@@ -1,0 +1,2841 @@
+Subject: 19ME533 [4 Credits]
+Type: OPEN ELECTIVE
+Course Name: 3D Printing Processes
+Status: Full
+
+  Section: 4X1-97, MECH - MUTHUKUMAR V
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19TD609 [2 Credits]
+Type: OPEN ELECTIVE
+Course Name: Abroad Studies Entry Preparation
+Status: Full
+
+  Section: 4X1-115, ENGLISH - Manoj Krishna M
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19AI305 [3 Credits]
+Type: PROFESSIONAL CORE
+Course Name: Advanced C Programming
+Status: Full
+
+  Section: 4K1-3, AI - Kumaravelu R
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4T2-3, AI - Kumaravelu R
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4K1-2, AI - Kiruthika S S
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4T2-2, AI - Kiruthika S S
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4K1-1, AI - RENUGADEVI R
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4D6-2, AI - Nagendran k
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4T2-1, AI - Dinesh Babu G L
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4C3-4, AI - Kumaravelu R
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4S2-3, AI - Kumaravelu R
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4E1-1, AI - Kiruthika S S
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4S2-2, AI - Kiruthika S S
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4C3-2, AI - Shankar P
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4C3-1, AI - Nagendran k
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4S2-1, AI - Nagendran k
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4P5-1, AI - Shankar P
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4Y5-2, AI - Nagendran k
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19AI553 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Advanced Java Web Applications
+Status: Full
+
+  Section: 4D4-1, AI - PROGRAD FACULTY
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4M2-1, AI - MANOJ V
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4X5-1, AI - MANOJ V
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4P6-1, AI - PROGRAD FACULTY
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4L2-1, AI - MANOJ V
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19MA212 [4 Credits]
+Type: BASIC SCIENCES
+Course Name: Algebra and Number Theory
+Status: Full
+
+  Section: 4X2-48, Maths - Premila S C
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4X1-76, Maths - Mary Henrietta H
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4X3-28, Maths - Premila S C
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19AI404 [3 Credits]
+Type: PROFESSIONAL CORE
+Course Name: Analysis of Algorithms
+Status: Full
+
+  Section: 4U1-2, AI - Selvanayaki S S
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4U6-1, AI - Sasikala K
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4U1-1, AI - MANICKAM S
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4A4-2, AI - Sasikala K
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4L1-2, AI - Selvanayaki S S
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4L1-1, AI - MANICKAM S
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19AI409 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Applied Artificial Intelligence
+Status: Full
+
+  Section: 4A2-2, AI - Swedha .V
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4F1-2, AI - Saravanan N
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4M5-2, AI - Swedha .V
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4C1-2, AI - Saravanan N
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19AI502 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Applied Natural Language Processing
+Status: Full
+
+  Section: BLENDED, AI - LAVANYA G SCOFT
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19AI550 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Artificial Intelligence for Games
+Status: Full
+
+  Section: 4W1-2, AM - Uma Rani V
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4Z1-2, AM - Uma Rani V
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19EE305 [3 Credits]
+Type: ENGINEERING SCIENCES
+Course Name: Basic Electrical, Electronics and Measurement Engineering
+Status: Full
+
+  Section: 4X8-1, EEE - VAIGUNDAMOORTHI M
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4X2-23, EEE - SANDHIYAA S
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4X5-3, EEE - SANDHIYAA S
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X5-2, EEE - NANDHINI S
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X2-22, EEE - GOKUL KANNAN K
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4X5-1, EEE - GOKUL KANNAN K
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X4-6, EEE - KARTHIGEYAN K A
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4X2-21, EEE - KARTHIGEYAN K A
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4X6-2, EEE - VAIGUNDAMOORTHI M
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X3-13, EEE - VAIGUNDAMOORTHI M
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4X6-1, EEE - SANDHIYAA S
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X1-31, EEE - NANDHINI S
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X3-12, EEE - GOKUL KANNAN K
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4X1-30, EEE - GOKUL KANNAN K
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X3-11, EEE - KARTHIGEYAN K A
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4X1-29, EEE - KARTHIGEYAN K A
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X7-1, EEE - SANDHIYAA S
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19MS154 [3 Credits]
+Type: HUMANITIES AND SCIENCES
+Course Name: Basic Financial Accounting
+Status: Full
+
+  Section: 3A4-2, MBA - GANESAN ALIAS KANAGARAJ M
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Wednesday: 15:00 – 16:00
+
+  Section: 3A4-1, MBA - ELANGO J
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Wednesday: 15:00 – 16:00
+
+  Section: 3A2-2, MBA - GANESAN ALIAS KANAGARAJ M
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 15:00 – 16:00
+
+  Section: 3A2-1, MBA - ELANGO J
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 15:00 – 16:00
+
+  Section: 3D4-2, MBA - SELVI K
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+    Tuesday: 08:00 – 09:00
+
+  Section: 3A1-1, MBA - PERIASAMY P
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 3V5-2, MBA - PERIASAMY P
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 16:00 – 17:00
+
+  Section: 3V1-2, MBA - SELVI K
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Saturday: 10:00 – 11:00
+
+Subject: 19AI516 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Big Data Mining and Analysis
+Status: Full
+
+  Section: 4R5-2, AI - DHANALAKSHMI J
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19AI547 [3 Credits]
+Type: PROFESSIONAL CORE
+Course Name: Blockchain for Business
+Status: Full
+
+  Section: 4Y1-2, AI - KALADEVI R
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4B2-2, AI - KALADEVI R
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19AI602 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: CISCO Networking Certifications
+Status: Full
+
+  Section: 4L2-2, AI - SUNDARAVADIVEL P
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4M2-2, AI - SUNDARAVADIVEL P
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19EY708 [1 Credits]
+Type: EMPLOYABILITY ENHANCEMENT COURSES
+Course Name: Career Development Skills
+Status: Full
+
+  Section: 2V1-1, TRAINING - Rajesh Emmanuel
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 2K1-1, TRAINING - JAYPREETHA V R
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2R1-4, TRAINING - EVANGELIN HELEN
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19AI541 [4 Credits]
+Type: PROFESSIONAL CORE
+Course Name: Cloud Computing
+Status: Full
+
+  Section: 4E2-1, AI - SHOBANA M
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: BLENDED-LNG1, AI - Malathi K
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4V1-2, AI - Malathi K
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4D2-2, AI - SHOBANA M
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4D2-1, AI - Malathi K
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: BLENDED, AI - SHOBANA M
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19CS416 [3 Credits]
+Type: PROFESSIONAL CORE
+Course Name: Cloud Security
+Status: Full
+
+  Section: 4X2-1, CSE - SHOBANA M
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4X1-1, CSE - RAJESH C
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19EN101 [4 Credits]
+Type: HUMANITIES AND SCIENCES
+Course Name: Communicative English
+Status: Full
+
+  Section: 4X2-31, ENGLISH - UDHAYAKUMAR R
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X1-57, ENGLISH - SRIDEVI B
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19ME505 [3 Credits]
+Type: OPEN ELECTIVE
+Course Name: Computer Aided Design
+Status: Full
+
+  Section: 4X1-93, MECH - NIRMAL KUMAR K
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19CS305 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Computer Architecture
+Status: Full
+
+  Section: 3B2-2, CSE - VELMURUGAN N
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Monday: 10:00 – 11:00
+
+  Section: 3L3-1, CSE - ANBARASAN M
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 3B2-1, CSE - ANBARASAN M
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Monday: 10:00 – 11:00
+
+  Section: 3J1-2, CSE - C M VELU
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 3J1-1, CSE - ARUL G
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 3M3-1, CSE - ANBARASAN M
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 13:00 – 14:00
+
+  Section: 3B3-1, CSE - ANBARASAN M
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Saturday: 13:00 – 14:00
+
+Subject: 19CS406 [4 Credits]
+Type: PROFESSIONAL CORE
+Course Name: Computer Networks
+Status: Full
+
+  Section: 4G5-4, CSE - VINOTHINI M
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4P3-2, CSE - Vijay Anand M
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4Z4-3, CSE - Sathya U
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4Z4-4, CSE - Vijay Anand M
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4G5-3, CSE - Ramyadevi R
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4G5-2, CSE - GOBALAKRISHNAN N
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4Z4-2, CSE - C M VELU
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4R3-2, CSE - Vijay Anand M
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4J4-2, CSE - PRIYANGA G
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4F4-2, CSE - C M VELU
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4K5-2, CSE - VINOTHINI M
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4A5-5, CSE - Ramyadevi R
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4A5-4, CSE - GOBALAKRISHNAN N
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4A5-3, CSE - C M VELU
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19AI509 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Concepts of Virtual and Augmented Reality
+Status: Full
+
+  Section: 4N3-1, AI - Archana S H
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4T5-1, AI - Archana S H
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19CS415 [3 Credits]
+Type: PROFESSIONAL CORE
+Course Name: Cryptography
+Status: Full
+
+  Section: 44H6-1, CSE - PARAMESH J
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 44H6-2, CSE - Hemavathy P
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4S4-1, CSE - Arul Oli A
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4J1-2, CSE - Saravanan T
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4J1-1, CSE - Arul Oli A
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4M6-1, CSE - Saravanan T
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4M6-2, CSE - Arul Oli A
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4Q4-2, CSE - PARAMESH J
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4Q4-1, CSE - Arul Oli A
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19CS418 [3 Credits]
+Type: PROFESSIONAL CORE
+Course Name: Cyber Law and Compliance
+Status: Full
+
+  Section: 3P2-1, CSE - Hemadharsana S
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 16:00 – 17:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 3I1-1, CSE - Sangeetha Priya M
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 16:00 – 17:00
+
+Subject: 19AI408 [3 Credits]
+Type: PROFESSIONAL CORE
+Course Name: Data Structures
+Status: Full
+
+  Section: 4T4-1, AI - RENUGADEVI R
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4D3-1, AI - RENUGADEVI R
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4L3-2, AI - Poongulali E
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4O2-1, AI - Poongulali E
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4S6-1, AI - KRISHNAMOORTHY J
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4C1-1, AI - K SARANYA
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4L3-1, AI - K SARANYA
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4N4-1, AI - Dinesh Babu G L
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4M5-1, AI - KRISHNAMOORTHY J
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4A2-1, AI - KRISHNAMOORTHY J
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4W3-2, AI - Joel Jhon
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4I1-3, AI - Dinesh Babu G L
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4I1-2, AI - RENUGADEVI R
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4I1-1, AI - Poongulali E
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4U4-1, AI - KRISHNAMOORTHY J
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4F1-1, AI - K SARANYA
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4X2-1, AI - Poongulali E
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4I3-3, AI - RAJALAKSHMI E
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4I3-2, AI - K SARANYA
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4I3-1, AI - Dinesh Babu G L
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19CS404 [4 Credits]
+Type: PROFESSIONAL CORE
+Course Name: Database Management System and its Applications
+Status: Full
+
+  Section: 4L5-2, CSE - YASHINI P
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4K6-1, CSE - THAVA VINU A
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4L5-3, CSE - Shruthi S Nair
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4L5-4, CSE - ABINAYA G
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4M1-3, CSE - YASHINI P
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4M1-2, CSE - THAVA VINU A
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4M1-1, CSE - ABINAYA G
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4P4-1, CSE - VINOTHINI M
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4P4-2, CSE - THAVA VINU A
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4P4-3, CSE - ABINAYA G
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: BLENDED, CSE - ABINAYA G
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4J6-1, CSE - YASHINI P
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4L6-1, CSE - VINOTHINI M
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19AI413 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Deep Learning and its Applications
+Status: Full
+
+  Section: BLENDED, AI - Jaba Jasphin E.T
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4X1-1, AI - Nadar Akila P Mohan
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4O5-1, AI - MICHAEL MAHESH K
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4O1-1, AI - MICHAEL MAHESH K
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19EE404 [4 Credits]
+Type: ENGINEERING SCIENCES
+Course Name: Digital Electronics
+Status: Full
+
+  Section: 4X5-5, EEE - Navaneetha Velammal
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 13:00 – 14:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4X2-29, EEE - SAVITHA V
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4X4-8, EEE - HEMA R
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X2-28, EEE - HEMA R
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4X1-41, EEE - Navaneetha Velammal
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X1-40, EEE - HEMA R
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X3-17, EEE - HEMA R
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19CS419 [3 Credits]
+Type: PROFESSIONAL CORE
+Course Name: Digital Forensics and Digital Investigations
+Status: Full
+
+  Section: 4X1-4, CS - AUGUSTIAN ISAAC R
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X2-3, CS - AUGUSTIAN ISAAC R
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19AI406 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Digital Image Processing Techniques
+Status: Full
+
+  Section: 4Q1-2, AI - MANIKANDAN SP
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4E6-2, AI - Hari U
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4E6-1, AI - MICHAEL MAHESH K
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4N5-2, AI - MANIKANDAN SP
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4I5-2, AI - MICHAEL MAHESH K
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4I5-1, AI - Hari U
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19CS421 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Edge Computing
+Status: Full
+
+  Section: 4X1-6, CSE - Vasanth Kumar
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19CS542 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Embedded Board Design
+Status: Full
+
+  Section: 4X2-7, CSE - AnishKumar J
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4X1-9, CSE - AnishKumar J
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4X3-2, CSE - AnishKumar J
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19EY712 [1 Credits]
+Type: EMPLOYABILITY ENHANCEMENT COURSES
+Course Name: Employment Enrichment Skills
+Status: Full
+
+  Section: 2X9-5, TRAINING - GITTY JOELIN J
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 2X5-8, TRAINING - Sneha Priya p
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2X9-4, TRAINING - Rajesh Emmanuel
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 2X9-3, TRAINING - Pandiyan R
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 2X4-13, TRAINING - EVANGELIN HELEN
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2X5-7, TRAINING - David Raja V
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2X4-12, TRAINING - David Raja V
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2X7-8, TRAINING - Sneha Priya p
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2X13-1, TRAINING - Saranya V
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2X12-1, TRAINING - Saranya V
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 2X7-7, TRAINING - Pandiyan R
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2X7-6, TRAINING - EVANGELIN HELEN
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2X2-37, TRAINING - GITTY JOELIN J
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2X14-1, TRAINING - Saranya V
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 2X3-21, TRAINING - Rajesh Emmanuel
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2X2-36, TRAINING - Pandiyan R
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2X3-20, TRAINING - Pandiyan R
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2X3-19, TRAINING - EVANGELIN HELEN
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2X2-35, TRAINING - EVANGELIN HELEN
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2X3-18, TRAINING - David Raja V
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2X2-34, TRAINING - David Raja V
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2X10-5, TRAINING - Pandiyan R
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2X6-5, TRAINING - EVANGELIN HELEN
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2X11-4, TRAINING - Saranya V
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2X11-3, TRAINING - Rajesh Emmanuel
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2X1-64, TRAINING - Rajesh Emmanuel
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 2X8-4, TRAINING - JAYPREETHA V R
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 2X1-63, TRAINING - JAYPREETHA V R
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 2X1-62, TRAINING - GITTY JOELIN J
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19AI302 [3 Credits]
+Type: ENGINEERING SCIENCES
+Course Name: Engineering Design and Modelling
+Status: Full
+
+  Section: 4O4-1, AI - Sellakumar S
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4K2-2, AI - CALEB DANIEL R
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4D1-2, AI - CALEB DANIEL R
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4A3-1, AI - Sellakumar S
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19AI303 [3 Credits]
+Type: ENGINEERING SCIENCES
+Course Name: Engineering Mechanics and Product Development
+Status: Full
+
+  Section: 4O4-2, AI - CALEB DANIEL R
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4A1-1, AI - Sellakumar S
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4A3-2, AI - CALEB DANIEL R
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19CS570 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Entrepreneurship and Small Business Development
+Status: Full
+
+  Section: 4X2-11, CSE - HAND IN HAND FACULTY - I
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4X1-16, CSE - HAND IN HAND FACULTY - I
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19CY801 [2 Credits]
+Type: ENGINEERING SCIENCES
+Course Name: Environmental Sciences and Sustainability
+Status: Full
+
+  Section: 2B1-2, CHEMISTRY - SHANTHI S
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 2R1-1, CHEMISTRY - Yamini B
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2G1-4, CHEMISTRY - Lavanya G
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 2L1-1, CHEMISTRY - Vivekanand P A
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19CS417 [3 Credits]
+Type: PROFESSIONAL CORE
+Course Name: Ethical Hacking Techniques
+Status: Full
+
+  Section: 4X4-1, CSE - PARAMESH J
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X2-2, CSE - AUGUSTIAN ISAAC R
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X1-3, CSE - Gowri Ganesh N S
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X1-2, CSE - AUGUSTIAN ISAAC R
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X3-1, CSE - PARAMESH J
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19AI405 [3 Credits]
+Type: PROFESSIONAL CORE
+Course Name: Fundamentals of Artificial Intelligence
+Status: Full
+
+  Section: 4G4-2, AI - Saravanan N
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4T6-1, AI - RAMSHANKAR N
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4V6-1, AI - Murugesan S
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4G4-1, AI - Swedha .V
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4Q1-1, AI - Saravanan N
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4N5-1, AI - RAMSHANKAR N
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4X3-2, AI - Murugesan S
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X3-1, AI - Swedha .V
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19AI304 [3 Credits]
+Type: PROFESSIONAL CORE
+Course Name: Fundamentals of C Programming
+Status: Full
+
+  Section: 4N1-2, AI - Shankar P
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4D6-1, AI - Magitha Nirmala Tennyson
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4N1-1, AI - Magitha Nirmala Tennyson
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4A1-2, AI - Dhinesh Kumar K S
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4Y5-1, AI - Ramachandran .
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4T3-2, AI - Ramachandran .
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4T3-1, AI - Magitha Nirmala Tennyson
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4Z5-2, AI - Shankar P
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4Z5-1, AI - Magitha Nirmala Tennyson
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19CS547 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Fundamentals of Cryptocurrency
+Status: Full
+
+  Section: 4X1-12, CSE - KALADEVI R
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X3-3, CSE - Saravanan T
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4X2-9, CSE - Saravanan T
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19AI414 [5 Credits]
+Type: PROFESSIONAL CORE
+Course Name: Fundamentals of Web Application Development
+Status: Full
+
+  Section: 4X1-2, AI - VIJAYAN P
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4O5-2, AI - VIJAYAN P
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: BLENDED, AI - JEEVANANDHAM M
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4O1-2, AI - VIJAYAN P
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4N2-2, AI - VIJAYAN P
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4N2-1, AI - JEEVANANDHAM M
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19EC603 [3 Credits]
+Type: OPEN ELECTIVE
+Course Name: Fuzzy Logic Systems and ANN
+Status: Full
+
+  Section: 3N1-1, ECE - Kalaivani C.T
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19AI513 [4 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Game Programming
+Status: Full
+
+  Section: 4R5-1, AI - MONOLITH FACULTY
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4N3-2, AI - MONOLITH FACULTY
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19EN609 [2 Credits]
+Type: OPEN ELECTIVE
+Course Name: Gender Sensitization
+Status: Full
+
+  Section: 4X1-61, ENGLISH - ARUNA DEVI K
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19CS579 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Generative AI Application Development
+Status: Full
+
+  Section: BLENDED, CSE - Jaba Jasphin E.T
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19MS156 [3 Credits]
+Type: HUMANITIES AND SCIENCES
+Course Name: Human Resource Management and Team Building
+Status: Full
+
+  Section: 3V3-2, MBA - Gurunathan M
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 13:00 – 14:00
+
+  Section: 3X6-9, MBA - RAMAR V
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 3X3-30, MBA - DIVYA RANJANI R
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 08:00 – 09:00
+
+  Section: 3V3-1, MBA - DIVYA RANJANI R
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 13:00 – 14:00
+
+  Section: 3X4-21, MBA - Gurunathan M
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 16:00 – 17:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 3X5-12, MBA - RAMAR V
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 15:00 – 16:00
+
+  Section: 3X4-20, MBA - RAMAR V
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 16:00 – 17:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 3X7-12, MBA - KARTHICK K K
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 3X7-11, MBA - Gurunathan M
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19HS801 [2 Credits]
+Type: BASIC SCIENCES
+Course Name: Human Values and Professional Ethics
+Status: Full
+
+  Section: 2X2-42, ENGLISH - KIRAN KUMAR J
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2X1-67, ENGLISH - ANNE DORTHY
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2X3-24, ENGLISH - subhashini R
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19EN618 [2 Credits]
+Type: OPEN ELECTIVE
+Course Name: Indian Astronomy and Mathematics
+Status: Full
+
+  Section: 2L1-4, ENGLISH - Rangarathnam Gopu
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19AM509 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Industrial Internet of Things
+Status: Full
+
+  Section: 4V2-2, AM - Vasanth Kumar
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19CH629 [3 Credits]
+Type: OPEN ELECTIVE
+Course Name: Industrial Safety
+Status: Full
+
+  Section: 3I3-1, CHEM - Senthilkumar P
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 15:00 – 16:00
+
+Subject: 19PH601 [3 Credits]
+Type: OPEN ELECTIVE
+Course Name: Instrumentation and Applied Physics in Engineering
+Status: Full
+
+  Section: 2X1-110, PHYSICS - Priya M
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19ME531 [3 Credits]
+Type: OPEN ELECTIVE
+Course Name: Intellectual Property Rights
+Status: Full
+
+  Section: 4X1-96, MECH - RAJA RAJESWARI N
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19AI403 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Introduction to Data Science
+Status: Full
+
+  Section: 4K3-2, AI - VISHNUPRIYA K
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4K3-1, AI - Varalakshmi J
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4R1-2, AI - VISHNUPRIYA K
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4B4-2, AI - Varalakshmi J
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4A4-1, AI - VISHNUPRIYA K
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4R2-2, AI - VISHNUPRIYA K
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4R2-1, AI - Karthi Govindharaju
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19AM508 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Introduction to IoT
+Status: Full
+
+  Section: 4N6-1, IOT - Karthiga M
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4V2-1, IOT - Vasanth Kumar
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: BLENDED, IOT - Vasanth Kumar
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: BLENDED-LNG1, IOT - Karthiga M
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19AI410 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Introduction to Machine Learning
+Status: Full
+
+  Section: 4M3-1, AI - Nadar Akila P Mohan
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4N4-2, AI - Jesila mol J
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4T4-2, AI - Jesila mol J
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4O2-2, AI - ATHIRAJA A
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4U4-2, AI - ATHIRAJA A
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4C6-1, AI - PREMNATH K
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4R6-1, AI - PREMNATH K
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: BLENDED, AI - Nadar Akila P Mohan
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4Z2-2, AI - PREMNATH K
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4Z2-1, AI - Jesila mol J
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4D3-2, AI - Gayathri s
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4X2-2, AI - ATHIRAJA A
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4Y4-3, AI - PREMNATH K
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4Y4-2, AI - Jesila mol J
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4Y4-1, AI - ATHIRAJA A
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19EC602 [3 Credits]
+Type: OPEN ELECTIVE
+Course Name: Introduction to Micro Electro Mechanical Systems
+Status: Full
+
+  Section: 3O1-2, ECE - Archana T
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 13:00 – 14:00
+
+Subject: 19EN619 [2 Credits]
+Type: OPEN ELECTIVE
+Course Name: Inventions and Discoveries
+Status: Full
+
+  Section: 2R1-3, ENGLISH - Rangarathnam Gopu
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19TD604 [3 Credits]
+Type: OPEN ELECTIVE
+Course Name: Japanese Language N4
+Status: Full
+
+  Section: 6G1-1, ENGLISH - Subashini D
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19TD603 [3 Credits]
+Type: OPEN ELECTIVE
+Course Name: Japanese Language N5
+Status: Full
+
+  Section: 6E1-1, ENGLISH - Subashini D
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 6I1-1, ENGLISH - SATHYA PRIYA K
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 6H1-1, ENGLISH - SATHYA PRIYA K
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 6D1-1, ENGLISH - Subashini D
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19AI534 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Kinematics and Dynamics of Robots
+Status: Full
+
+  Section: 4S5-1, AI - Sellakumar S
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19MA220 [4 Credits]
+Type: BASIC SCIENCES
+Course Name: Mathematics for Artificial Intelligence
+Status: Full
+
+  Section: 6K1-1, AI - Bhuvaneswari G
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19AI539 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Mobile User Interface Development
+Status: Full
+
+  Section: 4V1-1, AI - Surya S
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19EN605 [2 Credits]
+Type: OPEN ELECTIVE
+Course Name: Modern Trends in Physical Education and Sports Sciences
+Status: Full
+
+  Section: 4X2-33, ENGLISH - Prabhakaran G
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X1-60, ENGLISH - Balasingh D
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19AI545 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Modern Web Application Development
+Status: Full
+
+  Section: 4W1-1, AI - PROGRAD FACULTY
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4Y1-1, AI - JEEVANANDHAM M
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4B2-1, AI - PROGRAD FACULTY
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4C2-2, AI - PROGRAD FACULTY
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4Z1-1, AI - MANOJ V
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19PH602 [3 Credits]
+Type: OPEN ELECTIVE
+Course Name: NanoPhotonics: Physics, Fabrication and Technologies
+Status: Full
+
+  Section: 2X1-111, PHYSICS - Silambarasan M
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19AI411 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Neural Networks
+Status: Full
+
+  Section: 4P1-1, AI - LAVANYA G SCOFT
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4O6-1, AI - LAVANYA G SCOFT
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4M3-2, AI - Jayanthi G
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4H3-1, AI - Jayanthi G
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19AI307 [3 Credits]
+Type: ENGINEERING SCIENCES
+Course Name: Object Oriented Programming using Java
+Status: Full
+
+  Section: 4G3-2, AI - Tenali Ravi Kumar
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4G3-1, AI - Surya S
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4B4-1, AI - Shanmuga Priya S
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4M4-2, AI - Surya S
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4M4-1, AI - RAJAKRISHNAMMAL A
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4B6-2, AI - Shanmuga Priya S
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4P5-2, AI - Tenali Ravi Kumar
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4B6-1, AI - RAJAKRISHNAMMAL A
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4R1-1, AI - Shanmuga Priya S
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4E1-2, AI - RAJAKRISHNAMMAL A
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19CS545 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Open Source Operating System
+Status: Full
+
+  Section: 4X2-8, CSE - ADVANTAGE PRO FACULTY
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4X1-11, CSE - ADVANTAGE PRO FACULTY
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19CS405 [4 Credits]
+Type: PROFESSIONAL CORE
+Course Name: Operating System
+Status: Full
+
+  Section: 4B5-1, CSE - Suresh Kumar K
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4D5-1, CSE - Kolli Amos Daniel
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4K5-1, CSE - Sujatha Elumalai
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4I6-3, CSE - Kolli Amos Daniel
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4I6-1, CSE - Dr C. Rajendra Thilahar
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4I6-2, CSE - ARUL G
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4J6-2, CSE - ARUL G
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4D1-5, CSE - Kolli Amos Daniel
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4D1-4, CSE - Gowri Ganesh N S
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4D1-3, CSE - Dr C. Rajendra Thilahar
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4C5-1, CSE - Sujatha Elumalai
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4Q3-3, CSE - Sujatha Elumalai
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4Q3-2, CSE - Kolli Amos Daniel
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4O3-1, CSE - Gowri Ganesh N S
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4Y2-1, CSE - ARUL G
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4Q5-1, CSE - Sujatha Elumalai
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19AI407 [4 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Parallel Computing Architecture
+Status: Full
+
+  Section: 4G6-1, AI - Jayanthi G
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4W3-1, AI - Aswini J
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: BLENDED, AI - Aswini J
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4F6-1, AI - Jayanthi G
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19AI603 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Pega Platform
+Status: Full
+
+  Section: 4W5-1, AI - Murugesan S
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4J2-1, AI - Murugesan S
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19PH814 [3 Credits]
+Type: ENGINEERING SCIENCES
+Course Name: Physics for Quantum Computing
+Status: Full
+
+  Section: 2X1-112, PHYSICS - Ganapathi Raman
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19CY205 [4 Credits]
+Type: BASIC SCIENCES
+Course Name: Principles of Chemistry in Engineering
+Status: Full
+
+  Section: 2B1-1, CHEMISTRY - Muthupandian P
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2G1-2, CHEMISTRY - DOLLI H
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19MA222 [4 Credits]
+Type: BASIC SCIENCES
+Course Name: Probability and Queueing Models
+Status: Full
+
+  Section: 4X1-80, Maths - Gayathri Lakshmi M
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X2-51, Maths - USHA M
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19EE309 [3 Credits]
+Type: ENGINEERING SCIENCES
+Course Name: Programming Microcontrollers
+Status: Full
+
+  Section: 4X10-3, AI - Sripriya Ranganathan
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4X2-26, AI - SAVITHA V
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X10-2, AI - RAJARAJACHOZHAN C
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4X10-1, AI - MARISARGUNAM S
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4X8-2, AI - LAKSHMI C
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4X5-4, AI - ESWARAMOORTHY K
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4X2-25, AI - ESWARAMOORTHY K
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X2-24, AI - BALAKUMAR D
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X1-37, AI - SAVITHA V
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X1-36, AI - RAJARAJACHOZHAN C
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X9-1, AI - LAKSHMI C
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4X4-7, AI - ESWARAMOORTHY K
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4X1-35, AI - BALAKUMAR D
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X7-2, AI - Karthiga M
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4X3-16, AI - SAVITHA V
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X11-1, AI - RAJARAJACHOZHAN C
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X3-15, AI - MARISARGUNAM S
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X6-3, AI - Karthiga M
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4X3-14, AI - ESWARAMOORTHY K
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19TD608 [2 Credits]
+Type: OPEN ELECTIVE
+Course Name: Prompt Engineering
+Status: Full
+
+  Section: 4X3-32, AI - Hemavathy P
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X3-31, AI - Dr C. Rajendra Thilahar
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X5-13, AI - Hemavathy P
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4X4-22, AI - Dr C. Rajendra Thilahar
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4X2-55, AI - ALAGUMANI S
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X1-114, AI - YASHINI P
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4X1-113, AI - ALAGUMANI S
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19CS420 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Prototyping of IoT Systems
+Status: Full
+
+  Section: 4X1-5, IOT - Sripriya Ranganathan
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X2-4, IOT - Sripriya Ranganathan
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19AI301 [3 Credits]
+Type: ENGINEERING SCIENCES
+Course Name: Python Programming
+Status: Full
+
+  Section: 4E4-2, AI - Silambarasi C
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4E4-1, AI - D PAVAI
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 4D1-1, AI - D PAVAI
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4H2-2, AI - RAJASARANYAKUMARI R
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4H2-1, AI - D PAVAI
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4K2-1, AI - D PAVAI
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19AI301C [9 Credits]
+Type: OTHERS
+Course Name: Python and Linear Algebra
+Status: Full
+
+  Section: 8A1-1, AI - Bhuvaneswari G
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 8B1-1, AI - ARUN P
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 8C1-1, AI - ARUN P
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 8D1-1, AI - Archana S H
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19EY710 [1 Credits]
+Type: EMPLOYABILITY ENHANCEMENT COURSES
+Course Name: Quantitative Ability I
+Status: Full
+
+  Section: 2O1-3, TRAINING - AYILYA BL
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 2Q1-11, TRAINING - SOWMYA T
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2Q1-10, TRAINING - SHABANA S
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2Q1-9, TRAINING - MATHIVANAN A
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2Q1-8, TRAINING - MEGALA J
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2W1-2, TRAINING - Manoj Krishna M
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2Q1-7, TRAINING - Manoj Krishna M
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2W1-3, TRAINING - GOWTHAMI M
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2Q1-6, TRAINING - GOWTHAMI M
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2Q1-5, TRAINING - AYILYA BL
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2H1-9, TRAINING - SOWMYA T
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 2H1-8, TRAINING - SHABANA S
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 2H1-7, TRAINING - GOWTHAMI M
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 2H1-6, TRAINING - AYILYA BL
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 2M1-5, TRAINING - SOWMYA T
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 2C1-3, TRAINING - SHABANA S
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 2M1-4t, TRAINING - SHABANA S
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 2C1-2, TRAINING - MATHIVANAN A
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 2D2-1, TRAINING - MATHIVANAN A
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2M1-2, TRAINING - Manoj Krishna M
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 2M1-3, TRAINING - AYILYA BL
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 2C1-1, TRAINING - AYILYA BL
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 2C-1, TRAINING - GOWTHAMI M
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19EY711 [1 Credits]
+Type: EMPLOYABILITY ENHANCEMENT COURSES
+Course Name: Quantitative Ability II
+Status: Full
+
+  Section: 2X8-3, TRAINING - Manoj Krishna M
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2X11-2, TRAINING - SOWMYA T
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2Z7-1, TRAINING - SHABANA S
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 2X9-2, TRAINING - MATHIVANAN A
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 2Z7-3, TRAINING - MATHIVANAN A
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 2Z7-2, TRAINING - AYILYA BL
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 2X4-11, TRAINING - SHABANA S
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 2X4-10, TRAINING - MATHIVANAN A
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 2X4-9, TRAINING - AYILYA BL
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 2X10-4, TRAINING - SOWMYA T
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 2X6-4, TRAINING - GOWTHAMI M
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 2X7-5, TRAINING - SOWMYA T
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2X7-4, TRAINING - MEGALA J
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2X7-3, TRAINING - Manoj Krishna M
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2X5-6, TRAINING - GOWTHAMI M
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19CS529 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Quantum Computing
+Status: Full
+
+  Section: 4X1-8, AI - GOBALAKRISHNAN N
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4X2-6, AI - GOBALAKRISHNAN N
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19EY709 [1 Credits]
+Type: EMPLOYABILITY ENHANCEMENT COURSES
+Course Name: Reasoning Ability
+Status: Full
+
+  Section: 2P1-4, TRAINING - Sneha Priya p
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2P1-3, TRAINING - SHABANA S
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2P1-2, TRAINING - JAYPREETHA V R
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2P1-1, TRAINING - David Raja V
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2K1-3, TRAINING - GOWTHAMI M
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2K1-2, TRAINING - EVANGELIN HELEN
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2I1-2, TRAINING - Sneha Priya p
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2I1-1, TRAINING - JAYPREETHA V R
+    Date: 04-08-2025 to 29-11-2025
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2O1-2, TRAINING - SOWMYA T
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 2F1-2, TRAINING - Sneha Priya p
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2A1-4, TRAINING - Sneha Priya p
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2A1-3, TRAINING - MATHIVANAN A
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2A1-2, TRAINING - Manoj Krishna M
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2F1-1, TRAINING - JAYPREETHA V R
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 2A1-1, TRAINING - JAYPREETHA V R
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2O1-1, TRAINING - GOWTHAMI M
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 2E1-2, TRAINING - Sneha Priya p
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+
+  Section: 2U1-2, TRAINING - Saranya V
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2U1-1, TRAINING - MEGALA J
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 2E1-1, TRAINING - JAYPREETHA V R
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19AI505 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Reinforcement Learning
+Status: Full
+
+  Section: 4A6-1, AI - Jaba Jasphin E.T
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19CS565 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Robotic Process Automation
+Status: Full
+
+  Section: 4X1-15, CSE - Nagappan G
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+    Tuesday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19AI604 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Rust Programming Language
+Status: Full
+
+  Section: 4J2-2, AI - RAMSHANKAR N
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19CS422 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Security for IoT Systems
+Status: Full
+
+  Section: 4X1-7, CSE - SUNDARAVADIVEL P
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4X2-5, CSE - SUNDARAVADIVEL P
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19CS408 [4 Credits]
+Type: PROFESSIONAL CORE
+Course Name: Software Engineering
+Status: Full
+
+  Section: 4C5-2, CSE - Ravindhar N.V
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4L4-2, CSE - Ravindhar N.V
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4L4-1, CSE - Madhumitha N
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00, 14:00 – 15:00
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4Q5-2, CSE - Ravindhar N.V
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 15:00 – 16:00, 16:00 – 17:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4S3-2, CSE - Ravindhar N.V
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4S3-1, CSE - Deepa A
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19AI543 [3 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Software Testing
+Status: Full
+
+  Section: 4E2-2, AI - PUGALENTHI R
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4C2-1, AI - PUGALENTHI R
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19MA211 [4 Credits]
+Type: BASIC SCIENCES
+Course Name: Statistics and Numerical Methods
+Status: Full
+
+  Section: 4X6-8, Maths - Thirumalai K
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 15:00 – 16:00, 16:00 – 17:00
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 4X4-18, Maths - Sivan V
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4X4-17, Maths - Kavitha N
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4X3-27, Maths - Jayasankari Chandramohan
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4X2-47, Maths - Sravya P R
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4X2-46, Maths - Jayasankari Chandramohan
+    Date: 04-08-2025 to 29-11-2025
+    Tuesday: 10:00 – 11:00, 11:00 – 12:00
+    Wednesday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 4X5-11, Maths - Kuppan A
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4X1-75, Maths - EUNICE JEMIMA PETER
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Saturday: 13:00 – 14:00, 14:00 – 15:00
+
+Subject: 19MS155 [3 Credits]
+Type: HUMANITIES AND SCIENCES
+Course Name: Stock Market and Company Operations
+Status: Full
+
+  Section: 3B4-1, MBA - Sathiyamurthi K
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 16:00 – 17:00
+
+  Section: 3C4-1, MBA - CATHERINE REX S
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 10:00 – 11:00
+
+  Section: 3C4-2, MBA - Sathiyamurthi K
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00, 09:00 – 10:00
+    Wednesday: 10:00 – 11:00
+
+  Section: 3A1-2, MBA - SEEMA BALAN
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 08:00 – 09:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 3Y3-1, MBA - SEEMA BALAN
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 3W3-1, MBA - Anitha L
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 15:00 – 16:00
+
+  Section: 3Y3-2, MBA - Anitha L
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+  Section: 3Z3-1, MBA - VASANTHA S
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00
+    Thursday: 10:00 – 11:00, 11:00 – 12:00
+
+Subject: 19CS407 [3 Credits]
+Type: PROFESSIONAL CORE
+Course Name: Theory of Computation
+Status: Full
+
+  Section: 3H1-2, CSE - SUNITHA T
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 08:00 – 09:00
+
+  Section: 3B1-1, CSE - SHANMUGA PRIYA G
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 10:00 – 11:00, 11:00 – 12:00
+    Tuesday: 10:00 – 11:00
+
+  Section: 3A3-1, CSE - MANI S V J
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 13:00 – 14:00, 14:00 – 15:00
+    Thursday: 16:00 – 17:00
+
+  Section: 3H1-1, CSE - JANAKI RAMAL R
+    Date: 04-08-2025 to 29-11-2025
+    Monday: 08:00 – 09:00, 09:00 – 10:00
+    Tuesday: 08:00 – 09:00
+
+  Section: 3E1-2, CSE - SUNITHA T
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 3E1-1, CSE - MANI S V J
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 08:00 – 09:00
+    Wednesday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 3Y2-1, CSE - MANI S V J
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 15:00 – 16:00, 16:00 – 17:00
+    Thursday: 13:00 – 14:00
+
+  Section: 3Z2-1, CSE - MANI S V J
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 13:00 – 14:00
+    Thursday: 08:00 – 09:00, 09:00 – 10:00
+
+Subject: 19AI412 [4 Credits]
+Type: PROFESSIONAL ELECTIVE
+Course Name: Web Data Mining
+Status: Full
+
+  Section: 4H3-2, AI - Varalakshmi J
+    Date: 04-08-2025 to 29-11-2025
+    Friday: 10:00 – 11:00, 11:00 – 12:00
+    Monday: 15:00 – 16:00, 16:00 – 17:00
+
+  Section: 4P1-2, AI - Varalakshmi J
+    Date: 04-08-2025 to 29-11-2025
+    Thursday: 15:00 – 16:00, 16:00 – 17:00
+    Wednesday: 15:00 – 16:00, 16:00 – 17:00
+
+Subject: 19EN616 [1 Credits]
+Type: OPEN ELECTIVE
+Course Name: Yoga and Meditation
+Status: Full
+
+  Section: 2L1-3, PED - Raghuram G
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 08:00 – 09:00, 09:00 – 10:00
+
+  Section: 2R1-2, PED - Raghuram G
+    Date: 04-08-2025 to 29-11-2025
+    Saturday: 10:00 – 11:00, 11:00 – 12:00
