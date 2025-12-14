@@ -14,52 +14,81 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1em;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
         }
         .container {
-            max-width: 400px;
+            max-width: 420px;
             width: 100%;
             padding: 20px;
         }
         .card {
             background: rgba(15, 23, 42, 0.95);
             border-radius: 16px;
-            padding: 40px;
+            padding: 48px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             border: 1px solid #1f2937;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
         h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
+            font-size: 1.75rem;
+            margin-bottom: 8px;
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            white-space: nowrap;
         }
         .subtitle {
             color: #9ca3af;
-            margin-bottom: 30px;
-            font-size: 1rem;
+            margin-bottom: 40px;
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
         .login-btn {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            color: white;
-            border: none;
-            padding: 16px 32px;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            background: white;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
             cursor: pointer;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            transition: transform 0.2s ease;
-            margin-bottom: 20px;
+            gap: 12px;
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
         .login-btn:hover {
-            transform: translateY(-2px);
+            background: #f9fafb;
+            border-color: #d1d5db;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .login-btn:active {
+            transform: scale(0.98);
         }
         .logout-btn {
             background: transparent;
@@ -71,6 +100,10 @@
             width: 100%;
             font-size: 0.9rem;
             transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         .logout-btn:hover {
             background: rgba(239, 68, 68, 0.1);
@@ -80,11 +113,18 @@
         .info {
             color: #9ca3af;
             font-size: 0.85rem;
-            margin-top: 30px;
-            padding: 15px;
+            margin-top: 32px;
+            padding: 16px;
             background: rgba(59, 130, 246, 0.05);
             border-radius: 8px;
-            border-left: 4px solid #3b82f6;
+            border-left: 3px solid #3b82f6;
+            text-align: left;
+            line-height: 1.6;
+        }
+        .info strong {
+            color: #d1d5db;
+            display: block;
+            margin-bottom: 4px;
         }
         .error {
             color: #ef4444;
@@ -94,6 +134,7 @@
             margin-bottom: 20px;
             border: 1px solid rgba(239, 68, 68, 0.3);
             display: none;
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -106,16 +147,15 @@
             <div id="errorMessage" class="error"></div>
             
             <button id="loginBtn" class="login-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
-                    <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
-                    <line x1="6" y1="1" x2="6" y2="4"></line>
-                    <line x1="10" y1="1" x2="10" y2="4"></line>
-                    <line x1="14" y1="1" x2="14" y2="4"></line>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                 </svg>
                 Sign in with Google
             </button>
-            
+                        
             <button class="logout-btn" onclick="logout()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -126,13 +166,36 @@
             </button>
             
             <div class="info">
-                <strong>Note:</strong> Contact Admin for Access.
-                If you see an access denied message, please try a different Google account.
+                <strong>Note:</strong> Contact Admin for Access. If you see an access denied message, please try a different Google account.
             </div>
         </div>
     </div>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script>
+        // Create snowfall effect
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.textContent = '•';
+            snowflake.style.left = Math.random() * 100 + '%';
+            snowflake.style.animationDuration = (Math.random() * 3 + 8) + 's';
+            snowflake.style.opacity = Math.random() * 0.6 + 0.2;
+            snowflake.style.fontSize = (Math.random() * 10 + 5) + 'px';
+            document.body.appendChild(snowflake);
+            
+            setTimeout(() => {
+                snowflake.remove();
+            }, 12000);
+        }
+        
+        // Create snowflakes periodically
+        setInterval(createSnowflake, 400);
+        
+        // Initial snowflakes
+        for (let i = 0; i < 15; i++) {
+            setTimeout(createSnowflake, i * 200);
+        }
+    
         const SUPABASE_URL = 'https://qmlmexokphzqrinbdfwk.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbG1leG9rcGh6cXJpbmJkZndrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU2NDg5ODksImV4cCI6MjA4MTIyNDk4OX0.n4SY5_s-VSr9BHudSUhgJRc90wMcIJkP75UTJcX76Qo';
         
@@ -143,7 +206,7 @@
                 const { error } = await supabase.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
-                        redirectTo: window.location.origin  // REMOVE THE + '/' 
+                        redirectTo: window.location.origin
                     }
                 });
                 if (error) throw error;
@@ -154,33 +217,25 @@
             }
         }
         
-        // FIXED: Properly handle the redirect
         function checkUrlFragment() {
             const hash = window.location.hash.substring(1);
             const params = new URLSearchParams(hash);
             const accessToken = params.get('access_token');
             
             if (accessToken) {
-                // Set the cookie immediately
                 document.cookie = `sb-access-token=${accessToken}; path=/; max-age=86400`;
-                
-                // Force redirect to root without hash
                 window.history.replaceState({}, '', '/');
                 window.location.reload();
             }
         }
         
         function logout() {
-            // Clear cookies
             document.cookie = "sb-access-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
             document.cookie = "sb-refresh-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
             window.location.href = '/login';
         }
         
-        // Initialize
         document.getElementById('loginBtn').addEventListener('click', handleLogin);
-        
-        // Check on load
         checkUrlFragment();
     </script>
 </body>
