@@ -1149,8 +1149,8 @@
     const step1Circle = document.getElementById('step1Circle');
     const step2Circle = document.getElementById('step2Circle');
     const subjectSearch = document.getElementById('subjectSearch');
-    const allSubjectsList = document.getElementById('allSubjectsList');
-    const selectedSubjectsList = document.getElementById('selectedSubjectsList');
+    let allSubjectsList = document.getElementById('allSubjectsList');
+    let selectedSubjectsList = document.getElementById('selectedSubjectsList');
     const selectedCount = document.getElementById('selectedCount');
     const selectedSubjectsSummary = document.getElementById('selectedSubjectsSummary');
     const nextToPage2Btn = document.getElementById('nextToPage2');
@@ -1260,7 +1260,7 @@
         allSubjectsList.innerHTML = `<div class="empty-state"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.998-.833-2.732 0L4.732 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg><p>Failed to load subjects. Please check your connection.</p></div>`;
       }
     }
-
+    let isRendering = false;
     function renderSubjectLists() {
       const searchTerm = subjectSearch.value.toLowerCase();
       filteredSubjects = allSubjects.filter(subject => {
@@ -1301,7 +1301,6 @@
         staffColumnsContainer.innerHTML = '<div class="empty-selection" style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-secondary);border:2px dashed var(--border);border-radius:10px;">Select subjects first to load staff lists</div>';
       }
       
-      attachSubjectEventListeners();
     }
 
     async function loadStaffFromSubjects() {
@@ -1559,24 +1558,39 @@
         `).join('');
       }
     }
-
     function attachSubjectEventListeners() {
-      document.querySelectorAll('.subject-item').forEach(item => {
-        item.addEventListener('click', () => {
-          const code = item.dataset.code; const subject = allSubjects.find(s => s.code === code);
-          if (subject && !selectedSubjects.some(s => s.code === code)) { 
-            selectedSubjects.push(subject); 
-            renderSubjectLists(); 
+      // clone/replace to remove old listeners
+      if (allSubjectsList && allSubjectsList.parentNode) {
+        const newAll = allSubjectsList.cloneNode(true);
+        allSubjectsList.parentNode.replaceChild(newAll, allSubjectsList);
+        allSubjectsList = document.getElementById('allSubjectsList'); // reassign
+      }
+
+      if (selectedSubjectsList && selectedSubjectsList.parentNode) {
+        const newSel = selectedSubjectsList.cloneNode(true);
+        selectedSubjectsList.parentNode.replaceChild(newSel, selectedSubjectsList);
+        selectedSubjectsList = document.getElementById('selectedSubjectsList'); // reassign
+      }
+
+      // use event delegation on the up-to-date variables
+      allSubjectsList.addEventListener('click', function(e) {
+        const item = e.target.closest('.subject-item');
+        if (item && !e.target.closest('.remove-subject')) {
+          const code = item.dataset.code;
+          const subject = allSubjects.find(s => s.code === code);
+          if (subject && !selectedSubjects.some(s => s.code === code)) {
+            selectedSubjects.push(subject);
+            renderSubjectLists();
           }
-        });
+        }
       });
 
-      document.querySelectorAll('.remove-subject').forEach(btn => {
-        btn.addEventListener('click', (e) => { e.stopPropagation(); const code = btn.dataset.code; selectedSubjects = selectedSubjects.filter(s => s.code !== code); renderSubjectLists(); });
-      });
-
-      document.querySelectorAll('.subject-card .remove-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => { e.stopPropagation(); const code = btn.dataset.code; selectedSubjects = selectedSubjects.filter(s => s.code !== code); updateSelectedSummary(); selectedCount.textContent = `(${selectedSubjects.length})`; renderSubjectLists(); });
+      selectedSubjectsList.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-subject')) {
+          const code = e.target.dataset.code;
+          selectedSubjects = selectedSubjects.filter(s => s.code !== code);
+          renderSubjectLists();
+        }
       });
     }
 
@@ -1727,6 +1741,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       loadSubjects();
+      attachSubjectEventListeners();
       generateBtn.addEventListener('click', () => generateTimetables(1));
       subjectSearch.addEventListener('keydown', (e) => { if (e.key==='Enter') renderSubjectLists(); });
       document.addEventListener('keydown', (e) => {
