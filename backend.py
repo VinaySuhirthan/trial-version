@@ -1902,7 +1902,7 @@ async def auth_guard(request: Request, call_next):
         return RedirectResponse("/login")
     
     try:
-        payload = jwt.decode(token, options={"verify_signature": False})
+        payload = jwt.decode(token, "I4rg0kV/wLByTHyDYiZpUTBC6e47/aCUBWERZ6rqaWn/aCGxu77NE4DJBpry3s16YE3jUljyHzUWtJqTpVSLlA==", algorithms=["HS256"])
         email = payload.get("email")
     except Exception:
         return RedirectResponse("/login")
@@ -1969,7 +1969,7 @@ async def auth_guard(request: Request, call_next):
                 <h2>Access Denied</h2>
                 <div class="info">
                     Contact Admin for Access.<br>
-                    <strong>Current users:</strong> {email} (not allowed)
+                    <strong>Current user:</strong> {email} (not allowed)
                 </div>
                 <p style="color: #9ca3af; margin-bottom: 20px;">
                     Please log out and try with one of the first 2 accounts.
