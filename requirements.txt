@@ -1,3 +1,5 @@
 fastapi
-uvicorn
+uvicorn[standard]
+supabase
+python-jose[cryptography]
 python-multipart
