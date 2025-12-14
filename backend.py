@@ -1968,7 +1968,7 @@ async def auth_guard(request: Request, call_next):
                 <div class="denied-icon">🚫</div>
                 <h2>Access Denied</h2>
                 <div class="info">
-                    Only the first 2 users can access this application.<br>
+                    Contact Admin for Access.<br>
                     <strong>Current users:</strong> {email} (not allowed)
                 </div>
                 <p style="color: #9ca3af; margin-bottom: 20px;">
