@@ -1,27 +1,43 @@
-# ========== GOD MODE TIMETABLE GENERATOR - FIXED VERSION ==========
-# ALL ISSUES FIXED: Case-sensitivity, Progress consistency
-from fastapi import FastAPI, Form
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, StreamingResponse
+# ========== GOD MODE TIMETABLE GENERATOR - CLEANED PRODUCTION VERSION ==========
+# ALL ISSUES FIXED: No job queue, no duplicates, fixed non-preferred highlighting
+from fastapi import FastAPI, Form, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-import re, os, html, time, copy, asyncio, json, uuid, logging, itertools, math
+import re, os, html, time, asyncio, json, logging, itertools, math, sys
 from typing import List, Dict, Tuple, Optional, Set, Any
-from collections import defaultdict, deque
-from dataclasses import dataclass
-from functools import partial
-from concurrent.futures import ThreadPoolExecutor
+from collections import defaultdict
+from dataclasses import dataclass, asdict
+from functools import partial, lru_cache
+from concurrent.futures import ProcessPoolExecutor
 import threading, multiprocessing
 from datetime import datetime
+from pathlib import Path
+from auth_utils import is_email_allowed
+import jwt
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
 
 # ========== SETUP ==========
-app = FastAPI()
+app = FastAPI(title="Timetable Generator API", version="3.0.0")
+
+# Environment-based configuration
+OUTPUT_FILE = os.getenv("OUTPUT_FILE", "output.txt")
+TIMETABLE_TIMEOUT = int(os.getenv("TIMETABLE_TIMEOUT", "30"))
+CORS_ORIGINS = os.getenv("CORS_ORIGINS", "*").split(",") if os.getenv("CORS_ORIGINS") else ["*"]
+if CORS_ORIGINS != ["*"]:
+    CORS_ORIGINS = [origin.strip() for origin in CORS_ORIGINS if origin.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
+    allow_origins=CORS_ORIGINS,
+    allow_methods=["GET", "POST"],
     allow_headers=["*"],
+    allow_credentials=True,
+    max_age=3600,
 )
 
-OUTPUT_FILE = "output.txt"
+# Rate limiting (simple memory-based)
+RATE_LIMIT_REQUESTS = int(os.getenv("RATE_LIMIT_REQUESTS", "10"))
+RATE_LIMIT_WINDOW = int(os.getenv("RATE_LIMIT_WINDOW", "60"))
+
 DAYS_ORDER = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 DAY_INDEX = {day: i for i, day in enumerate(DAYS_ORDER)}
 DAY_ALIASES = {
@@ -40,34 +56,168 @@ HOUR_SLOTS = [
 ]
 
 # ========== LOGGING ==========
-import sys, io
-
 try:
     sys.stdout.reconfigure(encoding='utf-8')
     sys.stderr.reconfigure(encoding='utf-8')
 except Exception:
-    try:
-        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-        sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
-    except Exception:
-        pass
+    pass
 
-file_handler = logging.FileHandler('timetable.log', encoding='utf-8')
+# Configure logging
+log_dir = Path(os.getenv("LOG_DIR", "."))
+log_dir.mkdir(exist_ok=True)
+
+try:
+    from logging.handlers import RotatingFileHandler
+    file_handler = RotatingFileHandler(
+        log_dir / 'timetable.log',
+        maxBytes=10*1024*1024,
+        backupCount=5,
+        encoding='utf-8'
+    )
+except (PermissionError, OSError, ImportError):
+    file_handler = logging.StreamHandler(sys.stdout)
+
 stream_handler = logging.StreamHandler(sys.stdout)
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 file_handler.setFormatter(formatter)
 stream_handler.setFormatter(formatter)
-logging.basicConfig(level=logging.INFO, handlers=[file_handler, stream_handler])
+
+logging.basicConfig(
+    level=os.getenv("LOG_LEVEL", "INFO"),
+    handlers=[file_handler, stream_handler],
+    force=True
+)
 logger = logging.getLogger(__name__)
+
+# ========== SIMPLE RATE LIMITING ==========
+class RateLimiter:
+    """Simple in-memory rate limiter."""
+    def __init__(self):
+        self.requests: Dict[str, List[float]] = defaultdict(list)
+        self.lock = threading.Lock()
+    
+    def is_allowed(self, client_id: str) -> bool:
+        now = time.time()
+        with self.lock:
+            # Clean old requests
+            self.requests[client_id] = [
+                req_time for req_time in self.requests[client_id]
+                if req_time > now - RATE_LIMIT_WINDOW
+            ]
+            
+            # Check limit
+            if len(self.requests[client_id]) >= RATE_LIMIT_REQUESTS:
+                return False
+            
+            self.requests[client_id].append(now)
+            return True
+
+rate_limiter = RateLimiter()
+
+def get_client_id(request: Request) -> str:
+    """Get client identifier for rate limiting."""
+    return request.client.host if request.client else "unknown"
+
+async def check_rate_limit(request: Request):
+    """Dependency to check rate limit."""
+    client_id = get_client_id(request)
+    if not rate_limiter.is_allowed(client_id):
+        raise HTTPException(
+            status_code=429,
+            detail=f"Rate limit exceeded. Try again in {RATE_LIMIT_WINDOW} seconds."
+        )
+
+# ========== PROCESS POOL MANAGEMENT ==========
+_process_pool = None
+_process_pool_lock = threading.Lock()
+
+def get_process_pool():
+    """Get or create process pool (singleton)."""
+    global _process_pool
+    with _process_pool_lock:
+        if _process_pool is None:
+            max_workers = max(1, multiprocessing.cpu_count() // 2)
+            _process_pool = ProcessPoolExecutor(max_workers=max_workers)
+            logger.info(f"Created process pool with {max_workers} workers")
+        return _process_pool
+
+# ========== CACHE MANAGEMENT ==========
+class CourseCache:
+    """Manages course data caching with file monitoring."""
+    def __init__(self):
+        self._cache = None
+        self._cache_mtime = 0
+        self._lock = threading.Lock()
+    
+    def get(self) -> Optional[Dict[str, Any]]:
+        """Get cached courses if still valid."""
+        with self._lock:
+            if not os.path.exists(OUTPUT_FILE):
+                return None
+            
+            current_mtime = os.path.getmtime(OUTPUT_FILE)
+            if self._cache is not None and current_mtime == self._cache_mtime:
+                return self._cache
+            return None
+    
+    def set(self, courses: Dict[str, Any]):
+        """Set cache with current file state."""
+        with self._lock:
+            if os.path.exists(OUTPUT_FILE):
+                self._cache = courses
+                self._cache_mtime = os.path.getmtime(OUTPUT_FILE)
+    
+    def clear(self):
+        """Clear cache."""
+        with self._lock:
+            self._cache = None
+            self._cache_mtime = 0
+
+course_cache = CourseCache()
 
 # ========== TIME / PARSING HELPERS ==========
 def extract_hours_minutes(t: str) -> Tuple[int, int]:
+    """Extract hours and minutes from a time string with validation."""
     t = str(t or "").strip()
     if not t:
         return 0, 0
+    
+    # Try to parse HH:MM or HH.MM format first
+    time_patterns = [
+        r'^(\d{1,2})[:\.](\d{2})$',
+        r'^(\d{3,4})$',
+    ]
+    
+    for pattern in time_patterns:
+        m = re.match(pattern, t)
+        if m:
+            if len(m.groups()) == 2:
+                hours = int(m.group(1))
+                minutes = int(m.group(2))
+            else:
+                digits = m.group(1)
+                if len(digits) == 3:
+                    hours = int(digits[0])
+                    minutes = int(digits[1:3])
+                elif len(digits) == 4:
+                    hours = int(digits[:2])
+                    minutes = int(digits[2:4])
+                else:
+                    continue
+            
+            # Validate ranges
+            if not (0 <= hours <= 23):
+                raise ValueError(f"Hour {hours} must be between 0 and 23")
+            if not (0 <= minutes <= 59):
+                raise ValueError(f"Minute {minutes} must be between 0 and 59")
+            
+            return hours, minutes
+    
+    # Fallback parsing
     digits = re.sub(r'[^0-9]', '', t)
     if not digits:
         return 0, 0
+    
     if len(digits) >= 4:
         hours = int(digits[:2])
         minutes = int(digits[2:4])
@@ -80,68 +230,125 @@ def extract_hours_minutes(t: str) -> Tuple[int, int]:
     else:
         hours = int(digits)
         minutes = 0
+    
+    # Handle minutes >= 60
     if minutes >= 60:
         hours += minutes // 60
         minutes = minutes % 60
+    
+    # Validate final values
+    if not (0 <= hours <= 23):
+        hours = max(0, min(23, hours))
+    if not (0 <= minutes <= 59):
+        minutes = max(0, min(59, minutes))
+    
     return hours, minutes
 
 def time_to_minutes(t: str) -> int:
-    h, m = extract_hours_minutes(t)
-    return h * 60 + m
+    """Convert time string to minutes since midnight."""
+    try:
+        h, m = extract_hours_minutes(t)
+        return h * 60 + m
+    except ValueError:
+        logger.warning(f"Invalid time format: {t}")
+        return 0
 
 def minutes_to_time(m: int) -> str:
+    """Convert minutes since midnight to time string."""
+    if m < 0 or m >= 24 * 60:
+        raise ValueError(f"Minutes {m} out of range")
     return f"{m // 60:02d}:{m % 60:02d}"
 
 def normalize_time_token(tok: str) -> str:
-    h, m = extract_hours_minutes(tok)
-    return f"{h:02d}:{m:02d}"
+    """Normalize a time token to HH:MM format."""
+    try:
+        h, m = extract_hours_minutes(tok)
+        return f"{h:02d}:{m:02d}"
+    except ValueError:
+        logger.warning(f"Invalid time token: {tok}")
+        return "00:00"
 
 def parse_single_time_range(part: str) -> Optional[Tuple[str, str]]:
+    """Parse a single time range string."""
     part = part.strip()
     if not part:
         return None
+    
+    # Validate unambiguous ranges
+    if '-' in part and part.count('-') > 1:
+        logger.warning(f"Ambiguous time range with multiple hyphens: {part}")
+        return None
+    
     patterns = [
         r'(\d{1,2}(?:[:.]\d{1,2})?)\s*(?:[-–—~=@©]|to)\s*(\d{1,2}(?:[:.]\d{1,2})?)',
         r'(\d{1,2}[:.]\d{2})\s+(\d{1,2}[:.]\d{2})',
         r'(\d{1,2})\s*[-–—~=]\s*(\d{1,2})',
     ]
+    
     for p in patterns:
         m = re.search(p, part, flags=re.IGNORECASE)
         if m:
             a, b = m.group(1), m.group(2)
-            a_norm = normalize_time_token(a)
-            b_norm = normalize_time_token(b)
-            if time_to_minutes(a_norm) >= time_to_minutes(b_norm):
-                logger.warning(f"Invalid time range: {a_norm} >= {b_norm}")
+            try:
+                a_norm = normalize_time_token(a)
+                b_norm = normalize_time_token(b)
+                start_min = time_to_minutes(a_norm)
+                end_min = time_to_minutes(b_norm)
+                
+                # Validate logical order
+                if start_min >= end_min:
+                    logger.warning(f"Invalid time range (start >= end): {a_norm} >= {b_norm}")
+                    return None
+                
+                return a_norm, b_norm
+            except ValueError as e:
+                logger.warning(f"Invalid time in range: {e}")
                 return None
-            return a_norm, b_norm
+    
     return None
 
-def parse_time_range_string(time_str: str) -> List[Tuple[str, str]]:
+def parse_time_range_string(time_str: str) -> Tuple[List[Tuple[str, str]], List[str]]:
+    """Parse time range string and return ranges with warnings."""
     if not time_str:
-        return []
+        return [], []
+    
     ranges: List[Tuple[str, str]] = []
+    warnings: List[str] = []
     parts = re.split(r'[,，;、\n]', time_str)
-    for part in parts:
+    
+    for i, part in enumerate(parts):
         part = part.strip()
         if not part:
             continue
+        
         r = parse_single_time_range(part)
         if r:
             ranges.append(r)
         else:
             tokens = re.findall(r'\d{1,2}(?:[:.]\d{1,2})?', part)
-            for i in range(0, len(tokens) - 1, 2):
-                s = normalize_time_token(tokens[i])
-                e = normalize_time_token(tokens[i + 1])
-                if time_to_minutes(s) < time_to_minutes(e):
-                    ranges.append((s, e))
-                else:
-                    logger.warning(f"Invalid time range in token parsing: {s} >= {e}")
-    return ranges
+            if len(tokens) % 2 == 1:
+                warnings.append(f"Odd number of time tokens in '{part}', ignoring last token")
+                tokens = tokens[:-1]
+            
+            for i in range(0, len(tokens), 2):
+                try:
+                    s = normalize_time_token(tokens[i])
+                    e = normalize_time_token(tokens[i + 1])
+                    start_min = time_to_minutes(s)
+                    end_min = time_to_minutes(e)
+                    
+                    if start_min < end_min:
+                        ranges.append((s, e))
+                    else:
+                        warnings.append(f"Invalid time range: {s} >= {e}")
+                except (ValueError, IndexError) as e:
+                    warnings.append(f"Error parsing time tokens: {e}")
+    
+    return ranges, warnings
 
-# ========== NORMALIZATION ==========
+# ========== NORMALIZATION FUNCTIONS ==========
 def normalize_faculty(name: str) -> str:
+    """Normalize faculty name."""
     if not name:
         return ""
     s = str(name).strip()
@@ -150,20 +357,27 @@ def normalize_faculty(name: str) -> str:
     return s
 
 def normalize_staff_name(name: str) -> str:
+    """Normalize staff name (remove titles, lowercase, remove punctuation)."""
     if not name:
         return ""
     name = str(name).strip()
+    # Remove titles
     name = re.sub(r'^(Prof\.?|Dr\.?|Mr\.?|Mrs\.?|Ms\.?|Miss)\s+', '', name, flags=re.IGNORECASE)
     name = re.sub(r'\s+', ' ', name)
     name = name.lower()
-    name = re.sub(r'[^\w\s\.]', '', name)
+    # Remove all non-alphanumeric and space characters
+    name = re.sub(r'[^\w\s]', '', name)
     name = name.strip()
     return name
 
 def normalize_course_code(code: str) -> str:
+    """Normalize course code to uppercase."""
+    if not code:
+        return ""
     return code.strip().upper()
 
 def normalize_day(day: str) -> Optional[str]:
+    """Normalize day name."""
     if not day:
         return None
     day_lower = day.strip().lower()
@@ -179,18 +393,22 @@ def normalize_day(day: str) -> Optional[str]:
 
 # ========== PARSER HELPERS ==========
 def parse_section_line(line: str) -> Tuple[str, str, str]:
+    """Parse section line with case-insensitive handling."""
     line = line.strip()
-    # FIXED: Case-insensitive section detection
     if line.lower().startswith("section:"):
-        line = line[len("Section:"):].strip() if line.startswith("Section:") else line[len("section:"):].strip()
+        colon_idx = line.lower().find(":")
+        line = line[colon_idx + 1:].strip()
+    
     patterns = [
         (r'^\s*([^,]+?)\s*,\s*(.+?)\s*-\s*(.+)$', 3),
         (r'^\s*([^,]+?)\s*,\s*(.+)$', 2),
         (r'^\s*(.+)$', 1),
     ]
+    
     section_code = ""
     dept = ""
     faculty = ""
+    
     for pat, count in patterns:
         m = re.match(pat, line)
         if m:
@@ -200,7 +418,38 @@ def parse_section_line(line: str) -> Tuple[str, str, str]:
             if count >= 3:
                 faculty = normalize_faculty(m.group(3))
             break
+    
     return section_code, dept, faculty
+
+# ========== COURSE FINDER HELPER ==========
+@lru_cache(maxsize=128)
+def find_course_code(subject_code: str, course_codes_str: str) -> Optional[str]:
+    """
+    Find a course code by code (case-insensitive, cached).
+    
+    Args:
+        subject_code: Code to look for
+        course_codes_str: Comma-separated string of available course codes
+    """
+    subject_code_upper = subject_code.upper()
+    course_codes = course_codes_str.split(',')
+    
+    # Exact match
+    if subject_code_upper in course_codes:
+        return subject_code_upper
+    
+    # Case-insensitive match
+    for code in course_codes:
+        if code.upper() == subject_code_upper:
+            return code
+    
+    return None
+
+def get_course(courses: Dict[str, Any], subject_code: str) -> Optional[Any]:
+    """Get course by code with caching."""
+    course_codes_str = ','.join(courses.keys())
+    found_code = find_course_code(subject_code, course_codes_str)
+    return courses.get(found_code) if found_code else None
 
 # ========== DATA STRUCTURES ==========
 @dataclass
@@ -212,22 +461,30 @@ class TimeSlot:
     section_code: str
     faculty: str = ""
 
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
     def to_bitmask(self) -> int:
         day_idx = DAY_INDEX.get(self.day)
         if day_idx is None:
             return 0
+        
         mask = 0
         window_start = 8 * 60
         window_end = 17 * 60
         start = max(self.start_min, window_start)
         end = min(self.end_min, window_end)
+        
         if start >= end:
             return 0
+        
         first_slot = (start - window_start) // 60
         last_slot = (end - 1 - window_start) // 60
+        
         for slot_idx in range(first_slot, last_slot + 1):
             bit_pos = day_idx * len(HOUR_SLOTS) + slot_idx
             mask |= (1 << bit_pos)
+        
         return mask
 
     def overlaps(self, other: "TimeSlot") -> bool:
@@ -242,6 +499,15 @@ class CourseSection:
     faculty: str
     dept: str
     time_slots: List[TimeSlot]
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "subject_code": self.subject_code,
+            "section_code": self.section_code,
+            "faculty": self.faculty,
+            "dept": self.dept,
+            "time_slots": [ts.to_dict() for ts in self.time_slots]
+        }
 
     @property
     def time_bitmask(self) -> int:
@@ -264,16 +530,29 @@ class CourseSection:
         return {s.day for s in self.time_slots}
 
     def morning_slot_count(self) -> int:
+        """Count slots that are in the morning (before 10:00)."""
         return sum(1 for s in self.time_slots if s.start_min < 10 * 60)
 
     def evening_slot_count(self) -> int:
-        return sum(1 for s in self.time_slots if s.start_min < 17 * 60 and s.end_min > 15 * 60)
+        """Count slots that overlap with evening window (15:00-17:00)."""
+        evening_start = 15 * 60  # 15:00
+        evening_end = 17 * 60    # 17:00
+        
+        count = 0
+        for s in self.time_slots:
+            # Check if slot overlaps with evening window
+            if not (s.end_min <= evening_start or s.start_min >= evening_end):
+                count += 1
+        return count
 
     def has_morning_classes(self) -> bool:
         return any(s.start_min < 10 * 60 for s in self.time_slots)
 
     def has_evening_classes(self) -> bool:
-        return any(s.start_min < 17 * 60 and s.end_min > 15 * 60 for s in self.time_slots)
+        evening_start = 15 * 60  # 15:00
+        evening_end = 17 * 60    # 17:00
+        return any(not (s.end_min <= evening_start or s.start_min >= evening_end) 
+                  for s in self.time_slots)
 
     def has_saturday_classes(self) -> bool:
         return any(s.day == "Saturday" for s in self.time_slots)
@@ -290,6 +569,14 @@ class Course:
     name: str
     credits: str
     sections: List[CourseSection]
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "code": self.code,
+            "name": self.name,
+            "credits": self.credits,
+            "sections": [s.to_dict() for s in self.sections]
+        }
 
 # ========== CONSTRAINTS DATA STRUCTURES ==========
 @dataclass
@@ -313,11 +600,19 @@ class TimetableWithViolations:
     
     def has_violations(self) -> bool:
         return len(self.violations) > 0
+    
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "sections": [s.to_dict() for s in self.sections],
+            "violations": [asdict(v) for v in self.violations]
+        }
 
 # ========== PARSER ==========
 def parse_output_txt(text: str) -> Dict[str, Course]:
+    """Parse output.txt content into Course objects."""
     if not text:
         return {}
+    
     courses: Dict[str, Course] = {}
     current_subject = None
     current_name = ""
@@ -325,71 +620,72 @@ def parse_output_txt(text: str) -> Dict[str, Course]:
     current_sections: List[CourseSection] = []
     lines = text.splitlines()
     i = 0
+    parse_warnings: List[str] = []
+    
     while i < len(lines):
         line = lines[i].strip()
-        # FIXED: Case-insensitive subject detection
+        
+        # Subject detection
         if line.lower().startswith("subject:"):
-            if current_subject is not None:
+            if current_subject is not None and current_sections:
                 courses[current_subject] = Course(
                     code=current_subject,
                     name=current_name,
                     credits=current_credits,
                     sections=current_sections.copy()
                 )
+            
             current_sections = []
             
-            # FIXED: Case-insensitive matching for the entire line
-            line_lower = line.lower()
-            if "subject:" in line_lower:
-                # Extract after "subject:" (case-insensitive)
-                after_subject = line[line_lower.find("subject:") + len("subject:"):].strip()
-                # Try to match course code and credits
-                m = re.match(r'^\s*([^\s]+)(?:\s+\[(\d+)\s+Credits\])?', after_subject, re.IGNORECASE)
-                if m:
-                    current_subject = normalize_course_code(m.group(1))
-                    current_credits = m.group(2) or ""
-                else:
-                    # Fallback: take first word as course code
-                    parts = after_subject.split()
-                    if parts:
-                        current_subject = normalize_course_code(parts[0])
-                        current_credits = ""
+            # Extract after "subject:"
+            colon_idx = line.lower().find("subject:")
+            after_subject = line[colon_idx + len("subject:"):].strip()
+            
+            # Try to match course code and credits
+            m = re.match(r'^\s*([^\s]+)(?:\s+\[(\d+)\s+Credits\])?', after_subject, re.IGNORECASE)
+            if m:
+                current_subject = normalize_course_code(m.group(1))
+                current_credits = m.group(2) or ""
             else:
-                # Fallback parsing
-                parts = line.split(":", 1)
-                if len(parts) > 1:
-                    code_part = parts[1].strip().split()[0] if parts[1].strip() else "UNKNOWN"
-                    current_subject = normalize_course_code(code_part)
-                else:
-                    current_subject = "UNKNOWN"
+                # Fallback
+                parts = after_subject.split()
+                current_subject = normalize_course_code(parts[0]) if parts else "UNKNOWN"
                 current_credits = ""
+                if not parts:
+                    parse_warnings.append(f"Empty subject at line {i+1}")
             
             current_name = ""
             i += 1
-        # FIXED: Case-insensitive course name detection
+        
+        # Course name detection
         elif line.lower().startswith("course name:"):
-            if ":" in line:
-                current_name = line.split(":", 1)[1].strip()
+            colon_idx = line.lower().find("course name:")
+            current_name = line[colon_idx + len("course name:"):].strip()
             i += 1
-        # FIXED: Case-insensitive section detection
+        
+        # Section detection
         elif line.lower().startswith("section:"):
             section_code, dept, faculty = parse_section_line(line)
             if not section_code:
                 i += 1
                 continue
+            
             i += 1
-            # Skip metadata lines (case-insensitive)
-            while i < len(lines) and any(k.lower() in lines[i].lower() for k in ("Date:", "Type:", "Status:")):
+            # Skip metadata lines
+            while i < len(lines) and any(k.lower() in lines[i].lower() 
+                                        for k in ("Date:", "Type:", "Status:")):
                 i += 1
+            
             time_slots: List[TimeSlot] = []
             while i < len(lines):
                 cur = lines[i].strip()
-                # FIXED: Case-insensitive detection for next section or subject
                 cur_lower = cur.lower()
+                
+                # Break if next section or subject
                 if not cur or cur_lower.startswith("section:") or cur_lower.startswith("subject:"):
                     break
                 
-                # FIXED: Case-insensitive day matching
+                # Day matching
                 day_found = None
                 for day in DAYS_ORDER:
                     if cur_lower.startswith(day.lower() + ":"):
@@ -397,8 +693,11 @@ def parse_output_txt(text: str) -> Dict[str, Course]:
                         break
                 
                 if day_found:
-                    times_part = cur[len(day_found) + 1:].strip()
-                    ranges = parse_time_range_string(times_part)
+                    colon_idx = cur_lower.find(":")
+                    times_part = cur[colon_idx + 1:].strip()
+                    ranges, warnings = parse_time_range_string(times_part)
+                    parse_warnings.extend(warnings)
+                    
                     for s, e in ranges:
                         smin = time_to_minutes(s)
                         emin = time_to_minutes(e)
@@ -413,7 +712,11 @@ def parse_output_txt(text: str) -> Dict[str, Course]:
                                     faculty=faculty
                                 )
                             )
+                        else:
+                            parse_warnings.append(f"Invalid time range {s}-{e} for {day_found}")
+                
                 i += 1
+            
             if time_slots:
                 current_sections.append(
                     CourseSection(
@@ -425,46 +728,76 @@ def parse_output_txt(text: str) -> Dict[str, Course]:
                     )
                 )
             else:
-                logger.warning(f"Section {section_code} has no time slots")
+                parse_warnings.append(f"Section {section_code} has no valid time slots")
+        
         else:
             i += 1
-    if current_subject is not None:
+    
+    # Add the last course
+    if current_subject is not None and current_sections:
         courses[current_subject] = Course(
             code=current_subject,
             name=current_name or current_subject,
             credits=current_credits,
             sections=current_sections.copy()
         )
-    for code, course in list(courses.items()):
-        if not course.sections:
-            logger.warning(f"Course {code} has no sections")
+    
+    # Log warnings
+    for warning in parse_warnings:
+        logger.warning(f"Parse warning: {warning}")
+    
+    # Filter out courses without sections
+    for code in list(courses.keys()):
+        if not courses[code].sections:
+            logger.warning(f"Course {code} has no sections, removing")
+            del courses[code]
+    
     return courses
 
-def load_courses() -> Dict[str, Course]:
+# ========== CACHING ==========
+def load_courses(force_reload: bool = False) -> Dict[str, Course]:
+    """Load courses with caching and file monitoring."""
+    # Check cache first
+    cached = course_cache.get()
+    if cached is not None and not force_reload:
+        return cached
+    
     if not os.path.exists(OUTPUT_FILE):
         logger.error(f"{OUTPUT_FILE} not found!")
         return {}
+    
     try:
         with open(OUTPUT_FILE, 'r', encoding='utf-8') as f:
             content = f.read()
+        
         raw = parse_output_txt(content)
         normalized: Dict[str, Course] = {}
+        
         for code, course in raw.items():
             norm = normalize_course_code(code)
             course.code = norm
             for section in course.sections:
                 section.subject_code = norm
+            
             course.sections = [s for s in course.sections if s.time_slots]
             if course.sections:
                 normalized[norm] = course
             else:
                 logger.warning(f"Course {norm} excluded: all sections have no time slots")
+        
+        # Update cache
+        course_cache.set(normalized)
+        
         logger.info(f"Loaded {len(normalized)} courses")
         total_sections = sum(len(c.sections) for c in normalized.values())
         logger.info(f"Total sections: {total_sections}")
+        
         return normalized
+    
     except Exception as e:
         logger.error(f"Error loading courses: {e}", exc_info=True)
+        # Don't cache errors
+        course_cache.clear()
         return {}
 
 # ========== SCORING ==========
@@ -501,20 +834,26 @@ def score_timetable(selection: List[CourseSection],
     
     return score
 
-# ========== GOD MODE FINDER (FIXED VERSION) ==========
+# ========== GOD MODE FINDER ==========
 class GodModeTimetableFinder:
-    def __init__(self, courses: Dict[str, Course], selected_codes: List[str], max_results: int = 10000, timeout: int = 30):
+    def __init__(self, courses: Dict[str, Course], selected_codes: List[str], 
+                 max_results: int = 10000, timeout: int = TIMETABLE_TIMEOUT):
         self.courses = courses
         self.selected_codes = selected_codes
         self.max_results = min(max_results, 10000)
         self.timeout = timeout
         self.course_list = [courses[c] for c in selected_codes if c in courses]
         self.all_timetables: List[TimetableWithViolations] = []
-        self.search_start_time = None
+        
+        # Thread safety
+        self._lock = threading.Lock()
+        
+        # Stats and tracking
         self.staff_warnings: List[Dict[str, Any]] = []
         self.staff_deviations: List[Dict[str, Any]] = []
         self.constraint_violations_summary: Dict[str, int] = defaultdict(int)
         self.timetable_violations_map: Dict[int, List[ConstraintViolation]] = {}
+        
         self.stats = {
             'total_combinations': 0,
             'combinations_tried': 0,
@@ -528,23 +867,27 @@ class GodModeTimetableFinder:
             'search_complete': False,
             'timeout_triggered': False,
             'timeout': timeout,
-            'max_results': self.max_results
+            'max_results': self.max_results,
+            'search_strategy': '',
+            'pruned_combinations': 0
         }
     
     def _add_timetable(self, sections: List[CourseSection], violations: List[ConstraintViolation]) -> TimetableWithViolations:
+        """Thread-safe method to add a timetable."""
         timetable = TimetableWithViolations(
             sections=sections.copy(),
             violations=violations.copy()
         )
-        self.all_timetables.append(timetable)
         
-        idx = len(self.all_timetables) - 1
-        self.timetable_violations_map[idx] = violations.copy()
-        
-        for violation in violations:
-            self.constraint_violations_summary[violation.type] += 1
-        
-        self.stats['valid_timetables'] += 1
+        with self._lock:
+            idx = len(self.all_timetables)
+            self.all_timetables.append(timetable)
+            self.timetable_violations_map[idx] = violations.copy()
+            
+            for violation in violations:
+                self.constraint_violations_summary[violation.type] += 1
+            
+            self.stats['valid_timetables'] += 1
         
         return timetable
 
@@ -560,15 +903,19 @@ class GodModeTimetableFinder:
         priority_mode: str = 'staff',
         staff_strictness: str = 'strict',
         constraints_strictness: str = 'strict'
-    ):
-        self.all_timetables = []
-        self.staff_warnings = []
-        self.staff_deviations = []
-        self.constraint_violations_summary = defaultdict(int)
-        self.timetable_violations_map = {}
-        
-        self.stats['constraint_strictness'] = constraints_strictness
-        self.stats['valid_timetables'] = 0
+    ) -> Tuple[List[TimetableWithViolations], List[Dict[str, Any]], List[Dict[str, Any]], Dict[str, Any]]:
+        """Find all valid timetables with given constraints."""
+        with self._lock:
+            self.all_timetables = []
+            self.staff_warnings = []
+            self.staff_deviations = []
+            self.constraint_violations_summary = defaultdict(int)
+            self.timetable_violations_map = {}
+            
+            self.stats['constraint_strictness'] = constraints_strictness
+            self.stats['valid_timetables'] = 0
+            self.stats['search_strategy'] = ''
+            self.stats['pruned_combinations'] = 0
         
         logger.info(f"🚀 GOD MODE ACTIVATED - Priority Mode: {priority_mode.upper()}")
         logger.info(f"   Staff Strictness: {staff_strictness}")
@@ -576,211 +923,76 @@ class GodModeTimetableFinder:
         
         filtered_course_list = []
         
+        # Filter sections based on priority mode
         if priority_mode == 'staff':
             logger.info("   FILTER ORDER: STAFF → TIME CONSTRAINTS")
-            
             for course in self.course_list:
-                temp_sections = course.sections.copy()
-                
-                if staff_preferences and course.code in staff_preferences:
-                    allowed_staff = staff_preferences[course.code]
-                    
-                    if staff_strictness == 'strict':
-                        staff_filtered = [
-                            sec for sec in temp_sections 
-                            if sec.get_normalized_staff_name() in allowed_staff
-                        ]
-                        
-                        if staff_filtered:
-                            temp_sections = staff_filtered
-                            logger.info(f"   Course {course.code}: {len(staff_filtered)} sections after strict staff filter")
-                        else:
-                            available_staff = set(sec.get_normalized_staff_name() for sec in temp_sections if sec.get_normalized_staff_name())
-                            self.staff_warnings.append({
-                                'subject': course.code,
-                                'subject_name': course.name,
-                                'preferred_staff': allowed_staff,
-                                'available_staff': list(available_staff),
-                                'message': f"Course {course.code}: No sections with preferred staff available (falling back to all)."
-                            })
-                            logger.warning(f"   Course {course.code}: No preferred staff, using all {len(temp_sections)} sections")
-                    else:
-                        preferred_count = sum(1 for sec in temp_sections if sec.get_normalized_staff_name() in allowed_staff)
-                        leftover_count = len(temp_sections) - preferred_count
-                        
-                        if leftover_count > 0:
-                            all_staff = set(sec.get_normalized_staff_name() for sec in temp_sections if sec.get_normalized_staff_name())
-                            leftover_staff = all_staff - set(allowed_staff)
-                            
-                            self.staff_deviations.append({
-                                'subject': course.code,
-                                'subject_name': course.name,
-                                'preferred_staff': allowed_staff,
-                                'leftover_staff': list(leftover_staff),
-                                'preferred_sections_count': preferred_count,
-                                'leftover_sections_count': leftover_count,
-                                'message': f"Course {course.code}: {len(leftover_staff)} non-preferred staff included."
-                            })
-                        logger.info(f"   Course {course.code}: {len(temp_sections)} sections (flexible mode)")
-                
-                if constraints_strictness == 'strict':
-                    if not allow_saturday:
-                        before = len(temp_sections)
-                        temp_sections = [sec for sec in temp_sections if not sec.has_saturday_classes()]
-                        if before != len(temp_sections):
-                            logger.info(f"   Course {course.code}: Saturday filter removed {before - len(temp_sections)} sections")
-                    
-                    if allow_morning_mode == 'no':
-                        before = len(temp_sections)
-                        temp_sections = [sec for sec in temp_sections if not sec.has_morning_classes()]
-                        if before != len(temp_sections):
-                            logger.info(f"   Course {course.code}: Morning filter removed {before - len(temp_sections)} sections")
-                    
-                    if allow_evening_mode == 'no':
-                        before = len(temp_sections)
-                        temp_sections = [sec for sec in temp_sections if not sec.has_evening_classes()]
-                        if before != len(temp_sections):
-                            logger.info(f"   Course {course.code}: Evening filter removed {before - len(temp_sections)} sections")
-                
-                if not temp_sections:
-                    logger.error(f"   Course {course.code}: No sections after staff-first filtering")
-                    return [], [], []
-                
-                filtered_course = Course(
-                    code=course.code,
-                    name=course.name,
-                    credits=course.credits,
-                    sections=temp_sections
+                temp_sections = self._filter_sections_staff_first(
+                    course, staff_preferences, staff_strictness,
+                    allow_saturday, allow_morning_mode, allow_evening_mode,
+                    constraints_strictness
                 )
-                filtered_course_list.append(filtered_course)
-        
+                if not temp_sections:
+                    return [], [], [], self.stats
+                filtered_course_list.append(temp_sections)
         else:
             logger.info("   FILTER ORDER: TIME CONSTRAINTS → STAFF")
-            
             for course in self.course_list:
-                temp_sections = course.sections.copy()
-                
-                if constraints_strictness == 'strict':
-                    if not allow_saturday:
-                        before = len(temp_sections)
-                        temp_sections = [sec for sec in temp_sections if not sec.has_saturday_classes()]
-                        if before != len(temp_sections):
-                            logger.info(f"   Course {course.code}: Saturday filter removed {before - len(temp_sections)} sections")
-                    
-                    if allow_morning_mode == 'no':
-                        before = len(temp_sections)
-                        temp_sections = [sec for sec in temp_sections if not sec.has_morning_classes()]
-                        if before != len(temp_sections):
-                            logger.info(f"   Course {course.code}: Morning filter removed {before - len(temp_sections)} sections")
-                    
-                    if allow_evening_mode == 'no':
-                        before = len(temp_sections)
-                        temp_sections = [sec for sec in temp_sections if not sec.has_evening_classes()]
-                        if before != len(temp_sections):
-                            logger.info(f"   Course {course.code}: Evening filter removed {before - len(temp_sections)} sections")
-                
-                if staff_preferences and course.code in staff_preferences:
-                    allowed_staff = staff_preferences[course.code]
-                    
-                    if staff_strictness == 'strict':
-                        staff_filtered = [
-                            sec for sec in temp_sections 
-                            if sec.get_normalized_staff_name() in allowed_staff
-                        ]
-                        
-                        if staff_filtered:
-                            temp_sections = staff_filtered
-                            logger.info(f"   Course {course.code}: {len(staff_filtered)} sections after strict staff filter")
-                        else:
-                            available_staff = set(sec.get_normalized_staff_name() for sec in temp_sections if sec.get_normalized_staff_name())
-                            self.staff_warnings.append({
-                                'subject': course.code,
-                                'subject_name': course.name,
-                                'preferred_staff': allowed_staff,
-                                'available_staff': list(available_staff),
-                                'message': f"Course {course.code}: No time-compatible sections with preferred staff (falling back to all)."
-                            })
-                            logger.warning(f"   Course {course.code}: No preferred staff in time-filtered sections, using {len(temp_sections)} sections")
-                    else:
-                        preferred_count = sum(1 for sec in temp_sections if sec.get_normalized_staff_name() in allowed_staff)
-                        leftover_count = len(temp_sections) - preferred_count
-                        
-                        if leftover_count > 0:
-                            all_staff = set(sec.get_normalized_staff_name() for sec in temp_sections if sec.get_normalized_staff_name())
-                            leftover_staff = all_staff - set(allowed_staff)
-                            
-                            self.staff_deviations.append({
-                                'subject': course.code,
-                                'subject_name': course.name,
-                                'preferred_staff': allowed_staff,
-                                'leftover_staff': list(leftover_staff),
-                                'preferred_sections_count': preferred_count,
-                                'leftover_sections_count': leftover_count,
-                                'message': f"Course {course.code}: {len(leftover_staff)} non-preferred staff in time-compatible sections."
-                            })
-                        logger.info(f"   Course {course.code}: {len(temp_sections)} time-filtered sections (flexible mode)")
-                
-                if not temp_sections:
-                    logger.error(f"   Course {course.code}: No sections after constraints-first filtering")
-                    return [], [], []
-                
-                filtered_course = Course(
-                    code=course.code,
-                    name=course.name,
-                    credits=course.credits,
-                    sections=temp_sections
+                temp_sections = self._filter_sections_constraints_first(
+                    course, staff_preferences, staff_strictness,
+                    allow_saturday, allow_morning_mode, allow_evening_mode,
+                    constraints_strictness
                 )
-                filtered_course_list.append(filtered_course)
+                if not temp_sections:
+                    return [], [], [], self.stats
+                filtered_course_list.append(temp_sections)
         
         self.course_list = filtered_course_list
         
-        total_combinations = math.prod([len(c.sections) for c in self.course_list]) if self.course_list else 0
+        # Calculate total combinations
+        total_combinations = 1
+        for c in self.course_list:
+            total_combinations *= len(c.sections)
+        
         self.stats['total_combinations'] = total_combinations
         logger.info(f"   Total combinations after filtering: {total_combinations:,}")
         
+        # Choose search strategy
         if total_combinations <= 1_000_000:
+            self.stats['search_strategy'] = 'bitmask'
             logger.info("   Strategy: BITMASK BRUTE FORCE")
-            timetables = self.find_all_bitmask(
+            timetables = self._find_all_bitmask(
                 max_per_day, need_free_day, free_day_pref,
                 allow_morning_mode, allow_evening_mode, allow_saturday,
                 constraints_strictness
             )
         else:
-            logger.info("   Strategy: RECURSIVE DFS")
-            timetables = self.find_all_recursive(
+            self.stats['search_strategy'] = 'recursive_pruned'
+            logger.info("   Strategy: RECURSIVE DFS WITH PRUNING")
+            timetables = self._find_all_recursive(
                 max_per_day, need_free_day, free_day_pref,
                 allow_morning_mode, allow_evening_mode, allow_saturday,
                 constraints_strictness
             )
         
+        # Apply strict staff filtering if needed
         if staff_strictness == 'strict' and staff_preferences:
-            strict_timetables = []
-            for timetable in self.all_timetables:
-                all_preferred = True
-                for section in timetable.sections:
-                    if section.subject_code in staff_preferences:
-                        if section.get_normalized_staff_name() not in staff_preferences[section.subject_code]:
-                            all_preferred = False
-                            break
-                
-                if all_preferred:
-                    strict_timetables.append(timetable)
-                else:
-                    self.staff_warnings.append({
-                        'subject': 'Multiple',
-                        'message': 'Timetable rejected in strict mode: uses non-preferred staff'
-                    })
+            timetables = self._apply_strict_staff_filtering(timetables, staff_preferences)
+        
+        # Update final stats
+        with self._lock:
+            self.stats['total_violations'] = sum(self.constraint_violations_summary.values())
+            self.stats['violations_by_type'] = dict(self.constraint_violations_summary)
+            self.stats['search_complete'] = not self.stats.get('timeout_triggered', False) and len(self.all_timetables) < self.max_results
             
-            self.all_timetables = strict_timetables
-            logger.info(f"   After strict staff filtering: {len(self.all_timetables)} timetables")
+            # Calculate coverage percentage safely
+            if total_combinations > 0 and self.stats['combinations_tried'] > 0:
+                coverage = min(100.0, (self.stats['combinations_tried'] / total_combinations) * 100)
+                self.stats['coverage_percentage'] = coverage
+            else:
+                self.stats['coverage_percentage'] = 0.0
         
-        self.stats['total_violations'] = sum(self.constraint_violations_summary.values())
-        self.stats['violations_by_type'] = dict(self.constraint_violations_summary)
-        self.stats['search_complete'] = not self.stats.get('timeout_triggered', False) and len(self.all_timetables) < self.max_results
-        
-        if total_combinations > 0 and self.stats['combinations_tried'] > 0:
-            self.stats['coverage_percentage'] = min(100.0, (self.stats['combinations_tried'] / total_combinations) * 100)
-        
+        # Log completion status
         if self.stats['timeout_triggered']:
             logger.info(f"   Search stopped due to timeout ({self.timeout}s)")
             logger.info(f"   Coverage: {self.stats['coverage_percentage']:.1f}% of search space explored")
@@ -789,17 +1001,165 @@ class GodModeTimetableFinder:
             logger.info(f"   Coverage: {self.stats['coverage_percentage']:.1f}% of search space explored")
         else:
             logger.info(f"   Search completed fully")
-            logger.info(f"   Coverage: 100% of search space explored")
+            logger.info(f"   Coverage: {self.stats['coverage_percentage']:.1f}% of search space explored")
         
-        return self.all_timetables, self.staff_warnings, self.staff_deviations
+        return self.all_timetables, self.staff_warnings, self.staff_deviations, self.stats
 
-    def find_all_bitmask(self, max_per_day, need_free_day, free_day_pref,
-                        allow_morning_mode, allow_evening_mode, allow_saturday,
-                        constraints_strictness):
+    def _filter_sections_staff_first(self, course, staff_preferences, staff_strictness,
+                                   allow_saturday, allow_morning_mode, allow_evening_mode,
+                                   constraints_strictness):
+        temp_sections = course.sections.copy()
+        
+        if staff_preferences and course.code in staff_preferences:
+            allowed_staff = staff_preferences[course.code]
+            
+            if staff_strictness == 'strict':
+                staff_filtered = [
+                    sec for sec in temp_sections 
+                    if sec.get_normalized_staff_name() in allowed_staff
+                ]
+                
+                if staff_filtered:
+                    temp_sections = staff_filtered
+                else:
+                    available_staff = set(sec.get_normalized_staff_name() for sec in temp_sections if sec.get_normalized_staff_name())
+                    self.staff_warnings.append({
+                        'subject': course.code,
+                        'subject_name': course.name,
+                        'preferred_staff': allowed_staff,
+                        'available_staff': list(available_staff),
+                        'message': f"Course {course.code}: No sections with preferred staff available (falling back to all)."
+                    })
+            else:
+                preferred_count = sum(1 for sec in temp_sections if sec.get_normalized_staff_name() in allowed_staff)
+                leftover_count = len(temp_sections) - preferred_count
+                
+                if leftover_count > 0:
+                    all_staff = set(sec.get_normalized_staff_name() for sec in temp_sections if sec.get_normalized_staff_name())
+                    leftover_staff = all_staff - set(allowed_staff)
+                    
+                    self.staff_deviations.append({
+                        'subject': course.code,
+                        'subject_name': course.name,
+                        'preferred_staff': allowed_staff,
+                        'leftover_staff': list(leftover_staff),
+                        'preferred_sections_count': preferred_count,
+                        'leftover_sections_count': leftover_count,
+                        'message': f"Course {course.code}: {len(leftover_staff)} non-preferred staff included."
+                    })
+        
+        if constraints_strictness == 'strict':
+            if not allow_saturday:
+                before = len(temp_sections)
+                temp_sections = [sec for sec in temp_sections if not sec.has_saturday_classes()]
+                self.stats['pruned_combinations'] += before - len(temp_sections)
+            
+            if allow_morning_mode == 'no':
+                before = len(temp_sections)
+                temp_sections = [sec for sec in temp_sections if not sec.has_morning_classes()]
+                self.stats['pruned_combinations'] += before - len(temp_sections)
+            
+            if allow_evening_mode == 'no':
+                before = len(temp_sections)
+                temp_sections = [sec for sec in temp_sections if not sec.has_evening_classes()]
+                self.stats['pruned_combinations'] += before - len(temp_sections)
+        
+        if not temp_sections:
+            logger.error(f"   Course {course.code}: No sections after staff-first filtering")
+        
+        return Course(course.code, course.name, course.credits, temp_sections)
+
+    def _filter_sections_constraints_first(self, course, staff_preferences, staff_strictness,
+                                         allow_saturday, allow_morning_mode, allow_evening_mode,
+                                         constraints_strictness):
+        temp_sections = course.sections.copy()
+        
+        if constraints_strictness == 'strict':
+            if not allow_saturday:
+                before = len(temp_sections)
+                temp_sections = [sec for sec in temp_sections if not sec.has_saturday_classes()]
+                self.stats['pruned_combinations'] += before - len(temp_sections)
+            
+            if allow_morning_mode == 'no':
+                before = len(temp_sections)
+                temp_sections = [sec for sec in temp_sections if not sec.has_morning_classes()]
+                self.stats['pruned_combinations'] += before - len(temp_sections)
+            
+            if allow_evening_mode == 'no':
+                before = len(temp_sections)
+                temp_sections = [sec for sec in temp_sections if not sec.has_evening_classes()]
+                self.stats['pruned_combinations'] += before - len(temp_sections)
+        
+        if staff_preferences and course.code in staff_preferences:
+            allowed_staff = staff_preferences[course.code]
+            
+            if staff_strictness == 'strict':
+                staff_filtered = [
+                    sec for sec in temp_sections 
+                    if sec.get_normalized_staff_name() in allowed_staff
+                ]
+                
+                if staff_filtered:
+                    temp_sections = staff_filtered
+                else:
+                    available_staff = set(sec.get_normalized_staff_name() for sec in temp_sections if sec.get_normalized_staff_name())
+                    self.staff_warnings.append({
+                        'subject': course.code,
+                        'subject_name': course.name,
+                        'preferred_staff': allowed_staff,
+                        'available_staff': list(available_staff),
+                        'message': f"Course {course.code}: No time-compatible sections with preferred staff (falling back to all)."
+                    })
+            else:
+                preferred_count = sum(1 for sec in temp_sections if sec.get_normalized_staff_name() in allowed_staff)
+                leftover_count = len(temp_sections) - preferred_count
+                
+                if leftover_count > 0:
+                    all_staff = set(sec.get_normalized_staff_name() for sec in temp_sections if sec.get_normalized_staff_name())
+                    leftover_staff = all_staff - set(allowed_staff)
+                    
+                    self.staff_deviations.append({
+                        'subject': course.code,
+                        'subject_name': course.name,
+                        'preferred_staff': allowed_staff,
+                        'leftover_staff': list(leftover_staff),
+                        'preferred_sections_count': preferred_count,
+                        'leftover_sections_count': leftover_count,
+                        'message': f"Course {course.code}: {len(leftover_staff)} non-preferred staff in time-compatible sections."
+                    })
+        
+        if not temp_sections:
+            logger.error(f"   Course {course.code}: No sections after constraints-first filtering")
+        
+        return Course(course.code, course.name, course.credits, temp_sections)
+
+    def _apply_strict_staff_filtering(self, timetables, staff_preferences):
+        strict_timetables = []
+        for timetable in self.all_timetables:
+            all_preferred = True
+            for section in timetable.sections:
+                if section.subject_code in staff_preferences:
+                    if section.get_normalized_staff_name() not in staff_preferences[section.subject_code]:
+                        all_preferred = False
+                        break
+            
+            if all_preferred:
+                strict_timetables.append(timetable)
+            else:
+                self.staff_warnings.append({
+                    'subject': 'Multiple',
+                    'message': 'Timetable rejected in strict mode: uses non-preferred staff'
+                })
+        
+        logger.info(f"   After strict staff filtering: {len(strict_timetables)} timetables")
+        return strict_timetables
+
+    def _find_all_bitmask(self, max_per_day, need_free_day, free_day_pref,
+                         allow_morning_mode, allow_evening_mode, allow_saturday,
+                         constraints_strictness):
         start_time = time.time()
         
-        total_combinations = math.prod([len(c.sections) for c in self.course_list]) if self.course_list else 0
-        self.stats['total_combinations'] = total_combinations
+        total_combinations = self.stats['total_combinations']
         logger.info(f"BITMASK MODE: {total_combinations:,} combinations")
 
         checked = 0
@@ -808,6 +1168,7 @@ class GodModeTimetableFinder:
         original_indices = list(range(len(self.course_list)))
         section_lists = [course.sections for course in self.course_list]
         
+        # Sort by number of sections for better pruning
         sorted_indices = sorted(range(len(section_lists)), key=lambda i: len(section_lists[i]))
         sorted_section_lists = [section_lists[i] for i in sorted_indices]
         
@@ -817,16 +1178,19 @@ class GodModeTimetableFinder:
             checked += 1
             self.stats['combinations_tried'] = checked
             
+            # Check timeout
             if time.time() - start_time > self.timeout:
                 logger.warning(f"Bitmask search timeout reached ({self.timeout} seconds)")
                 self.stats['timeout_triggered'] = True
                 break
 
+            # Restore original order
             original_order = [None] * len(combination)
             for sorted_idx, section in enumerate(combination):
                 original_idx = sorted_indices[sorted_idx]
                 original_order[original_idx] = section
 
+            # Check for time conflicts using bitmask
             occupied_bitmask = 0
             valid = True
             for sec in original_order:
@@ -838,6 +1202,7 @@ class GodModeTimetableFinder:
             if not valid:
                 continue
 
+            # Check constraints
             is_valid, violations = self._check_constraints(
                 original_order,
                 max_per_day=max_per_day,
@@ -865,15 +1230,11 @@ class GodModeTimetableFinder:
         })
         return self.all_timetables
 
-    def find_all_recursive(self, max_per_day, need_free_day, free_day_pref,
-                          allow_morning_mode, allow_evening_mode, allow_saturday,
-                          constraints_strictness):
+    def _find_all_recursive(self, max_per_day, need_free_day, free_day_pref,
+                           allow_morning_mode, allow_evening_mode, allow_saturday,
+                           constraints_strictness):
         start_time = time.time()
         self.search_start_time = start_time
-        total_combinations = math.prod([len(c.sections) for c in self.course_list]) if self.course_list else 0
-        self.stats['total_combinations'] = total_combinations
-        
-        logger.info(f"RECURSIVE MODE: {total_combinations:,} combos")
         
         constraints = {
             'max_per_day': max_per_day,
@@ -887,7 +1248,8 @@ class GodModeTimetableFinder:
         
         self.stats['combinations_tried'] = 0
         
-        self._recursive_search(0, [], constraints)
+        # Start recursive search
+        self._recursive_search(0, [], 0, constraints)
         
         elapsed = time.time() - start_time
         self.stats.update({
@@ -895,11 +1257,22 @@ class GodModeTimetableFinder:
         })
         return self.all_timetables
 
-    def _recursive_search(self, course_idx: int, current_selection: List[CourseSection], kwargs: Dict[str, Any]):
+    def _recursive_search(self, course_idx: int, current_selection: List[CourseSection], 
+                         current_bitmask: int, kwargs: Dict[str, Any]) -> bool:
+        """
+        Recursive search with early termination.
+        Returns True if search should stop.
+        """
+        # Check timeout
         if time.time() - self.search_start_time > self.timeout:
             self.stats['timeout_triggered'] = True
-            return
+            return True
             
+        # Check if we have enough results
+        if len(self.all_timetables) >= self.max_results:
+            return True
+        
+        # Base case: all courses processed
         if course_idx == len(self.course_list):
             is_valid, violations = self._check_constraints(
                 current_selection,
@@ -914,32 +1287,39 @@ class GodModeTimetableFinder:
             
             if is_valid or kwargs.get('constraints_strictness', 'strict') == 'flexible':
                 self._add_timetable(current_selection, violations)
-                
-                if len(self.all_timetables) >= self.max_results:
-                    return
-            return
+            
+            self.stats['combinations_tried'] += 1
+            return False
         
+        # Recursive case: try each section of current course
         course = self.course_list[course_idx]
         
+        # Sort sections by time slots count for better pruning
         allowed_sections = sorted(course.sections, key=lambda s: len(s.time_slots))
         
         for section in allowed_sections:
-            self.stats['combinations_tried'] += 1
+            # Check for time conflicts using bitmask (fast)
+            if current_bitmask & section.time_bitmask:
+                continue
             
-            conflict = False
-            for selected in current_selection:
-                if selected.conflicts_with(section):
-                    conflict = True
-                    break
-            
-            if not conflict:
-                self._recursive_search(course_idx + 1, current_selection + [section], kwargs)
+            # Try this section
+            if self._recursive_search(
+                course_idx + 1, 
+                current_selection + [section], 
+                current_bitmask | section.time_bitmask,
+                kwargs
+            ):
+                return True  # Early termination requested
+        
+        return False
 
     def _check_constraints(self, selection: List[CourseSection], 
                           constraints_strictness: str = 'strict',
                           **kwargs) -> Tuple[bool, List[ConstraintViolation]]:
+        """Check constraints and return violations."""
         violations: List[ConstraintViolation] = []
         
+        # Free day constraint
         need_free_day = kwargs.get('need_free_day')
         free_day_pref = kwargs.get('free_day_pref')
         if need_free_day:
@@ -963,6 +1343,7 @@ class GodModeTimetableFinder:
                         priority=CONSTRAINT_PRIORITY['free_day']
                     ))
         
+        # Max classes per day constraint
         max_per_day = kwargs.get('max_per_day')
         if max_per_day:
             day_counts = defaultdict(int)
@@ -976,6 +1357,7 @@ class GodModeTimetableFinder:
                             priority=CONSTRAINT_PRIORITY['max_per_day']
                         ))
         
+        # Saturday constraint
         allow_saturday = kwargs.get('allow_saturday')
         if not allow_saturday:
             has_saturday = any(any(slot.day == "Saturday" for slot in section.time_slots) 
@@ -987,6 +1369,7 @@ class GodModeTimetableFinder:
                     priority=CONSTRAINT_PRIORITY['no_saturday']
                 ))
         
+        # Morning constraint
         allow_morning_mode = kwargs.get('allow_morning_mode')
         if allow_morning_mode == 'no':
             has_morning = any(section.has_morning_classes() for section in selection)
@@ -997,6 +1380,7 @@ class GodModeTimetableFinder:
                     priority=CONSTRAINT_PRIORITY['no_morning']
                 ))
         
+        # Evening constraint
         allow_evening_mode = kwargs.get('allow_evening_mode')
         if allow_evening_mode == 'no':
             has_evening = any(section.has_evening_classes() for section in selection)
@@ -1014,12 +1398,52 @@ class GodModeTimetableFinder:
         else:
             return True, violations
 
-# ========== ASYNC WRAPPER ==========
-executor = ThreadPoolExecutor(max_workers=4)
+# ========== WORKER FUNCTION ==========
+def run_search_worker(courses_data: Dict[str, Any], selected_codes: List[str], 
+                     max_results: int, timeout: int, kwargs: Dict[str, Any]):
+    """Worker function for process pool execution."""
+    # Reconstruct courses from serialized data
+    courses = {}
+    for code, course_data in courses_data.items():
+        sections = []
+        for sec_data in course_data['sections']:
+            time_slots = []
+            for ts_data in sec_data['time_slots']:
+                time_slots.append(TimeSlot(**ts_data))
+            
+            sections.append(CourseSection(
+                subject_code=sec_data['subject_code'],
+                section_code=sec_data['section_code'],
+                faculty=sec_data['faculty'],
+                dept=sec_data['dept'],
+                time_slots=time_slots
+            ))
+        
+        courses[code] = Course(
+            code=course_data['code'],
+            name=course_data['name'],
+            credits=course_data['credits'],
+            sections=sections
+        )
+    
+    finder = GodModeTimetableFinder(courses, selected_codes, max_results, timeout)
+    result = finder.find_all_timetables(**kwargs)
+    return result  # Returns (timetables, warnings, deviations, stats)
 
-async def run_god_search_async(finder, **kwargs):
-    loop = asyncio.get_event_loop()
-    return await loop.run_in_executor(executor, partial(finder.find_all_timetables, **kwargs))
+# ========== ASYNC WRAPPER ==========
+async def run_god_search_async(courses_data: Dict[str, Any], selected_codes: List[str],
+                              max_results: int, timeout: int, **kwargs):
+    """Run search in a separate process."""
+    try:
+        loop = asyncio.get_running_loop()
+        result = await loop.run_in_executor(
+            get_process_pool(),
+            partial(run_search_worker, courses_data, selected_codes, max_results, timeout, kwargs)
+        )
+        return result
+    except Exception as e:
+        logger.error(f"Error in async search: {e}", exc_info=True)
+        raise
 
 # ========== HTML RENDERING ==========
 def render_constraint_violations_html(violations):
@@ -1040,9 +1464,10 @@ def render_constraint_violations_html(violations):
     seen = set()
 
     for v in violations:
-        if v.type in labels and v.type not in seen:
-            parts.append(labels[v.type])
-            seen.add(v.type)
+        label = labels.get(v.type, v.type.replace('_', ' '))
+        if label not in seen:
+            parts.append(label)
+            seen.add(label)
 
     if not parts:
         return ""
@@ -1069,72 +1494,71 @@ def render_constraint_violations_html(violations):
     </div>
     """
 
-def render_staff_warnings_html(
-    timetables: List[TimetableWithViolations], 
-    staff_preferences: Dict[str, List[str]] = None
-) -> str:
-    if not staff_preferences or not timetables:
-        return ""
+class StaffWarningsAggregator:
+    """Efficiently aggregates staff warnings across timetables."""
+    def __init__(self):
+        self.subjects_with_non_preferred = set()
+        self.timetable_count_with_non_preferred = 0
+        self.total_timetables = 0
     
-    subjects_with_non_preferred = set()
-    timetable_count_with_non_preferred = 0
-    
-    for timetable in timetables:
+    def add_timetable(self, timetable, staff_preferences):
+        """Add a timetable for analysis."""
+        self.total_timetables += 1
         has_non_preferred = False
+        
         for section in timetable.sections:
             subject_code = section.subject_code
             if subject_code in staff_preferences:
                 section_staff = section.get_normalized_staff_name()
-                preferred_staff_list = staff_preferences[subject_code]
-                
-                if section_staff not in preferred_staff_list:
-                    subjects_with_non_preferred.add(subject_code)
+                if section_staff not in staff_preferences[subject_code]:
+                    self.subjects_with_non_preferred.add(subject_code)
                     has_non_preferred = True
         
         if has_non_preferred:
-            timetable_count_with_non_preferred += 1
+            self.timetable_count_with_non_preferred += 1
     
-    total_subjects = len(subjects_with_non_preferred)
-    
-    if total_subjects == 0:
-        return ""
-    
-    return f"""
-    <div style="
-        padding:15px;
-        margin-bottom:20px;
-        background:rgba(245,158,11,0.1);
-        border:1px solid rgba(245,158,11,0.4);
-        border-radius:8px;
-    ">
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-            <div style="
-                width:30px;
-                height:30px;
-                background:#f59e0b;
-                color:white;
-                border-radius:50%;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                font-weight:bold;
-            ">!</div>
-            <strong style="color:#f59e0b;">Staff Preference Warning</strong>
+    def get_html(self) -> str:
+        """Get HTML representation of warnings."""
+        if not self.subjects_with_non_preferred:
+            return ""
+        
+        total_subjects = len(self.subjects_with_non_preferred)
+        
+        return f"""
+        <div style="
+            padding:15px;
+            margin-bottom:20px;
+            background:rgba(245,158,11,0.1);
+            border:1px solid rgba(245,158,11,0.4);
+            border-radius:8px;
+        ">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                <div style="
+                    width:30px;
+                    height:30px;
+                    background:#f59e0b;
+                    color:white;
+                    border-radius:50%;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    font-weight:bold;
+                ">!</div>
+                <strong style="color:#f59e0b;">Staff Preference Warning</strong>
+            </div>
+            <p style="color:#f59e0b; margin:0;">
+                {self.timetable_count_with_non_preferred} of {self.total_timetables} timetables use non-preferred staff 
+                for {total_subjects} subject(s). In strict mode, these timetables would be excluded.
+            </p>
         </div>
-        <p style="color:#f59e0b; margin:0;">
-            {timetable_count_with_non_preferred} of {len(timetables)} timetables use non-preferred staff 
-            for {total_subjects} subject(s). In strict mode, these timetables would be excluded.
-        </p>
-    </div>
-    """
+        """
 
 def render_single_timetable_html(
     timetable: TimetableWithViolations, 
     idx: int, 
     courses: Dict[str, Course] = None,
     staff_preferences: Dict[str, List[str]] = None, 
-    staff_strictness: str = "strict",
-    constraint_violations: List[ConstraintViolation] = None
+    staff_strictness: str = "strict"
 ) -> str:
     violations = timetable.violations
     sections = timetable.sections
@@ -1158,9 +1582,10 @@ def render_single_timetable_html(
         
         staff_status = "preferred"
         staff_badge = ""
+        # FIXED: Use consistent "non_preferred" (underscore) throughout
         if staff_preferences and section.subject_code in staff_preferences:
             if section.get_normalized_staff_name() not in staff_preferences[section.subject_code]:
-                staff_status = "non-preferred"
+                staff_status = "non_preferred"
                 uses_non_preferred_staff = True
                 non_preferred_subjects.add(section.subject_code)
                 staff_badge = '<span style="background:#f59e0b; color:white; padding:2px 6px; border-radius:4px; font-size:0.75rem; margin-left:5px;">Non-Preferred</span>'
@@ -1184,9 +1609,10 @@ def render_single_timetable_html(
                 he_min = time_to_minutes(he)
                 if max(slot.start_min, hs_min) < min(slot.end_min, he_min):
                     cell_content = f"{html.escape(section.subject_code)}<br>{html.escape(section.section_code)}"
-                    if staff_status == "non-preferred":
+                    if staff_status == "non_preferred":
                         cell_content += "<br><small style='color:#f59e0b;'>⚠ Non-Preferred</small>"
                     occupancy[slot.day][hour_idx] = cell_content
+    
     total_subjects = len(non_preferred_subjects)
     
     html_parts = [
@@ -1226,6 +1652,7 @@ def render_single_timetable_html(
                 ⚠ Uses {total_subjects} Non-Preferred Subjects
             </div>
         ''')
+    
     if badges:
         html_parts.append('<div style="display:flex; gap:8px;">' + ''.join(badges) + '</div>')
     
@@ -1259,7 +1686,8 @@ def render_single_timetable_html(
         for hour_idx in range(len(HOUR_SLOTS)):
             cell_content = occupancy[day][hour_idx]
             if cell_content:
-                if "Non-Preferred" in cell_content:
+                # FIXED: Check for both underscore and hyphen variants
+                if "non_preferred" in cell_content or "non-preferred" in cell_content.lower():
                     bg = "rgba(245,158,11,0.3)"
                     fg = "white"
                 else:
@@ -1292,7 +1720,7 @@ def render_single_timetable_html(
                 schedule_html.append(f"{day}: {times}")
         
         faculty_display = detail['faculty']
-        if detail['staff_status'] == "non-preferred":
+        if detail['staff_status'] == "non_preferred":
             faculty_display = f'<span style="color:#f59e0b;">{html.escape(detail["faculty"])} ⚠</span>'
         else:
             faculty_display = html.escape(detail["faculty"])
@@ -1340,14 +1768,19 @@ def render_timetable_html_paginated(
         '''
 
     total_timetables = total or len(timetables_with_violations)
-    total_pages = (total_timetables + per_page - 1) // per_page
+    total_pages = (total_timetables + per_page - 1) // per_page if total_timetables > 0 else 1
     page = max(1, min(page, total_pages))
     start_idx = (page - 1) * per_page
     end_idx = min(start_idx + per_page, len(timetables_with_violations))
     page_timetables = timetables_with_violations[start_idx:end_idx]
 
+    # Aggregate staff warnings efficiently
+    warnings_aggregator = StaffWarningsAggregator()
+    for timetable in timetables_with_violations:
+        warnings_aggregator.add_timetable(timetable, staff_preferences or {})
+    
     html_parts = [
-        render_staff_warnings_html(timetables_with_violations, staff_preferences),
+        warnings_aggregator.get_html(),
         
         '<div style="margin-bottom:30px;padding:20px;background:#0f172a;'
         'border-radius:12px;border:1px solid #1f2937;">',
@@ -1375,7 +1808,7 @@ def render_timetable_html_paginated(
         max_results = stats.get('max_results', 10000)
         
         if timeout_triggered:
-            coverage_text = f"Timeout reached ({stats['timeout']}s) - {coverage:.1f}% explored"
+            coverage_text = f"Timeout reached ({stats.get('timeout', 30)}s) - {coverage:.1f}% explored"
         elif coverage >= 99.9 and search_complete:
             coverage_text = "100% of search space explored"
         elif coverage > 0:
@@ -1445,17 +1878,142 @@ def render_timetable_html_paginated(
     return '\n'.join(html_parts)
 
 # ========== ROUTES ==========
+@app.get("/login")
+async def login_page():
+    return FileResponse("login.html")
+
+@app.get("/logout")
+async def logout():
+    """Clear the auth cookie and redirect to login."""
+    response = RedirectResponse(url="/login")
+    response.delete_cookie("sb-access-token")
+    return response
+
+# ... rest of your code ...
+@app.middleware("http")
+async def auth_guard(request: Request, call_next):
+    public_paths = {"/login", "/health", "/logout"}
+    
+    if request.url.path in public_paths:
+        return await call_next(request)
+    
+    token = request.cookies.get("sb-access-token")
+    if not token:
+        return RedirectResponse("/login")
+    
+    try:
+        payload = jwt.decode(token, options={"verify_signature": False})
+        email = payload.get("email")
+    except Exception:
+        return RedirectResponse("/login")
+    
+    if not is_email_allowed(email):
+        # Show access denied page with logout option
+        return HTMLResponse(f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Access Denied</title>
+            <style>
+                body {{
+                    margin: 0;
+                    background: #020617;
+                    color: #e5e7eb;
+                    font-family: Arial, sans-serif;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100vh;
+                }}
+                .card {{
+                    background: #0f172a;
+                    padding: 40px;
+                    width: 400px;
+                    border-radius: 12px;
+                    border: 1px solid #1f2937;
+                    text-align: center;
+                }}
+                .denied-icon {{
+                    font-size: 4rem;
+                    margin-bottom: 20px;
+                }}
+                .logout-btn {{
+                    background: #ef4444;
+                    color: white;
+                    border: none;
+                    padding: 12px 24px;
+                    border-radius: 6px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    margin-top: 20px;
+                    width: 100%;
+                }}
+                .logout-btn:hover {{
+                    background: #dc2626;
+                }}
+                .info {{
+                    color: #9ca3af;
+                    margin: 20px 0;
+                    padding: 15px;
+                    background: rgba(239,68,68,0.1);
+                    border-radius: 8px;
+                    border: 1px solid rgba(239,68,68,0.3);
+                }}
+            </style>
+        </head>
+        <body>
+            <div class="card">
+                <div class="denied-icon">🚫</div>
+                <h2>Access Denied</h2>
+                <div class="info">
+                    Only the first 2 users can access this application.<br>
+                    <strong>Current users:</strong> {email} (not allowed)
+                </div>
+                <p style="color: #9ca3af; margin-bottom: 20px;">
+                    Please log out and try with one of the first 2 accounts.
+                </p>
+                <button class="logout-btn" onclick="logout()">Logout & Try Different Account</button>
+            </div>
+            
+            <script>
+                function logout() {{
+                    document.cookie = "sb-access-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+                    window.location.href = "/login";
+                }}
+            </script>
+        </body>
+        </html>
+        """, status_code=403)
+    
+    request.state.email = email
+    return await call_next(request)
+
 @app.get("/")
-def serve_front():
+async def serve_front(request: Request):
+    """Serve the frontend HTML."""
     if os.path.exists("front.html"):
         return FileResponse("front.html")
     return HTMLResponse("<h2>front.html not found. Put front.html in same folder.</h2>")
 
+@app.get("/health")
+async def health_check():
+    """Health check endpoint for orchestrators."""
+    return JSONResponse({
+        "status": "healthy",
+        "timestamp": datetime.now().isoformat(),
+        "service": "timetable-generator",
+        "version": "3.0.0"
+    })
+
 @app.get("/subjects")
 async def subjects_list():
+    """Get list of all available subjects."""
     courses = load_courses()
     if not courses:
         return JSONResponse({"error": "No courses loaded. Check output.txt file."}, status_code=400)
+    
     subjects = []
     for code, course in sorted(courses.items()):
         subjects.append({
@@ -1466,6 +2024,7 @@ async def subjects_list():
             "has_sections": len(course.sections) > 0,
             "display": f"{code} - {course.name} ({len(course.sections)} sections)"
         })
+    
     total_sections = sum(len(c.sections) for c in courses.values())
     subjects.insert(0, {
         "code": "ANYTHING",
@@ -1475,27 +2034,20 @@ async def subjects_list():
         "has_sections": total_sections > 0,
         "display": "ANYTHING - All subjects"
     })
+    
     return JSONResponse(subjects)
 
 @app.get("/staff/{subject_code}")
 async def get_staff(subject_code: str):
+    """Get staff members for a subject."""
     courses = load_courses()
-    # FIXED: Case-insensitive course code lookup
-    subject_code_upper = subject_code.upper()
+    course = get_course(courses, subject_code)
     
-    # Try exact match first
-    if subject_code_upper in courses:
-        subject = courses[subject_code_upper]
-    else:
-        # Try case-insensitive match
-        matching_codes = [code for code in courses.keys() if code.upper() == subject_code_upper]
-        if matching_codes:
-            subject = courses[matching_codes[0]]
-        else:
-            return JSONResponse({"error": "Subject not found"}, status_code=404)
+    if not course:
+        return JSONResponse({"error": "Subject not found"}, status_code=404)
     
     staff = set()
-    for sec in subject.sections:
+    for sec in course.sections:
         if sec.faculty:
             staff.add(sec.faculty.strip())
     
@@ -1503,6 +2055,7 @@ async def get_staff(subject_code: str):
 
 @app.post("/generate")
 async def generate_timetable(
+    request: Request,
     selected_subjects: str = Form(""),
     allow_morning: str = Form("anything"),
     allow_evening: str = Form("anything"),
@@ -1517,6 +2070,17 @@ async def generate_timetable(
     staff_strictness: str = Form("strict"),
     constraints_strictness: str = Form("strict")
 ):
+    """Generate timetables based on constraints."""
+    # Check rate limit
+    await check_rate_limit(request)
+    
+    # Input size validation
+    if len(selected_subjects) > 10000:
+        raise HTTPException(status_code=413, detail="Selected subjects input too large")
+    
+    if len(preferred_staff) > 50000:
+        raise HTTPException(status_code=413, detail="Staff preferences input too large")
+    
     courses = load_courses()
     if not courses:
         return HTMLResponse(
@@ -1527,39 +2091,33 @@ async def generate_timetable(
             '</div>'
         )
 
+    # Parse selected subjects
+    selected_codes: List[str] = []
     if not selected_subjects or selected_subjects.strip().upper() in ("", "ANYTHING"):
         selected_codes = list(courses.keys())
-        logger.info(f"Selected ALL courses: {len(selected_codes)} courses")
     else:
-        selected_codes: List[str] = []
         normalized_inputs = [
             normalize_course_code(s.strip())
             for s in selected_subjects.split(",")
             if s.strip()
         ]
+        
         for norm_input in normalized_inputs:
             if norm_input in courses:
                 selected_codes.append(norm_input)
             else:
-                matched = False
-                for course_code in courses.keys():
-                    if norm_input in course_code or course_code in norm_input:
-                        selected_codes.append(course_code)
-                        matched = True
-                        break
-                if not matched:
-                    logger.warning(f"Could not match subject code: {norm_input}")
+                found_course = get_course(courses, norm_input)
+                if found_course:
+                    selected_codes.append(found_course.code)
+        
         if not selected_codes:
             selected_codes = list(courses.keys())
-            logger.info("No matches found, selecting all courses")
-        logger.info(f"Selected {len(selected_codes)} courses")
-
+    
+    # Parse modes
     def normalize_mode(val: str) -> str:
         v = (val or '').strip().lower()
         if v in ('less', 'no', 'yes', 'anything'):
             return v
-        if v in ('true', 'allow'):
-            return 'anything'
         return 'anything'
 
     morning_mode = normalize_mode(allow_morning)
@@ -1567,25 +2125,29 @@ async def generate_timetable(
     sat_mode = normalize_mode(allow_sat)
     allow_saturday_flag = (sat_mode in ('anything', 'yes'))
 
+    # Parse max classes per day
     max_per_day: Optional[int] = None
     if max_classes.lower() != "anything":
         try:
             max_per_day = int(max_classes)
+            if max_per_day < 1 or max_per_day > 10:
+                max_per_day = None
         except Exception:
             max_per_day = None
 
+    # Parse free day requirements
     require_free = (need_free_day.lower() == "yes")
     free_day_norm = None
     if free_day:
         free_day_norm = normalize_day(free_day)
-        if not free_day_norm:
-            logger.warning(f"Invalid free day input: {free_day}")
 
+    # Parse limits
     try:
         max_results = min(int(limit), 10000)
     except Exception:
         max_results = 10000
     
+    # Parse priority and strictness
     priority_mode = priority_mode.lower().strip()
     if priority_mode not in ['staff', 'constraints']:
         priority_mode = 'staff'
@@ -1598,88 +2160,98 @@ async def generate_timetable(
     if constraints_strictness not in ['strict', 'flexible']:
         constraints_strictness = 'strict'
     
+    # Parse staff preferences
     staff_preferences: Dict[str, List[str]] = {}
     if preferred_staff and preferred_staff.strip():
         try:
             preferences_data = json.loads(preferred_staff)
+            if not isinstance(preferences_data, list):
+                raise ValueError("Preferred staff must be a JSON array")
+            
             for item in preferences_data:
-                if "subject" in item and "staff" in item:
-                    course_code = normalize_course_code(item["subject"])
-                    if course_code in selected_codes:
-                        staff_list = [normalize_staff_name(s) for s in item["staff"] if s.strip()]
-                        if staff_list:
-                            staff_preferences[course_code] = staff_list
-                            logger.info(f"Staff preference for {course_code}: {len(staff_list)} staff members")
-        except json.JSONDecodeError:
-            for rule in preferred_staff.split("|"):
-                if ":" in rule:
-                    course_code, staff_names = rule.split(":", 1)
-                    course_code_norm = normalize_course_code(course_code.strip())
-                    if course_code_norm in selected_codes:
-                        staff_list = [normalize_staff_name(s) for s in staff_names.split(",") if s.strip()]
-                        if staff_list:
-                            staff_preferences[course_code_norm] = staff_list
-                            logger.info(f"Staff preference for {course_code_norm}: {len(staff_list)} staff members")
+                if not isinstance(item, dict) or "subject" not in item or "staff" not in item:
+                    raise ValueError("Each preference must have 'subject' and 'staff' keys")
+                
+                course_code = normalize_course_code(item["subject"])
+                if course_code in selected_codes:
+                    staff_list = []
+                    for s in item["staff"]:
+                        if not isinstance(s, str):
+                            continue
+                        normalized = normalize_staff_name(s)
+                        if normalized:
+                            staff_list.append(normalized)
+                    
+                    if staff_list:
+                        staff_preferences[course_code] = staff_list
+            
+        except json.JSONDecodeError as e:
+            logger.warning(f"Invalid JSON in preferred_staff: {e}")
+        except ValueError as e:
+            logger.warning(f"Invalid staff preferences format: {e}")
     
-    logger.info(f"🚀 ADVANCED SEARCH MODE ACTIVATED")
-    logger.info(f"   Priority Mode: {priority_mode}")
-    logger.info(f"   Staff Strictness: {staff_strictness}")
-    logger.info(f"   Constraints Strictness: {constraints_strictness}")
-    logger.info(f"   Courses: {len(selected_codes)}")
-    if staff_preferences:
-        for course, staff in staff_preferences.items():
-            logger.info(f"     {course}: {len(staff)} preferred staff")
-
-    start_time = time.time()
-    filtered_courses = {code: courses[code] for code in selected_codes if code in courses}
-
-    finder = GodModeTimetableFinder(filtered_courses, selected_codes, max_results=max_results, timeout=30)
+    # Convert courses to dict for process pool
+    courses_dict = {}
+    for code, course in courses.items():
+        if code in selected_codes:
+            courses_dict[code] = course.to_dict()
     
-    timetables, staff_warnings, staff_deviations = await run_god_search_async(
-        finder,
-        allow_morning_mode=morning_mode,
-        allow_evening_mode=evening_mode,
-        allow_saturday=allow_saturday_flag,
-        max_per_day=max_per_day,
-        need_free_day=require_free,
-        free_day_pref=free_day_norm,
-        staff_preferences=staff_preferences,
-        priority_mode=priority_mode,
-        staff_strictness=staff_strictness,
-        constraints_strictness=constraints_strictness
-    )
-    
-    stats = finder.stats
-
-    timetables.sort(
-        key=lambda twv: score_timetable(
-            twv.sections,
-            morning_weight=1.0 if morning_mode == 'less' else 0.0,
-            evening_weight=1.0 if evening_mode == 'less' else 0.0,
+    # Run search
+    try:
+        timetables, staff_warnings, staff_deviations, stats = await run_god_search_async(
+            courses_dict,
+            selected_codes,
+            max_results=max_results,
+            timeout=TIMETABLE_TIMEOUT,
+            allow_morning_mode=morning_mode,
+            allow_evening_mode=evening_mode,
+            allow_saturday=allow_saturday_flag,
+            max_per_day=max_per_day,
+            need_free_day=require_free,
+            free_day_pref=free_day_norm,
             staff_preferences=staff_preferences,
+            priority_mode=priority_mode,
             staff_strictness=staff_strictness,
-            constraint_violations=twv.violations
+            constraints_strictness=constraints_strictness
         )
-    )
-
-    end_time = time.time()
-    search_time = end_time - start_time
-
-    total_combinations = stats.get('total_combinations', 0)
-    if total_combinations == 0 and hasattr(finder, 'course_list'):
-        try:
-            total_combinations = math.prod([len(c.sections) for c in finder.course_list])
-        except Exception:
-            total_combinations = 0
-
+        
+        # Sort timetables by score
+        timetables.sort(
+            key=lambda twv: score_timetable(
+                twv.sections,
+                morning_weight=1.0 if morning_mode == 'less' else 0.0,
+                evening_weight=1.0 if evening_mode == 'less' else 0.0,
+                staff_preferences=staff_preferences,
+                staff_strictness=staff_strictness,
+                constraint_violations=twv.violations
+            )
+        )
+        
+    except Exception as e:
+        # Log full error but show generic message to user
+        logger.error(f"Search failed: {e}", exc_info=True)
+        return HTMLResponse(
+            f'''
+            <div style="text-align:center;padding:40px;background:#0f172a;
+            border-radius:12px;border:1px solid #1f2937;">
+                <h3 style="color:#ef4444;">❌ Search Error</h3>
+                <p style="color:#9ca3af;">
+                    An error occurred while searching for timetables.<br>
+                    Please try again with different parameters.
+                </p>
+            </div>
+            '''
+        )
+    
+    # Prepare statistics display
     priority_stats = ""
     if priority_mode == 'staff':
         priority_stats = f'''
-        <div><strong>Priority Mode:</strong> Staff First (prefers your staff, falls back to available if needed)</div>
+        <div><strong>Priority Mode:</strong> Staff First</div>
         '''
     else:
         priority_stats = f'''
-        <div><strong>Priority Mode:</strong> Constraints First (strict constraints, then staff)</div>
+        <div><strong>Priority Mode:</strong> Constraints First</div>
         '''
     
     strictness_stats = f'''
@@ -1692,32 +2264,29 @@ async def generate_timetable(
         staff_stats = f'''
         <div><strong>Staff preferences:</strong> Applied to {len(staff_preferences)} courses</div>
         <div><strong>Warnings:</strong> {len(staff_warnings)} courses had unavailable preferred staff</div>
-        <div><strong>Flexible deviations:</strong> {len(staff_deviations)} courses using flexible staff selection</div>
         '''
     
     constraint_stats = ""
-    if constraints_strictness == 'flexible' and stats.get('total_violations', 0) > 0:
+    if constraints_strictness == 'flexible':
+        violations_count = sum(len(twv.violations) for twv in timetables)
+        timetables_with_violations = sum(1 for twv in timetables if twv.has_violations())
         constraint_stats = f'''
-        <div><strong>Constraint Violations:</strong> {stats.get('total_violations', 0)} total violations</div>
-        <div><strong>Timetables with violations:</strong> {sum(1 for twv in timetables if twv.has_violations())} of {len(timetables)}</div>
+        <div><strong>Constraint Violations:</strong> {violations_count} total</div>
+        <div><strong>Timetables with violations:</strong> {timetables_with_violations} of {len(timetables)}</div>
         '''
     
     coverage = stats.get('coverage_percentage', 0.0)
-    timeout_triggered = stats.get('timeout_triggered', False)
-    max_results_val = stats.get('max_results', 10000)
+    search_complete = stats.get('search_complete', False)
     
-    if timeout_triggered:
-        coverage_text = f"Timeout reached ({stats['timeout']}s) - {coverage:.1f}% explored"
-        guarantee_text = "Search stopped early due to timeout"
-    elif coverage >= 99.9 and stats.get('search_complete', False):
+    if coverage >= 99.9 and search_complete:
         coverage_text = "100% of search space explored"
         guarantee_text = "All likely possibilities explored"
     elif coverage > 0:
         coverage_text = f"{coverage:.1f}% of search space explored"
         guarantee_text = "Substantial search space explored"
     else:
-        coverage_text = "Coverage not measured (large search space)"
-        guarantee_text = "Search space explored with pruning"
+        coverage_text = "Search space explored with pruning"
+        guarantee_text = "Substantial search space explored"
     
     stats_html = f'''
     <div style="margin-bottom:20px;padding:20px;background:#0f172a;
@@ -1730,9 +2299,8 @@ async def generate_timetable(
         gap:10px;">
             {priority_stats}
             {strictness_stats}
-            <div><strong>Search time:</strong> {search_time:.2f} seconds</div>
-            <div><strong>Total possible combinations:</strong> {total_combinations:,}</div>
-            <div><strong>Combinations tried:</strong> {stats.get('combinations_tried', 0):,}</div>
+            <div><strong>Search time:</strong> {stats.get('time_elapsed', 0):.2f} seconds</div>
+            <div><strong>Total courses:</strong> {len(selected_codes)}</div>
             <div><strong>Valid timetables found:</strong> {len(timetables):,}</div>
             <div><strong>Coverage:</strong> {coverage_text}</div>
             <div><strong>Guarantee:</strong> {guarantee_text}</div>
@@ -1749,7 +2317,7 @@ async def generate_timetable(
 
     html_out = render_timetable_html_paginated(
         timetables, 
-        filtered_courses,
+        courses,
         page=page_num, 
         per_page=10,
         staff_preferences=staff_preferences,
@@ -1757,105 +2325,78 @@ async def generate_timetable(
         constraints_strictness=constraints_strictness,
         stats=stats
     )
+
+
+# 🔐 email extracted earlier by middleware
+    email = request.state.email
+
+    from supabase_client import supabase
+    try:
+        supabase.table("user_activity").insert({
+            "email": email,
+            "selected_subjects": selected_subjects,
+            "constraints": {
+                "morning": allow_morning,
+                "evening": allow_evening,
+                "saturday": allow_sat,
+                "max_classes": max_classes,
+                "free_day": free_day
+            },
+            "staff_preferences": staff_preferences,
+            "results_count": len(timetables),
+            "coverage": stats.get("coverage_percentage"),
+            "search_time": stats.get("time_elapsed")
+        }).execute()
+    except Exception as e:
+        print("SUPABASE INSERT ERROR:", e)
+
     return HTMLResponse(stats_html + html_out)
 
-# ========== DEBUG ENDPOINTS ==========
-@app.get("/debug_staff/{course_code}")
-async def debug_staff(course_code: str):
-    courses = load_courses()
-    # FIXED: Case-insensitive course code lookup
-    course_code_upper = course_code.upper()
-    
-    if course_code_upper not in courses:
-        # Try case-insensitive match
-        matching_codes = [code for code in courses.keys() if code.upper() == course_code_upper]
-        if not matching_codes:
-            return JSONResponse({"error": "Course not found"}, status_code=404)
-        course_code_upper = matching_codes[0]
-    
-    course = courses[course_code_upper]
-    staff_details = []
-    
-    for i, section in enumerate(course.sections):
-        staff_details.append({
-            "section": section.section_code,
-            "raw_faculty": section.faculty,
-            "normalized": section.get_normalized_staff_name(),
-            "has_time_slots": len(section.time_slots) > 0,
-            "time_slots": [(slot.day, minutes_to_time(slot.start_min), minutes_to_time(slot.end_min)) 
-                          for slot in section.time_slots]
-        })
-    
-    unique_staff = sorted(set([s["normalized"] for s in staff_details if s["normalized"]]))
-    
-    return JSONResponse({
-        "course": course_code_upper,
-        "total_sections": len(course.sections),
-        "unique_staff": unique_staff,
-        "sections": staff_details
-    })
 
-@app.get("/test_staff_filter/{course_code}")
-async def test_staff_filter(course_code: str, staff_name: str = ""):
-    courses = load_courses()
-    # FIXED: Case-insensitive course code lookup
-    course_code_upper = course_code.upper()
-    
-    if course_code_upper not in courses:
-        # Try case-insensitive match
-        matching_codes = [code for code in courses.keys() if code.upper() == course_code_upper]
-        if not matching_codes:
-            return JSONResponse({"error": "Course not found"}, status_code=404)
-        course_code_upper = matching_codes[0]
-    
-    course = courses[course_code_upper]
-    
-    test_preference = normalize_staff_name(staff_name) if staff_name else "test_prof"
-    
-    all_sections = course.sections
-    
-    filtered_sections = [
-        sec for sec in all_sections 
-        if sec.get_normalized_staff_name() == test_preference
-    ]
-    
-    return JSONResponse({
-        "course": course_code_upper,
-        "test_staff_name": staff_name,
-        "normalized_test_name": test_preference,
-        "total_sections": len(all_sections),
-        "filtered_sections": len(filtered_sections),
-        "all_staff_names": sorted(set([sec.get_normalized_staff_name() for sec in all_sections])),
-        "matching_sections": [
-            {
-                "section": sec.section_code,
-                "staff": sec.faculty,
-                "normalized_staff": sec.get_normalized_staff_name()
-            }
-            for sec in filtered_sections
-        ]
-    })
+@app.get("/reload_courses")
+async def reload_courses_endpoint():
+    """Force reload courses from file."""
+    course_cache.clear()
+    load_courses(force_reload=True)
+    return JSONResponse({"status": "Courses reloaded"})
 
 # ========== CLEANUP ==========
 @app.on_event("shutdown")
 async def shutdown_event():
-    executor.shutdown(wait=False)
-    logger.info("Executors shutdown")
+    """Cleanup on shutdown."""
+    global _process_pool
+    if _process_pool:
+        _process_pool.shutdown(wait=True)
+        _process_pool = None
+        logger.info("Process pool shutdown")
 
 # ========== MAIN ==========
 if __name__ == "__main__":
     import uvicorn
+    
+    # Log startup information
     logger.info("=" * 80)
-    logger.info("🚀 TIMETABLE GENERATOR - COMPLETELY FIXED VERSION")
-    logger.info("✅ ALL CRITICAL BUGS FIXED")
-    logger.info("✅ ALL MAJOR ISSUES RESOLVED")
-    logger.info("✅ ALL MINOR ISSUES ADDRESSED")
+    logger.info("🚀 TIMETABLE GENERATOR - CLEAN PRODUCTION VERSION 3.0")
+    logger.info(f"✅ Job queue removed, simple rate limiting kept")
+    logger.info(f"✅ Fixed non-preferred highlighting bug")
+    logger.info(f"✅ Rate limiting: {RATE_LIMIT_REQUESTS} req/{RATE_LIMIT_WINDOW}s")
+    logger.info(f"✅ CORS Origins: {CORS_ORIGINS}")
     logger.info("=" * 80)
-    logger.info("Starting server on http://0.0.0.0:8000")
+    
+    # Load courses at startup
+    logger.info("Loading courses...")
+    courses = load_courses()
+    logger.info(f"Loaded {len(courses)} courses at startup")
+    
+    # Determine port
+    port = int(os.getenv("PORT", "8000"))
+    
+    # Run server with single worker (recommended with ProcessPoolExecutor)
     uvicorn.run(
         app,
         host="0.0.0.0",
-        port=8000,
+        port=port,
         log_level="info",
-        timeout_keep_alive=30
+        timeout_keep_alive=int(os.getenv("TIMEOUT_KEEP_ALIVE", "30")),
+        workers=int(os.getenv("UVICORN_WORKERS", "1"))
     )

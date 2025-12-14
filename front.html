@@ -941,8 +941,16 @@
 </style>
 </head>
 <body>
-  <div class="container">
     <header class="header">
+      <!-- ADD THIS LOGOUT BUTTON DIV -->
+      <div style="position: absolute; top: 20px; right: 20px;">
+        <button onclick="logout()" 
+          style="background: #ef4444; color: white; border: none; padding: 8px 16px; 
+                  border-radius: 6px; cursor: pointer; font-weight: 500; 
+                  text-decoration: none; display: inline-block;">
+          Logout
+        </button>
+      </div>
       <h1>SCHEDULA MATRIX GENERATOR</h1>
       <p>FlexiLearn made it complex. I make it clear</p>
       <p><span>~ a Fitboy Product</span></p>
@@ -1731,6 +1739,18 @@
     window.loadPage = loadPage;
     window.removeStaff = removeStaff;
     window.selectPriority = selectPriority;
+  function logout() {
+      // Clear the Supabase token
+      document.cookie = "sb-access-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      
+      // Also clear any other auth cookies
+      document.cookie = "sb-refresh-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+      
+      // Redirect to login page
+      window.location.href = "/login";
+  }
+
+
 </script>
 </body>
 </html>
