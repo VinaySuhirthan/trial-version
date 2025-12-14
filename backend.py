@@ -2374,6 +2374,20 @@ async def shutdown_event():
 if __name__ == "__main__":
     import uvicorn
     
+    # Log startup information
+    logger.info("=" * 80)
+    logger.info("🚀 TIMETABLE GENERATOR - CLEAN PRODUCTION VERSION 3.0")
+    logger.info(f"✅ Job queue removed, simple rate limiting kept")
+    logger.info(f"✅ Fixed non-preferred highlighting bug")
+    logger.info(f"✅ Rate limiting: {RATE_LIMIT_REQUESTS} req/{RATE_LIMIT_WINDOW}s")
+    logger.info(f"✅ CORS Origins: {CORS_ORIGINS}")
+    logger.info("=" * 80)
+    
+    # Load courses at startup
+    logger.info("Loading courses...")
+    courses = load_courses()
+    logger.info(f"Loaded {len(courses)} courses at startup")
+    
     # Determine port
     port = int(os.getenv("PORT", "8000"))
     
