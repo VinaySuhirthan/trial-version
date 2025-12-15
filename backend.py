@@ -16,7 +16,7 @@ from auth_utils import is_email_allowed
 import jwt
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
     # ========== SETUP ==========
-    app = FastAPI(title="Timetable Generator API", version="3.0.0")
+app = FastAPI(title="Timetable Generator API", version="3.0.0")
 
     # Environment-based configuration
     OUTPUT_FILE = os.getenv("OUTPUT_FILE", "output.txt")
