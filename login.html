@@ -18,31 +18,12 @@
             position: relative;
         }
         
-        /* Walking GIF Animation */
-        @keyframes moveRight {
-            from { left: 0px; }
-            to { left: 100vw; }
-        }
-        
-        /* Walking GIF Style */
-        .walking-gif {
-            width: 150px;
-            height: auto;
-            transform: scaleX(-1);
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            animation: moveRight 30s linear infinite;
-            z-index: 0; /* Below everything else */
-        }
-        
         .snowflake {
             position: absolute;
             top: -10px;
             color: rgba(255, 255, 255, 0.6);
             font-size: 1em;
             pointer-events: none;
-            z-index: 1;
         }
         
         @keyframes fall {
@@ -58,14 +39,11 @@
             75% { transform: translateY(75vh) translateX(10px); }
             100% { transform: translateY(100vh) translateX(-10px); }
         }
-        
         .container {
             max-width: 420px;
             width: 100%;
             padding: 20px;
-            z-index: 2; /* Above snowflakes and GIF */
         }
-        
         .card {
             background: rgba(15, 23, 42, 0.95);
             border-radius: 16px;
@@ -74,9 +52,8 @@
             border: 1px solid #1f2937;
             text-align: center;
             position: relative;
-            z-index: 2;
+            z-index: 1;
         }
-        
         h1 {
             font-size: 1.75rem;
             margin-bottom: 8px;
@@ -88,14 +65,12 @@
             letter-spacing: -0.5px;
             white-space: nowrap;
         }
-        
         .subtitle {
             color: #9ca3af;
             margin-bottom: 40px;
             font-size: 0.95rem;
             line-height: 1.5;
         }
-        
         .login-btn {
             background: white;
             color: #374151;
@@ -114,17 +89,14 @@
             margin-bottom: 16px;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
-        
         .login-btn:hover {
             background: #f9fafb;
             border-color: #d1d5db;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        
         .login-btn:active {
             transform: scale(0.98);
         }
-        
         .info {
             color: #9ca3af;
             font-size: 0.85rem;
@@ -136,13 +108,11 @@
             text-align: left;
             line-height: 1.6;
         }
-        
         .info strong {
             color: #d1d5db;
             display: block;
             margin-bottom: 4px;
         }
-        
         .error {
             color: #ef4444;
             background: rgba(239, 68, 68, 0.1);
@@ -156,13 +126,6 @@
     </style>
 </head>
 <body>
-    <!-- Walking GIF -->
-    <img 
-        src="/static/walk.gif"
-        class="walking-gif" 
-        alt="Walking animation"
-    >
-
     <div class="container">
         <div class="card">
             <h1>SCHEDULA MATRIX</h1>
@@ -185,7 +148,6 @@
             </div>
         </div>
     </div>
-
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script>
         // Create snowfall effect

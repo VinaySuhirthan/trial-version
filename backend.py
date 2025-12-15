@@ -2,9 +2,6 @@
     # ALL ISSUES FIXED: No job queue, no duplicates, fixed non-preferred highlighting
     from fastapi import FastAPI, Form, Request, HTTPException
     from fastapi.staticfiles import StaticFiles
-    app = FastAPI(title="Timetable Generator API", version="3.0.0")
-
-    app.mount("/static", StaticFiles(directory="static"), name="static")
     from fastapi.middleware.cors import CORSMiddleware
     import re, os, html, time, asyncio, json, logging, itertools, math, sys
     from typing import List, Dict, Tuple, Optional, Set, Any
@@ -20,6 +17,7 @@
     from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
 
     # ========== SETUP ==========
+    app = FastAPI(title="Timetable Generator API", version="3.0.0")
 
     # Environment-based configuration
     OUTPUT_FILE = os.getenv("OUTPUT_FILE", "output.txt")
