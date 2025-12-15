@@ -24,13 +24,20 @@
             color: rgba(255, 255, 255, 0.6);
             font-size: 1em;
             pointer-events: none;
-            animation: fall linear infinite;
         }
         
         @keyframes fall {
             to {
                 transform: translateY(100vh);
             }
+        }
+        
+        @keyframes sway {
+            0% { transform: translateY(0) translateX(-10px); }
+            25% { transform: translateY(25vh) translateX(5px); }
+            50% { transform: translateY(50vh) translateX(-5px); }
+            75% { transform: translateY(75vh) translateX(10px); }
+            100% { transform: translateY(100vh) translateX(-10px); }
         }
         .container {
             max-width: 420px;
@@ -176,11 +183,14 @@
         function createSnowflake() {
             const snowflake = document.createElement('div');
             snowflake.classList.add('snowflake');
-            snowflake.textContent = '•';
+            const shapes = ['•', '❄', '❅', '❆'];
+            snowflake.textContent = shapes[Math.floor(Math.random() * shapes.length)];
             snowflake.style.left = Math.random() * 100 + '%';
-            snowflake.style.animationDuration = (Math.random() * 3 + 8) + 's';
+            const duration = (Math.random() * 3 + 8) + 's';
             snowflake.style.opacity = Math.random() * 0.6 + 0.2;
-            snowflake.style.fontSize = (Math.random() * 10 + 5) + 'px';
+            snowflake.style.fontSize = (Math.random() * 10 + 6) + 'px';
+            snowflake.style.animation = `sway ${duration} linear infinite`;
+            
             document.body.appendChild(snowflake);
             
             setTimeout(() => {
@@ -188,12 +198,12 @@
             }, 12000);
         }
         
-        // Create snowflakes periodically
-        setInterval(createSnowflake, 400);
+        // Create snowflakes periodically - LESS VOLUME
+        setInterval(createSnowflake, 600);
         
-        // Initial snowflakes
-        for (let i = 0; i < 15; i++) {
-            setTimeout(createSnowflake, i * 200);
+        // Initial snowflakes - LESS VOLUME
+        for (let i = 0; i < 10; i++) {
+            setTimeout(createSnowflake, i * 300);
         }
     
         const SUPABASE_URL = 'https://qmlmexokphzqrinbdfwk.supabase.co';
