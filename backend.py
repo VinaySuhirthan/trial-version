@@ -1,21 +1,20 @@
     # ========== GOD MODE TIMETABLE GENERATOR - CLEANED PRODUCTION VERSION ==========
     # ALL ISSUES FIXED: No job queue, no duplicates, fixed non-preferred highlighting
-    from fastapi import FastAPI, Form, Request, HTTPException
-    from fastapi.staticfiles import StaticFiles
-    from fastapi.middleware.cors import CORSMiddleware
-    import re, os, html, time, asyncio, json, logging, itertools, math, sys
-    from typing import List, Dict, Tuple, Optional, Set, Any
-    from collections import defaultdict
-    from dataclasses import dataclass, asdict
-    from functools import partial, lru_cache
-    from concurrent.futures import ProcessPoolExecutor
-    import threading, multiprocessing
-    from datetime import datetime
-    from pathlib import Path
-    from auth_utils import is_email_allowed
-    import jwt
-    from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
-
+from fastapi import FastAPI, Form, Request, HTTPException
+from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
+import re, os, html, time, asyncio, json, logging, itertools, math, sys
+from typing import List, Dict, Tuple, Optional, Set, Any
+from collections import defaultdict
+from dataclasses import dataclass, asdict
+from functools import partial, lru_cache
+from concurrent.futures import ProcessPoolExecutor
+import threading, multiprocessing
+from datetime import datetime
+from pathlib import Path
+from auth_utils import is_email_allowed
+import jwt
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
     # ========== SETUP ==========
     app = FastAPI(title="Timetable Generator API", version="3.0.0")
 
