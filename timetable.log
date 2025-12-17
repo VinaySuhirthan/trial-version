@@ -4186,3 +4186,21 @@
 2025-12-14 16:38:53,399 - httpx - INFO - HTTP Request: GET https://qmlmexokphzqrinbdfwk.supabase.co/rest/v1/allowed_users?select=email&email=eq.ksvinaysuhirthan%40gmail.com "HTTP/2 200 OK"
 2025-12-14 16:38:53,480 - backend - INFO - Loaded 95 courses
 2025-12-14 16:38:53,480 - backend - INFO - Total sections: 494
+2025-12-17 21:25:22,665 - httpx - INFO - HTTP Request: GET https://qmlmexokphzqrinbdfwk.supabase.co/rest/v1/allowed_users?select=email&email=eq.dummypiecera%40gmail.com "HTTP/2 200 OK"
+2025-12-17 21:25:22,964 - httpx - INFO - HTTP Request: GET https://qmlmexokphzqrinbdfwk.supabase.co/rest/v1/allowed_users?select=email&email=eq.dummypiecera%40gmail.com "HTTP/2 200 OK"
+2025-12-17 21:25:23,178 - httpx - INFO - HTTP Request: GET https://qmlmexokphzqrinbdfwk.supabase.co/rest/v1/allowed_users?select=email&email=eq.dummypiecera%40gmail.com "HTTP/2 200 OK"
+2025-12-17 21:25:23,280 - backend - INFO - Loaded 95 courses
+2025-12-17 21:25:23,280 - backend - INFO - Total sections: 494
+2025-12-17 21:25:40,691 - httpx - INFO - HTTP Request: GET https://qmlmexokphzqrinbdfwk.supabase.co/rest/v1/allowed_users?select=email&email=eq.dummypiecera%40gmail.com "HTTP/2 200 OK"
+2025-12-17 21:25:52,454 - httpx - INFO - HTTP Request: GET https://qmlmexokphzqrinbdfwk.supabase.co/rest/v1/allowed_users?select=email&email=eq.fennixag%40gmail.com "HTTP/2 200 OK"
+2025-12-17 21:25:52,695 - httpx - INFO - HTTP Request: GET https://qmlmexokphzqrinbdfwk.supabase.co/rest/v1/allowed_users?select=email&email=eq.fennixag%40gmail.com "HTTP/2 200 OK"
+2025-12-17 21:26:01,530 - httpx - INFO - HTTP Request: GET https://qmlmexokphzqrinbdfwk.supabase.co/rest/v1/allowed_users?select=email&email=eq.ksvinaysuhirthan%40gmail.com "HTTP/2 200 OK"
+2025-12-17 21:26:01,674 - httpx - INFO - HTTP Request: GET https://qmlmexokphzqrinbdfwk.supabase.co/rest/v1/allowed_users?select=%2A "HTTP/2 200 OK"
+2025-12-17 21:26:01,820 - httpx - INFO - HTTP Request: GET https://qmlmexokphzqrinbdfwk.supabase.co/rest/v1/allowed_users?select=email "HTTP/2 200 OK"
+2025-12-17 21:28:35,848 - httpx - INFO - HTTP Request: GET https://qmlmexokphzqrinbdfwk.supabase.co/rest/v1/allowed_users?select=email&email=eq.ksvinaysuhirthan%40gmail.com "HTTP/2 200 OK"
+2025-12-17 21:28:35,999 - httpx - INFO - HTTP Request: GET https://qmlmexokphzqrinbdfwk.supabase.co/rest/v1/allowed_users?select=%2A "HTTP/2 200 OK"
+2025-12-17 21:28:36,111 - httpx - INFO - HTTP Request: GET https://qmlmexokphzqrinbdfwk.supabase.co/rest/v1/allowed_users?select=email "HTTP/2 200 OK"
+2025-12-17 21:28:43,944 - httpx - INFO - HTTP Request: GET https://qmlmexokphzqrinbdfwk.supabase.co/rest/v1/allowed_users?select=email&email=eq.dummypiecera%40gmail.com "HTTP/2 200 OK"
+2025-12-17 21:28:44,135 - httpx - INFO - HTTP Request: GET https://qmlmexokphzqrinbdfwk.supabase.co/rest/v1/allowed_users?select=email&email=eq.dummypiecera%40gmail.com "HTTP/2 200 OK"
+2025-12-17 21:28:44,300 - backend - INFO - Loaded 95 courses
+2025-12-17 21:28:44,301 - backend - INFO - Total sections: 494
