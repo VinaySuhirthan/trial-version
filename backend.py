@@ -57,38 +57,9 @@ HOUR_SLOTS = [
 ]
 
 # ========== LOGGING ==========
-try:
-    sys.stdout.reconfigure(encoding='utf-8')
-    sys.stderr.reconfigure(encoding='utf-8')
-except Exception:
-    pass
-
-# Configure logging
-log_dir = Path(os.getenv("LOG_DIR", "."))
-log_dir.mkdir(exist_ok=True)
-
-try:
-    from logging.handlers import RotatingFileHandler
-    file_handler = RotatingFileHandler(
-        log_dir / 'timetable.log',
-        maxBytes=10*1024*1024,
-        backupCount=5,
-        encoding='utf-8'
-    )
-except (PermissionError, OSError, ImportError):
-    file_handler = logging.StreamHandler(sys.stdout)
-
-stream_handler = logging.StreamHandler(sys.stdout)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-file_handler.setFormatter(formatter)
-stream_handler.setFormatter(formatter)
-
-logging.basicConfig(
-    level=os.getenv("LOG_LEVEL", "INFO"),
-    handlers=[file_handler, stream_handler],
-    force=True
-)
+logging.basicConfig(level=logging.CRITICAL + 1)
 logger = logging.getLogger(__name__)
+
 
 # ========== SIMPLE RATE LIMITING ==========
 class RateLimiter:
