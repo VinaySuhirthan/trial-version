@@ -4204,3 +4204,7 @@
 2025-12-17 21:28:44,135 - httpx - INFO - HTTP Request: GET https://qmlmexokphzqrinbdfwk.supabase.co/rest/v1/allowed_users?select=email&email=eq.dummypiecera%40gmail.com "HTTP/2 200 OK"
 2025-12-17 21:28:44,300 - backend - INFO - Loaded 95 courses
 2025-12-17 21:28:44,301 - backend - INFO - Total sections: 494
+2025-12-17 21:32:26,156 - httpx - INFO - HTTP Request: GET https://qmlmexokphzqrinbdfwk.supabase.co/rest/v1/allowed_users?select=email&email=eq.dummypiecera%40gmail.com "HTTP/2 200 OK"
+2025-12-17 21:32:26,607 - httpx - INFO - HTTP Request: GET https://qmlmexokphzqrinbdfwk.supabase.co/rest/v1/allowed_users?select=email&email=eq.dummypiecera%40gmail.com "HTTP/2 200 OK"
+2025-12-17 21:32:26,685 - backend - INFO - Loaded 95 courses
+2025-12-17 21:32:26,685 - backend - INFO - Total sections: 494

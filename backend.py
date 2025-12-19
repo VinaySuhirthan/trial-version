@@ -2144,9 +2144,9 @@ async def generate_timetable(
 
     # Parse limits
     try:
-        max_results = min(int(limit), 10000)
+        max_results = min(int(limit), 20)
     except Exception:
-        max_results = 10000
+        max_results = 20
     
     # Parse priority and strictness
     priority_mode = priority_mode.lower().strip()
