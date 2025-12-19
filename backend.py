@@ -958,23 +958,14 @@ class GodModeTimetableFinder:
         self.stats['total_combinations'] = total_combinations
         logger.info(f"   Total combinations after filtering: {total_combinations:,}")
         
-        # Choose search strategy
-        if total_combinations <= 1_000_000:
-            self.stats['search_strategy'] = 'bitmask'
-            logger.info("   Strategy: BITMASK BRUTE FORCE")
-            timetables = self._find_all_bitmask(
-                max_per_day, need_free_day, free_day_pref,
-                allow_morning_mode, allow_evening_mode, allow_saturday,
-                constraints_strictness
-            )
-        else:
-            self.stats['search_strategy'] = 'recursive_pruned'
-            logger.info("   Strategy: RECURSIVE DFS WITH PRUNING")
-            timetables = self._find_all_recursive(
-                max_per_day, need_free_day, free_day_pref,
-                allow_morning_mode, allow_evening_mode, allow_saturday,
-                constraints_strictness
-            )
+        # Always use bitmask approach (recursive removed)
+        self.stats['search_strategy'] = 'bitmask'
+        logger.info("   Strategy: BITMASK ITERATIVE SEARCH")
+        timetables = self._find_all_bitmask(
+            max_per_day, need_free_day, free_day_pref,
+            allow_morning_mode, allow_evening_mode, allow_saturday,
+            constraints_strictness
+        )
         
         # Apply strict staff filtering if needed
         if staff_strictness == 'strict' and staff_preferences:
@@ -1166,153 +1157,168 @@ class GodModeTimetableFinder:
         checked = 0
         self.stats['combinations_tried'] = 0
 
-        original_indices = list(range(len(self.course_list)))
+        # Prepare section lists
         section_lists = [course.sections for course in self.course_list]
         
-        # Sort by number of sections for better pruning
-        sorted_indices = sorted(range(len(section_lists)), key=lambda i: len(section_lists[i]))
-        sorted_section_lists = [section_lists[i] for i in sorted_indices]
+        # Early exit if any course has no sections
+        if any(len(sections) == 0 for sections in section_lists):
+            return self.all_timetables
         
-        update_interval = min(1000, max(1, total_combinations // 10)) if total_combinations > 0 else 1
+        # Use iterative approach with pruning for large search spaces
+        if total_combinations > 1000000:
+            # Use iterative BFS with pruning for large search spaces
+            timetables = self._iterative_search_with_pruning(
+                section_lists, max_per_day, need_free_day, free_day_pref,
+                allow_morning_mode, allow_evening_mode, allow_saturday,
+                constraints_strictness, start_time
+            )
+            return timetables
+        else:
+            # Use product for smaller search spaces
+            for combination in itertools.product(*section_lists):
+                checked += 1
+                self.stats['combinations_tried'] = checked
+                
+                # Check timeout
+                if time.time() - start_time > self.timeout:
+                    logger.warning(f"Bitmask search timeout reached ({self.timeout} seconds)")
+                    self.stats['timeout_triggered'] = True
+                    break
+
+                # Check for time conflicts using bitmask
+                occupied_bitmask = 0
+                valid = True
+                for sec in combination:
+                    if occupied_bitmask & sec.time_bitmask:
+                        valid = False
+                        break
+                    occupied_bitmask |= sec.time_bitmask
+                
+                if not valid:
+                    continue
+
+                # Check constraints
+                is_valid, violations = self._check_constraints(
+                    list(combination),
+                    max_per_day=max_per_day,
+                    need_free_day=need_free_day,
+                    free_day_pref=free_day_pref,
+                    allow_morning_mode=allow_morning_mode,
+                    allow_evening_mode=allow_evening_mode,
+                    allow_saturday=allow_saturday,
+                    constraints_strictness=constraints_strictness
+                )
+                
+                if is_valid or constraints_strictness == 'flexible':
+                    self._add_timetable(list(combination), violations)
+                    
+                    if len(self.all_timetables) >= self.max_results:
+                        logger.warning(f"Reached max results limit: {self.max_results}")
+                        break
+
+                if checked % 100000 == 0 and checked > 0:
+                    logger.info(f"Bitmask checked {checked:,} combos, found {len(self.all_timetables):,} valid")
+
+        elapsed = time.time() - start_time
+        self.stats.update({
+            'time_elapsed': elapsed
+        })
+        return self.all_timetables
+
+    def _iterative_search_with_pruning(self, section_lists, max_per_day, need_free_day, free_day_pref,
+                                     allow_morning_mode, allow_evening_mode, allow_saturday,
+                                     constraints_strictness, start_time):
+        """
+        Iterative BFS search with pruning for large search spaces.
+        """
+        n_courses = len(section_lists)
         
-        for combination in itertools.product(*sorted_section_lists):
+        # Use a stack for DFS-like iterative search (but not recursive)
+        stack = []
+        
+        # Start with empty selection and no time conflicts
+        initial_state = {
+            'course_idx': 0,
+            'selected_sections': [],
+            'occupied_bitmask': 0,
+            'day_counts': defaultdict(int)
+        }
+        stack.append(initial_state)
+        
+        checked = 0
+        
+        while stack and len(self.all_timetables) < self.max_results:
+            # Check timeout
+            if time.time() - start_time > self.timeout:
+                logger.warning(f"Search timeout reached ({self.timeout} seconds)")
+                self.stats['timeout_triggered'] = True
+                break
+            
+            state = stack.pop()
+            course_idx = state['course_idx']
+            selected_sections = state['selected_sections']
+            occupied_bitmask = state['occupied_bitmask']
+            day_counts = state['day_counts']
+            
             checked += 1
             self.stats['combinations_tried'] = checked
             
-            # Check timeout
-            if time.time() - start_time > self.timeout:
-                logger.warning(f"Bitmask search timeout reached ({self.timeout} seconds)")
-                self.stats['timeout_triggered'] = True
-                break
-
-            # Restore original order
-            original_order = [None] * len(combination)
-            for sorted_idx, section in enumerate(combination):
-                original_idx = sorted_indices[sorted_idx]
-                original_order[original_idx] = section
-
-            # Check for time conflicts using bitmask
-            occupied_bitmask = 0
-            valid = True
-            for sec in original_order:
-                if occupied_bitmask & sec.time_bitmask:
-                    valid = False
-                    break
-                occupied_bitmask |= sec.time_bitmask
-            
-            if not valid:
-                continue
-
-            # Check constraints
-            is_valid, violations = self._check_constraints(
-                original_order,
-                max_per_day=max_per_day,
-                need_free_day=need_free_day,
-                free_day_pref=free_day_pref,
-                allow_morning_mode=allow_morning_mode,
-                allow_evening_mode=allow_evening_mode,
-                allow_saturday=allow_saturday,
-                constraints_strictness=constraints_strictness
-            )
-            
-            if is_valid or constraints_strictness == 'flexible':
-                self._add_timetable(original_order, violations)
+            # If we've processed all courses, check constraints
+            if course_idx == n_courses:
+                is_valid, violations = self._check_constraints(
+                    selected_sections,
+                    max_per_day=max_per_day,
+                    need_free_day=need_free_day,
+                    free_day_pref=free_day_pref,
+                    allow_morning_mode=allow_morning_mode,
+                    allow_evening_mode=allow_evening_mode,
+                    allow_saturday=allow_saturday,
+                    constraints_strictness=constraints_strictness
+                )
                 
-                if len(self.all_timetables) >= self.max_results:
-                    logger.warning(f"Reached max results limit: {self.max_results}")
-                    break
-
-            if checked % update_interval == 0:
-                logger.info(f"Bitmask checked {checked:,} combos, found {len(self.all_timetables):,} valid")
-
-        elapsed = time.time() - start_time
-        self.stats.update({
-            'time_elapsed': elapsed
-        })
-        return self.all_timetables
-
-    def _find_all_recursive(self, max_per_day, need_free_day, free_day_pref,
-                        allow_morning_mode, allow_evening_mode, allow_saturday,
-                        constraints_strictness):
-        start_time = time.time()
-        self.search_start_time = start_time
-        
-        constraints = {
-            'max_per_day': max_per_day,
-            'need_free_day': need_free_day,
-            'free_day_pref': free_day_pref,
-            'allow_morning_mode': allow_morning_mode,
-            'allow_evening_mode': allow_evening_mode,
-            'allow_saturday': allow_saturday,
-            'constraints_strictness': constraints_strictness
-        }
-        
-        self.stats['combinations_tried'] = 0
-        
-        # Start recursive search
-        self._recursive_search(0, [], 0, constraints)
-        
-        elapsed = time.time() - start_time
-        self.stats.update({
-            'time_elapsed': elapsed
-        })
-        return self.all_timetables
-
-    def _recursive_search(self, course_idx: int, current_selection: List[CourseSection], 
-                        current_bitmask: int, kwargs: Dict[str, Any]) -> bool:
-        """
-        Recursive search with early termination.
-        Returns True if search should stop.
-        """
-        # Check timeout
-        if time.time() - self.search_start_time > self.timeout:
-            self.stats['timeout_triggered'] = True
-            return True
-            
-        # Check if we have enough results
-        if len(self.all_timetables) >= self.max_results:
-            return True
-        
-        # Base case: all courses processed
-        if course_idx == len(self.course_list):
-            is_valid, violations = self._check_constraints(
-                current_selection,
-                max_per_day=kwargs.get('max_per_day'),
-                need_free_day=kwargs.get('need_free_day'),
-                free_day_pref=kwargs.get('free_day_pref'),
-                allow_morning_mode=kwargs.get('allow_morning_mode'),
-                allow_evening_mode=kwargs.get('allow_evening_mode'),
-                allow_saturday=kwargs.get('allow_saturday'),
-                constraints_strictness=kwargs.get('constraints_strictness', 'strict')
-            )
-            
-            if is_valid or kwargs.get('constraints_strictness', 'strict') == 'flexible':
-                self._add_timetable(current_selection, violations)
-            
-            self.stats['combinations_tried'] += 1
-            return False
-        
-        # Recursive case: try each section of current course
-        course = self.course_list[course_idx]
-        
-        # Sort sections by time slots count for better pruning
-        allowed_sections = sorted(course.sections, key=lambda s: len(s.time_slots))
-        
-        for section in allowed_sections:
-            # Check for time conflicts using bitmask (fast)
-            if current_bitmask & section.time_bitmask:
+                if is_valid or constraints_strictness == 'flexible':
+                    self._add_timetable(selected_sections, violations)
                 continue
             
-            # Try this section
-            if self._recursive_search(
-                course_idx + 1, 
-                current_selection + [section], 
-                current_bitmask | section.time_bitmask,
-                kwargs
-            ):
-                return True  # Early termination requested
+            # Try each section of the current course
+            current_course_sections = section_lists[course_idx]
+            
+            for section in current_course_sections:
+                # Prune: check time conflict early
+                if occupied_bitmask & section.time_bitmask:
+                    continue
+                
+                # Prune: check max_per_day constraint early if provided
+                new_day_counts = day_counts.copy()
+                if max_per_day:
+                    section_days = section.get_occupied_days()
+                    for day in section_days:
+                        new_day_counts[day] += 1
+                        if new_day_counts[day] > max_per_day:
+                            # Skip this section if it exceeds max_per_day
+                            break
+                    else:
+                        # Only continue if no day exceeded max_per_day
+                        new_state = {
+                            'course_idx': course_idx + 1,
+                            'selected_sections': selected_sections + [section],
+                            'occupied_bitmask': occupied_bitmask | section.time_bitmask,
+                            'day_counts': new_day_counts
+                        }
+                        stack.append(new_state)
+                else:
+                    new_state = {
+                        'course_idx': course_idx + 1,
+                        'selected_sections': selected_sections + [section],
+                        'occupied_bitmask': occupied_bitmask | section.time_bitmask,
+                        'day_counts': day_counts  # No max_per_day constraint, keep same counts
+                    }
+                    stack.append(new_state)
+            
+            if checked % 100000 == 0 and checked > 0:
+                logger.info(f"BFS checked {checked:,} states, found {len(self.all_timetables):,} valid")
         
-        return False
+        return self.all_timetables
 
     def _check_constraints(self, selection: List[CourseSection], 
                         constraints_strictness: str = 'strict',
