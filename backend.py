@@ -2050,8 +2050,6 @@ def render_timetable_html_paginated(
 
 # ========== AUTHENTICATION MIDDLEWARE ==========
 # ========== GOOGLE OAUTH FIX ==========
-@app.get("/oauth-callback")
-async def oauth_callback(request: Request):
     """Handle Google OAuth callback - FIX FOR COOKIE ISSUE"""
     try:
         # Get token from URL fragment
