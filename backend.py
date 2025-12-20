@@ -1,6 +1,7 @@
 # ========== GOD MODE TIMETABLE GENERATOR - CLEANED PRODUCTION VERSION ==========
 # ALL ISSUES FIXED: No job queue, no duplicates, fixed non-preferred highlighting
 from fastapi import FastAPI, Form, Request, HTTPException
+from jose import jwt as jose_jwt
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import re, os, html, time, asyncio, json, logging, itertools, math, sys
@@ -13,7 +14,6 @@ import threading, multiprocessing
 from datetime import datetime
 from pathlib import Path
 from auth_utils import is_email_allowed
-import jwt
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
 
 # ========== SETUP ==========
@@ -1867,32 +1867,38 @@ async def logout():
     response.delete_cookie("sb-access-token")
     return response
 
-# ... rest of your code ...
+SUPABASE_JWT_SECRET = os.getenv("SUPABASE_JWT_SECRET")
+
 @app.middleware("http")
 async def auth_guard(request: Request, call_next):
     public_paths = {"/login", "/health", "/logout"}
-    
+
     if request.url.path in public_paths:
         return await call_next(request)
-    
+
     token = request.cookies.get("sb-access-token")
     if not token:
         return RedirectResponse("/login")
-    
+
     try:
-        payload = jwt.decode(token, options={"verify_signature": False})
+        payload = jose_jwt.decode(
+            token,
+            SUPABASE_JWT_SECRET,
+            algorithms=["HS256"],
+            audience="authenticated"
+        )
         email = payload.get("email")
+        if not email:
+            return RedirectResponse("/login")
     except Exception:
         return RedirectResponse("/login")
-    
+
     if not is_email_allowed(email):
-        # Show access denied page with logout option
         return HTMLResponse(f"""
         <!DOCTYPE html>
         <html>
         <head>
             <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Access Denied</title>
             <style>
                 body {{
@@ -1913,10 +1919,6 @@ async def auth_guard(request: Request, call_next):
                     border: 1px solid #1f2937;
                     text-align: center;
                 }}
-                .denied-icon {{
-                    font-size: 4rem;
-                    margin-bottom: 20px;
-                }}
                 .logout-btn {{
                     background: #ef4444;
                     color: white;
@@ -1928,33 +1930,14 @@ async def auth_guard(request: Request, call_next):
                     margin-top: 20px;
                     width: 100%;
                 }}
-                .logout-btn:hover {{
-                    background: #dc2626;
-                }}
-                .info {{
-                    color: #9ca3af;
-                    margin: 20px 0;
-                    padding: 15px;
-                    background: rgba(239,68,68,0.1);
-                    border-radius: 8px;
-                    border: 1px solid rgba(239,68,68,0.3);
-                }}
             </style>
         </head>
         <body>
             <div class="card">
-                <div class="denied-icon">🚫</div>
-                <h2>Access Denied</h2>
-                <div class="info">
-                    Contact Admin for Access.<br>
-                    <strong>Current user:</strong> {email} (not allowed)
-                </div>
-                <p style="color: #9ca3af; margin-bottom: 20px;">
-                    Please log out and try with one of the first 2 accounts.
-                </p>
-                <button class="logout-btn" onclick="logout()">Logout & Try Different Account</button>
+                <h2>🚫 Access Denied</h2>
+                <p>{email} is not allowed</p>
+                <button class="logout-btn" onclick="logout()">Logout</button>
             </div>
-            
             <script>
                 function logout() {{
                     document.cookie = "sb-access-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
@@ -1964,7 +1947,7 @@ async def auth_guard(request: Request, call_next):
         </body>
         </html>
         """, status_code=403)
-    
+
     request.state.email = email
     return await call_next(request)
 
