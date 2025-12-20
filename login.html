@@ -130,6 +130,18 @@
             display: none;
             font-size: 0.9rem;
         }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -187,7 +199,11 @@
             setTimeout(createSnowflake, i * 300);
         }
     
+<<<<<<< HEAD
         // Supabase configuration
+=======
+        // Supabase configuration - YOUR EXACT CREDENTIALS
+>>>>>>> c096009e653c668d959bfc1ec3fd6bdcd5c94fcb
         const SUPABASE_URL = 'https://qmlmexokphzqrinbdfwk.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbG1leG9rcGh6cXJpbmJkZndrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU2NDg5ODksImV4cCI6MjA4MTIyNDk4OX0.n4SY5_s-VSr9BHudSUhgJRc90wMcIJkP75UTJcX76Qo';
         
@@ -199,6 +215,14 @@
             const errorDiv = document.getElementById('errorMessage');
             errorDiv.textContent = message;
             errorDiv.style.display = 'block';
+<<<<<<< HEAD
+=======
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+>>>>>>> c096009e653c668d959bfc1ec3fd6bdcd5c94fcb
         }
         
         // Disable login button function
@@ -229,6 +253,183 @@
             }
         }
         
+<<<<<<< HEAD
+=======
+        // Check if user email exists in your two tables
+        async function checkUserInTables(email) {
+            try {
+                console.log(`🔍 Checking email in tables: ${email}`);
+                
+                // Check permanent_allowed_user table (VIP users)
+                const vipResponse = await supabase
+                    .from('permanent_allowed_user')
+                    .select('email')
+                    .eq('email', email)
+                    .single();
+                
+                if (vipResponse.data) {
+                    console.log(`✅ User ${email} found in permanent_allowed_user (VIP)`);
+                    return { allowed: true, type: 'vip' };
+                }
+                
+                // Check other_extra_user table (active sessions)
+                const extraResponse = await supabase
+                    .from('other_extra_user')
+                    .select('email, expires_at')
+                    .eq('email', email)
+                    .single();
+                
+                if (extraResponse.data) {
+                    // Check if session is not expired
+                    const expiresAt = new Date(extraResponse.data.expires_at);
+                    const now = new Date();
+                    
+                    if (expiresAt > now) {
+                        console.log(`✅ User ${email} found in other_extra_user (Active session)`);
+                        return { allowed: true, type: 'extra' };
+                    } else {
+                        console.log(`❌ User ${email} session expired`);
+                        return { allowed: false, reason: 'Session expired. Please contact admin.' };
+                    }
+                }
+                
+                // Check allowed_users table (if exists)
+                try {
+                    const allowedResponse = await supabase
+                        .from('allowed_users')
+                        .select('email')
+                        .eq('email', email)
+                        .single();
+                    
+                    if (allowedResponse.data) {
+                        console.log(`✅ User ${email} found in allowed_users`);
+                        return { allowed: true, type: 'allowed' };
+                    }
+                } catch (e) {
+                    // Table might not exist, that's okay
+                }
+                
+                // Check user_activity table for active sessions
+                try {
+                    const activityResponse = await supabase
+                        .from('user_activity')
+                        .select('email, expires_at, role')
+                        .eq('email', email)
+                        .order('login_time', { ascending: false })
+                        .limit(1);
+                    
+                    if (activityResponse.data && activityResponse.data.length > 0) {
+                        const latest = activityResponse.data[0];
+                        const expiresAt = new Date(latest.expires_at);
+                        const now = new Date();
+                        
+                        if (expiresAt > now) {
+                            console.log(`✅ User ${email} found in user_activity (Active)`);
+                            return { allowed: true, type: latest.role || 'user' };
+                        }
+                    }
+                } catch (e) {
+                    // Table might not exist, that's okay
+                }
+                
+                console.log(`❌ User ${email} not found in any table`);
+                return { 
+                    allowed: false, 
+                    reason: 'Email not authorized. Contact admin for access.' 
+                };
+                
+            } catch (error) {
+                console.error('Error checking user in tables:', error);
+                return { 
+                    allowed: false, 
+                    reason: 'Database error. Please try again or contact admin.' 
+                };
+            }
+        }
+        
+        // Create session for user
+        async function createUserSession(email, userType = 'extra') {
+            try {
+                const now = new Date();
+                const expiresAt = new Date(now.getTime() + 2 * 60000); // 2 minutes from now
+                
+                console.log(`Creating ${userType} session for ${email}, expires at ${expiresAt}`);
+                
+                // First try user_activity table
+                try {
+                    const sessionData = {
+                        email: email,
+                        role: userType,
+                        session_type: 'login',
+                        login_time: now.toISOString(),
+                        expires_at: expiresAt.toISOString()
+                    };
+                    
+                    const { error } = await supabase
+                        .from('user_activity')
+                        .insert(sessionData);
+                    
+                    if (!error) {
+                        console.log(`✅ Session created in user_activity for ${email}`);
+                        return true;
+                    }
+                } catch (e) {
+                    console.log('user_activity table insert failed, trying other_extra_user');
+                }
+                
+                // Fallback to other_extra_user table
+                const extraUserData = {
+                    email: email,
+                    login_time: now.toISOString(),
+                    expires_at: expiresAt.toISOString()
+                };
+                
+                const { error } = await supabase
+                    .from('other_extra_user')
+                    .insert(extraUserData);
+                
+                if (error) {
+                    console.error('Failed to create session:', error);
+                    return false;
+                }
+                
+                console.log(`✅ Session created in other_extra_user for ${email}`);
+                return true;
+                
+            } catch (error) {
+                console.error('Error creating session:', error);
+                return false;
+            }
+        }
+        
+        // Check active user count
+        async function getActiveUserCount() {
+            try {
+                const now = new Date().toISOString();
+                
+                // Check other_extra_user table
+                const { count: extraCount } = await supabase
+                    .from('other_extra_user')
+                    .select('*', { count: 'exact', head: true })
+                    .gt('expires_at', now);
+                
+                // Check user_activity table for extra users
+                const { count: activityCount } = await supabase
+                    .from('user_activity')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('role', 'extra')
+                    .eq('session_type', 'login')
+                    .gt('expires_at', now);
+                
+                return (extraCount || 0) + (activityCount || 0);
+                
+            } catch (error) {
+                console.error('Error getting active user count:', error);
+                return 0;
+            }
+        }
+        
+>>>>>>> c096009e653c668d959bfc1ec3fd6bdcd5c94fcb
         // Handle login function
         async function handleLogin() {
             const loginBtn = document.getElementById('loginBtn');
@@ -244,13 +445,21 @@
             
             // Disable button during login attempt
             loginBtn.disabled = true;
+<<<<<<< HEAD
+=======
+            const originalText = loginBtn.innerHTML;
+>>>>>>> c096009e653c668d959bfc1ec3fd6bdcd5c94fcb
             loginBtn.innerHTML = '<span>Redirecting to Google...</span>';
             
             try {
                 const { error } = await supabase.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
+<<<<<<< HEAD
                         redirectTo: window.location.origin,
+=======
+                        redirectTo: window.location.origin + '/oauth-callback',
+>>>>>>> c096009e653c668d959bfc1ec3fd6bdcd5c94fcb
                         queryParams: {
                             access_type: 'offline',
                             prompt: 'consent'
@@ -268,6 +477,7 @@
                 
                 // Re-enable button
                 loginBtn.disabled = false;
+<<<<<<< HEAD
                 loginBtn.innerHTML = `
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -277,6 +487,9 @@
                     </svg>
                     Sign in with Google
                 `;
+=======
+                loginBtn.innerHTML = originalText;
+>>>>>>> c096009e653c668d959bfc1ec3fd6bdcd5c94fcb
                 
                 // Show user-friendly error
                 let errorMessage = 'Login failed. ';
@@ -292,6 +505,7 @@
             }
         }
         
+<<<<<<< HEAD
         // Check URL fragment for auth callback
         function checkUrlFragment() {
             const hash = window.location.hash.substring(1);
@@ -307,6 +521,37 @@
                 document.cookie = `sb-access-token=${accessToken}; path=/; max-age=86400; SameSite=Lax`;
                 window.history.replaceState({}, '', '/');
                 window.location.reload();
+=======
+        async function processOAuthCallback() {
+            // Extract parameters from the URL's HASH fragment, not query string
+            const hash = window.location.hash.substring(1); // Remove the '#'
+            const params = new URLSearchParams(hash);
+            const accessToken = params.get('access_token');
+            const error = params.get('error');
+
+            if (error) {
+                showError(`Authentication error: ${error}`);
+                return;
+            }
+
+            if (accessToken) {
+                console.log("✅ Access token found in URL hash");
+                // Now send this token to your backend endpoint
+                // Example: await sendTokenToBackend(accessToken);
+                // Then set your session cookie and redirect
+                // ... rest of your session creation logic
+            } else {
+                console.error("❌ No access token found in URL hash.");
+                // Also check query parameters as a fallback for different OAuth flows
+                const urlParams = new URLSearchParams(window.location.search);
+                const fallbackToken = urlParams.get('access_token');
+                if (fallbackToken) {
+                    console.log("Token found in query string (fallback).");
+                    // Proceed with fallbackToken
+                } else {
+                    showError('Authentication failed: No token received. Please try logging in again.');
+                }
+>>>>>>> c096009e653c668d959bfc1ec3fd6bdcd5c94fcb
             }
         }
         
@@ -327,9 +572,20 @@
                 showError('Login button not found on page.');
             }
             
+<<<<<<< HEAD
             // Check URL on page load
             checkUrlFragment();
         });
+=======
+            // Check URL on page load for OAuth callback
+            setTimeout(() => {
+                processOAuthCallback();
+            }, 100);
+        });
+        
+        // Store original button HTML
+        const originalText = document.getElementById('loginBtn').innerHTML;
+>>>>>>> c096009e653c668d959bfc1ec3fd6bdcd5c94fcb
     </script>
 </body>
 </html>
