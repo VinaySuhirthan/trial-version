@@ -1891,9 +1891,6 @@ async def logout():
     return response
 
 # ... rest of your code ...
-from dotenv import load_dotenv
-load_dotenv()
-
 @app.middleware("http")
 async def auth_guard(request: Request, call_next):
     public_paths = {"/login", "/health", "/logout"}
@@ -1906,11 +1903,7 @@ async def auth_guard(request: Request, call_next):
         return RedirectResponse("/login")
     
     try:
-        payload = jwt.decode(
-            token,
-            options={"verify_signature": False, "verify_exp": False}
-        )
-
+        payload = jwt.decode(token, options={"verify_signature": False})
         email = payload.get("email")
     except Exception:
         return RedirectResponse("/login")
@@ -2151,9 +2144,9 @@ async def generate_timetable(
 
     # Parse limits
     try:
-        max_results = min(int(limit), 20)
+        max_results = min(int(limit), 10000)
     except Exception:
-        max_results = 20
+        max_results = 10000
     
     # Parse priority and strictness
     priority_mode = priority_mode.lower().strip()
