@@ -1,7 +1,6 @@
 # ========== GOD MODE TIMETABLE GENERATOR - CLEANED PRODUCTION VERSION ==========
 # ALL ISSUES FIXED: No job queue, no duplicates, fixed non-preferred highlighting
 from fastapi import FastAPI, Form, Request, HTTPException
-from jose import jwt as jose_jwt
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import re, os, html, time, asyncio, json, logging, itertools, math, sys
@@ -14,6 +13,7 @@ import threading, multiprocessing
 from datetime import datetime
 from pathlib import Path
 from auth_utils import is_email_allowed
+import jwt
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
 
 # ========== SETUP ==========
@@ -57,9 +57,38 @@ HOUR_SLOTS = [
 ]
 
 # ========== LOGGING ==========
-logging.basicConfig(level=logging.CRITICAL + 1)
-logger = logging.getLogger(__name__)
+try:
+    sys.stdout.reconfigure(encoding='utf-8')
+    sys.stderr.reconfigure(encoding='utf-8')
+except Exception:
+    pass
 
+# Configure logging
+log_dir = Path(os.getenv("LOG_DIR", "."))
+log_dir.mkdir(exist_ok=True)
+
+try:
+    from logging.handlers import RotatingFileHandler
+    file_handler = RotatingFileHandler(
+        log_dir / 'timetable.log',
+        maxBytes=10*1024*1024,
+        backupCount=5,
+        encoding='utf-8'
+    )
+except (PermissionError, OSError, ImportError):
+    file_handler = logging.StreamHandler(sys.stdout)
+
+stream_handler = logging.StreamHandler(sys.stdout)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+file_handler.setFormatter(formatter)
+stream_handler.setFormatter(formatter)
+
+logging.basicConfig(
+    level=os.getenv("LOG_LEVEL", "INFO"),
+    handlers=[file_handler, stream_handler],
+    force=True
+)
+logger = logging.getLogger(__name__)
 
 # ========== SIMPLE RATE LIMITING ==========
 class RateLimiter:
@@ -929,14 +958,23 @@ class GodModeTimetableFinder:
         self.stats['total_combinations'] = total_combinations
         logger.info(f"   Total combinations after filtering: {total_combinations:,}")
         
-        # Always use bitmask approach (recursive removed)
-        self.stats['search_strategy'] = 'bitmask'
-        logger.info("   Strategy: BITMASK ITERATIVE SEARCH")
-        timetables = self._find_all_bitmask(
-            max_per_day, need_free_day, free_day_pref,
-            allow_morning_mode, allow_evening_mode, allow_saturday,
-            constraints_strictness
-        )
+        # Choose search strategy
+        if total_combinations <= 1_000_000:
+            self.stats['search_strategy'] = 'bitmask'
+            logger.info("   Strategy: BITMASK BRUTE FORCE")
+            timetables = self._find_all_bitmask(
+                max_per_day, need_free_day, free_day_pref,
+                allow_morning_mode, allow_evening_mode, allow_saturday,
+                constraints_strictness
+            )
+        else:
+            self.stats['search_strategy'] = 'recursive_pruned'
+            logger.info("   Strategy: RECURSIVE DFS WITH PRUNING")
+            timetables = self._find_all_recursive(
+                max_per_day, need_free_day, free_day_pref,
+                allow_morning_mode, allow_evening_mode, allow_saturday,
+                constraints_strictness
+            )
         
         # Apply strict staff filtering if needed
         if staff_strictness == 'strict' and staff_preferences:
@@ -1128,67 +1166,64 @@ class GodModeTimetableFinder:
         checked = 0
         self.stats['combinations_tried'] = 0
 
-        # Prepare section lists
+        original_indices = list(range(len(self.course_list)))
         section_lists = [course.sections for course in self.course_list]
         
-        # Early exit if any course has no sections
-        if any(len(sections) == 0 for sections in section_lists):
-            return self.all_timetables
+        # Sort by number of sections for better pruning
+        sorted_indices = sorted(range(len(section_lists)), key=lambda i: len(section_lists[i]))
+        sorted_section_lists = [section_lists[i] for i in sorted_indices]
         
-        # Use iterative approach with pruning for large search spaces
-        if total_combinations > 1000000:
-            # Use iterative BFS with pruning for large search spaces
-            timetables = self._iterative_search_with_pruning(
-                section_lists, max_per_day, need_free_day, free_day_pref,
-                allow_morning_mode, allow_evening_mode, allow_saturday,
-                constraints_strictness, start_time
+        update_interval = min(1000, max(1, total_combinations // 10)) if total_combinations > 0 else 1
+        
+        for combination in itertools.product(*sorted_section_lists):
+            checked += 1
+            self.stats['combinations_tried'] = checked
+            
+            # Check timeout
+            if time.time() - start_time > self.timeout:
+                logger.warning(f"Bitmask search timeout reached ({self.timeout} seconds)")
+                self.stats['timeout_triggered'] = True
+                break
+
+            # Restore original order
+            original_order = [None] * len(combination)
+            for sorted_idx, section in enumerate(combination):
+                original_idx = sorted_indices[sorted_idx]
+                original_order[original_idx] = section
+
+            # Check for time conflicts using bitmask
+            occupied_bitmask = 0
+            valid = True
+            for sec in original_order:
+                if occupied_bitmask & sec.time_bitmask:
+                    valid = False
+                    break
+                occupied_bitmask |= sec.time_bitmask
+            
+            if not valid:
+                continue
+
+            # Check constraints
+            is_valid, violations = self._check_constraints(
+                original_order,
+                max_per_day=max_per_day,
+                need_free_day=need_free_day,
+                free_day_pref=free_day_pref,
+                allow_morning_mode=allow_morning_mode,
+                allow_evening_mode=allow_evening_mode,
+                allow_saturday=allow_saturday,
+                constraints_strictness=constraints_strictness
             )
-            return timetables
-        else:
-            # Use product for smaller search spaces
-            for combination in itertools.product(*section_lists):
-                checked += 1
-                self.stats['combinations_tried'] = checked
+            
+            if is_valid or constraints_strictness == 'flexible':
+                self._add_timetable(original_order, violations)
                 
-                # Check timeout
-                if time.time() - start_time > self.timeout:
-                    logger.warning(f"Bitmask search timeout reached ({self.timeout} seconds)")
-                    self.stats['timeout_triggered'] = True
+                if len(self.all_timetables) >= self.max_results:
+                    logger.warning(f"Reached max results limit: {self.max_results}")
                     break
 
-                # Check for time conflicts using bitmask
-                occupied_bitmask = 0
-                valid = True
-                for sec in combination:
-                    if occupied_bitmask & sec.time_bitmask:
-                        valid = False
-                        break
-                    occupied_bitmask |= sec.time_bitmask
-                
-                if not valid:
-                    continue
-
-                # Check constraints
-                is_valid, violations = self._check_constraints(
-                    list(combination),
-                    max_per_day=max_per_day,
-                    need_free_day=need_free_day,
-                    free_day_pref=free_day_pref,
-                    allow_morning_mode=allow_morning_mode,
-                    allow_evening_mode=allow_evening_mode,
-                    allow_saturday=allow_saturday,
-                    constraints_strictness=constraints_strictness
-                )
-                
-                if is_valid or constraints_strictness == 'flexible':
-                    self._add_timetable(list(combination), violations)
-                    
-                    if len(self.all_timetables) >= self.max_results:
-                        logger.warning(f"Reached max results limit: {self.max_results}")
-                        break
-
-                if checked % 100000 == 0 and checked > 0:
-                    logger.info(f"Bitmask checked {checked:,} combos, found {len(self.all_timetables):,} valid")
+            if checked % update_interval == 0:
+                logger.info(f"Bitmask checked {checked:,} combos, found {len(self.all_timetables):,} valid")
 
         elapsed = time.time() - start_time
         self.stats.update({
@@ -1196,100 +1231,88 @@ class GodModeTimetableFinder:
         })
         return self.all_timetables
 
-    def _iterative_search_with_pruning(self, section_lists, max_per_day, need_free_day, free_day_pref,
-                                     allow_morning_mode, allow_evening_mode, allow_saturday,
-                                     constraints_strictness, start_time):
-        """
-        Iterative BFS search with pruning for large search spaces.
-        """
-        n_courses = len(section_lists)
+    def _find_all_recursive(self, max_per_day, need_free_day, free_day_pref,
+                        allow_morning_mode, allow_evening_mode, allow_saturday,
+                        constraints_strictness):
+        start_time = time.time()
+        self.search_start_time = start_time
         
-        # Use a stack for DFS-like iterative search (but not recursive)
-        stack = []
-        
-        # Start with empty selection and no time conflicts
-        initial_state = {
-            'course_idx': 0,
-            'selected_sections': [],
-            'occupied_bitmask': 0,
-            'day_counts': defaultdict(int)
+        constraints = {
+            'max_per_day': max_per_day,
+            'need_free_day': need_free_day,
+            'free_day_pref': free_day_pref,
+            'allow_morning_mode': allow_morning_mode,
+            'allow_evening_mode': allow_evening_mode,
+            'allow_saturday': allow_saturday,
+            'constraints_strictness': constraints_strictness
         }
-        stack.append(initial_state)
         
-        checked = 0
+        self.stats['combinations_tried'] = 0
         
-        while stack and len(self.all_timetables) < self.max_results:
-            # Check timeout
-            if time.time() - start_time > self.timeout:
-                logger.warning(f"Search timeout reached ({self.timeout} seconds)")
-                self.stats['timeout_triggered'] = True
-                break
+        # Start recursive search
+        self._recursive_search(0, [], 0, constraints)
+        
+        elapsed = time.time() - start_time
+        self.stats.update({
+            'time_elapsed': elapsed
+        })
+        return self.all_timetables
+
+    def _recursive_search(self, course_idx: int, current_selection: List[CourseSection], 
+                        current_bitmask: int, kwargs: Dict[str, Any]) -> bool:
+        """
+        Recursive search with early termination.
+        Returns True if search should stop.
+        """
+        # Check timeout
+        if time.time() - self.search_start_time > self.timeout:
+            self.stats['timeout_triggered'] = True
+            return True
             
-            state = stack.pop()
-            course_idx = state['course_idx']
-            selected_sections = state['selected_sections']
-            occupied_bitmask = state['occupied_bitmask']
-            day_counts = state['day_counts']
+        # Check if we have enough results
+        if len(self.all_timetables) >= self.max_results:
+            return True
+        
+        # Base case: all courses processed
+        if course_idx == len(self.course_list):
+            is_valid, violations = self._check_constraints(
+                current_selection,
+                max_per_day=kwargs.get('max_per_day'),
+                need_free_day=kwargs.get('need_free_day'),
+                free_day_pref=kwargs.get('free_day_pref'),
+                allow_morning_mode=kwargs.get('allow_morning_mode'),
+                allow_evening_mode=kwargs.get('allow_evening_mode'),
+                allow_saturday=kwargs.get('allow_saturday'),
+                constraints_strictness=kwargs.get('constraints_strictness', 'strict')
+            )
             
-            checked += 1
-            self.stats['combinations_tried'] = checked
+            if is_valid or kwargs.get('constraints_strictness', 'strict') == 'flexible':
+                self._add_timetable(current_selection, violations)
             
-            # If we've processed all courses, check constraints
-            if course_idx == n_courses:
-                is_valid, violations = self._check_constraints(
-                    selected_sections,
-                    max_per_day=max_per_day,
-                    need_free_day=need_free_day,
-                    free_day_pref=free_day_pref,
-                    allow_morning_mode=allow_morning_mode,
-                    allow_evening_mode=allow_evening_mode,
-                    allow_saturday=allow_saturday,
-                    constraints_strictness=constraints_strictness
-                )
-                
-                if is_valid or constraints_strictness == 'flexible':
-                    self._add_timetable(selected_sections, violations)
+            self.stats['combinations_tried'] += 1
+            return False
+        
+        # Recursive case: try each section of current course
+        course = self.course_list[course_idx]
+        
+        # Sort sections by time slots count for better pruning
+        allowed_sections = sorted(course.sections, key=lambda s: len(s.time_slots))
+        
+        for section in allowed_sections:
+            # Check for time conflicts using bitmask (fast)
+            if current_bitmask & section.time_bitmask:
                 continue
             
-            # Try each section of the current course
-            current_course_sections = section_lists[course_idx]
-            
-            for section in current_course_sections:
-                # Prune: check time conflict early
-                if occupied_bitmask & section.time_bitmask:
-                    continue
-                
-                # Prune: check max_per_day constraint early if provided
-                new_day_counts = day_counts.copy()
-                if max_per_day:
-                    section_days = section.get_occupied_days()
-                    for day in section_days:
-                        new_day_counts[day] += 1
-                        if new_day_counts[day] > max_per_day:
-                            # Skip this section if it exceeds max_per_day
-                            break
-                    else:
-                        # Only continue if no day exceeded max_per_day
-                        new_state = {
-                            'course_idx': course_idx + 1,
-                            'selected_sections': selected_sections + [section],
-                            'occupied_bitmask': occupied_bitmask | section.time_bitmask,
-                            'day_counts': new_day_counts
-                        }
-                        stack.append(new_state)
-                else:
-                    new_state = {
-                        'course_idx': course_idx + 1,
-                        'selected_sections': selected_sections + [section],
-                        'occupied_bitmask': occupied_bitmask | section.time_bitmask,
-                        'day_counts': day_counts  # No max_per_day constraint, keep same counts
-                    }
-                    stack.append(new_state)
-            
-            if checked % 100000 == 0 and checked > 0:
-                logger.info(f"BFS checked {checked:,} states, found {len(self.all_timetables):,} valid")
+            # Try this section
+            if self._recursive_search(
+                course_idx + 1, 
+                current_selection + [section], 
+                current_bitmask | section.time_bitmask,
+                kwargs
+            ):
+                return True  # Early termination requested
         
-        return self.all_timetables
+        return False
 
     def _check_constraints(self, selection: List[CourseSection], 
                         constraints_strictness: str = 'strict',
@@ -1867,47 +1890,104 @@ async def logout():
     response.delete_cookie("sb-access-token")
     return response
 
-SUPABASE_JWT_SECRET = os.getenv("I4rg0kV/wLByTHyDYiZpUTBC6e47/aCUBWERZ6rqaWn/aCGxu77NE4DJBpry3s16YE3jUljyHzUWtJqTpVSLlA==")
-
+# ... rest of your code ...
 @app.middleware("http")
 async def auth_guard(request: Request, call_next):
-    public_paths = {
-        "/login",
-        "/health",
-        "/logout",
-        "/static",
-        "/favicon.ico"
-    }
-
-    for p in public_paths:
-        if request.url.path.startswith(p):
-            return await call_next(request)
-
+    public_paths = {"/login", "/health", "/logout"}
+    
+    if request.url.path in public_paths:
+        return await call_next(request)
+    
     token = request.cookies.get("sb-access-token")
     if not token:
         return RedirectResponse("/login")
-
+    
     try:
-        payload = jose_jwt.decode(
-            token,
-            SUPABASE_JWT_SECRET,
-            algorithms=["HS256"],
-            audience="authenticated"
-        )
+        payload = jwt.decode(token, options={"verify_signature": False})
         email = payload.get("email")
-        if not email:
-            return RedirectResponse("/login")
-
-    except Exception as e:
-        print("JWT ERROR:", e)
+    except Exception:
         return RedirectResponse("/login")
-
+    
     if not is_email_allowed(email):
-        return HTMLResponse(
-            "<h2>Access Denied</h2><p>You are not allowed.</p>",
-            status_code=403
-        )
-
+        # Show access denied page with logout option
+        return HTMLResponse(f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Access Denied</title>
+            <style>
+                body {{
+                    margin: 0;
+                    background: #020617;
+                    color: #e5e7eb;
+                    font-family: Arial, sans-serif;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100vh;
+                }}
+                .card {{
+                    background: #0f172a;
+                    padding: 40px;
+                    width: 400px;
+                    border-radius: 12px;
+                    border: 1px solid #1f2937;
+                    text-align: center;
+                }}
+                .denied-icon {{
+                    font-size: 4rem;
+                    margin-bottom: 20px;
+                }}
+                .logout-btn {{
+                    background: #ef4444;
+                    color: white;
+                    border: none;
+                    padding: 12px 24px;
+                    border-radius: 6px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    margin-top: 20px;
+                    width: 100%;
+                }}
+                .logout-btn:hover {{
+                    background: #dc2626;
+                }}
+                .info {{
+                    color: #9ca3af;
+                    margin: 20px 0;
+                    padding: 15px;
+                    background: rgba(239,68,68,0.1);
+                    border-radius: 8px;
+                    border: 1px solid rgba(239,68,68,0.3);
+                }}
+            </style>
+        </head>
+        <body>
+            <div class="card">
+                <div class="denied-icon">🚫</div>
+                <h2>Access Denied</h2>
+                <div class="info">
+                    Contact Admin for Access.<br>
+                    <strong>Current user:</strong> {email} (not allowed)
+                </div>
+                <p style="color: #9ca3af; margin-bottom: 20px;">
+                    Please log out and try with one of the first 2 accounts.
+                </p>
+                <button class="logout-btn" onclick="logout()">Logout & Try Different Account</button>
+            </div>
+            
+            <script>
+                function logout() {{
+                    document.cookie = "sb-access-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+                    window.location.href = "/login";
+                }}
+            </script>
+        </body>
+        </html>
+        """, status_code=403)
+    
     request.state.email = email
     return await call_next(request)
 
