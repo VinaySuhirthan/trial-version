@@ -1867,7 +1867,7 @@ async def logout():
     response.delete_cookie("sb-access-token")
     return response
 
-SUPABASE_JWT_SECRET = os.getenv("SUPABASE_JWT_SECRET")
+SUPABASE_JWT_SECRET = os.getenv("I4rg0kV/wLByTHyDYiZpUTBC6e47/aCUBWERZ6rqaWn/aCGxu77NE4DJBpry3s16YE3jUljyHzUWtJqTpVSLlA==")
 
 @app.middleware("http")
 async def auth_guard(request: Request, call_next):
