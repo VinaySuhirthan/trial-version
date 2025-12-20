@@ -1891,6 +1891,9 @@ async def logout():
     return response
 
 # ... rest of your code ...
+from dotenv import load_dotenv
+load_dotenv()
+
 @app.middleware("http")
 async def auth_guard(request: Request, call_next):
     public_paths = {"/login", "/health", "/logout"}
@@ -1903,7 +1906,11 @@ async def auth_guard(request: Request, call_next):
         return RedirectResponse("/login")
     
     try:
-        payload = jwt.decode(token, options={"verify_signature": False})
+        payload = jwt.decode(
+            token,
+            options={"verify_signature": False, "verify_exp": False}
+        )
+
         email = payload.get("email")
     except Exception:
         return RedirectResponse("/login")
