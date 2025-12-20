@@ -945,14 +945,17 @@
 </style>
 </head>
 <body>
+    <script src="/static/auto_logout.js?v=999"></script>
     <header class="header">
       <div id="auto-logout-timer"
+          data-timeout="120"
           style="position:fixed;bottom:20px;right:20px;
                   background:#020617;color:#e5e7eb;
                   padding:8px 12px;border-radius:8px;
                   font-size:14px;z-index:9999;">
-        ⏳ Auto logout in 120s
+        ⏳ Auto logout in --
       </div>
+
 
       <!-- ADD THIS LOGOUT BUTTON DIV -->
       <div style="position: absolute; top: 20px; right: 20px;">
@@ -1779,6 +1782,5 @@
 
 
 </script>
-<script src="/static/auto_logout.js"></script>
 </body>
 </html>
