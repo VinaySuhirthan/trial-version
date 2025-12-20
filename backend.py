@@ -2049,6 +2049,69 @@ def render_timetable_html_paginated(
     return '\n'.join(html_parts)
 
 # ========== AUTHENTICATION MIDDLEWARE ==========
+# ========== GOOGLE OAUTH FIX ==========
+@app.get("/oauth-callback")
+async def oauth_callback(request: Request):
+    """Handle Google OAuth callback - FIX FOR COOKIE ISSUE"""
+    try:
+        # Get token from URL fragment
+        token = request.query_params.get("access_token")
+        if not token:
+            # Try to get from hash fragment
+            url_hash = str(request.url)
+            if "#" in url_hash:
+                hash_part = url_hash.split("#")[1]
+                params = dict(param.split("=") for param in hash_part.split("&") if "=" in param)
+                token = params.get("access_token")
+        
+        if not token:
+            logger.error("No token in OAuth callback")
+            return RedirectResponse("/login?error=No token provided")
+        
+        # Decode the token to get email
+        import jwt
+        payload = jwt.decode(token, options={"verify_signature": False})
+        email = payload.get("email")
+        
+        if not email:
+            logger.error("No email in token")
+            return RedirectResponse("/login?error=No email in token")
+        
+        email = email.strip().lower()
+        logger.info(f"Google OAuth user: {email}")
+        
+        # Check if user is allowed
+        if is_email_allowed(email):
+            # User already in system
+            logger.info(f"User {email} already allowed")
+        else:
+            # Create new session for user
+            if can_extra_user_login():
+                create_extra_user_session(email)
+                logger.info(f"Created new session for {email}")
+            else:
+                # Kick oldest user
+                kick_oldest_public_user()
+                create_extra_user_session(email)
+                logger.info(f"Kicked oldest and created session for {email}")
+        
+        # Create response with cookie
+        response = RedirectResponse("/")
+        response.set_cookie(
+            key="sb-access-token",
+            value=f"google:{email}",
+            httponly=True,
+            max_age=120,  # 2 minutes
+            path="/",
+            samesite="lax"
+        )
+        
+        logger.info(f"✅ Google login successful for {email}")
+        return response
+        
+    except Exception as e:
+        logger.error(f"OAuth callback error: {e}")
+        return RedirectResponse(f"/login?error={str(e)}")
 @app.middleware("http")
 async def auth_guard(request: Request, call_next):
     """Middleware to protect all routes except public ones."""
