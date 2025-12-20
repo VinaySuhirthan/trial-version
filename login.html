@@ -442,7 +442,11 @@
                 const { error } = await supabase.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
-                        redirectTo: window.location.origin + '/',
+                        redirectTo: window.location.origin + '/oauth-callback',
+                        queryParams: {
+                            access_type: 'offline',
+                            prompt: 'consent'
+                        }
                     }
                 });
                 
@@ -473,43 +477,6 @@
         }
         
         async function processOAuthCallback() {
-            // 1. Extract from URL hash
-            const hash = window.location.hash.substring(1);
-            const params = new URLSearchParams(hash);
-            const accessToken = params.get('access_token');
-            
-            if (accessToken) {
-                try {
-                    // 2. Set session
-                    if (!supabase) initSupabase();
-                    await supabase.auth.setSession({ access_token: accessToken });
-                    
-                    // 3. Get user email
-                    const { data: { user } } = await supabase.auth.getUser();
-                    if (!user || !user.email) throw new Error("No email");
-                    
-                    // 4. Send to backend
-                    const formData = new FormData();
-                    formData.append('email', user.email.toLowerCase());
-                    
-                    const response = await fetch('/login', {
-                        method: 'POST',
-                        body: formData
-                    });
-                    
-                    // 5. Clear URL and redirect
-                    if (response.ok || response.redirected) {
-                        window.history.replaceState({}, '', '/');
-                        window.location.href = '/';
-                    } else {
-                        throw new Error('Backend login failed');
-                    }
-                } catch (error) {
-                    showError('Google login failed. Use email login.');
-                    console.error('Login error:', error);
-                }
-            }
-        }
             // Extract parameters from the URL's HASH fragment, not query string
             const hash = window.location.hash.substring(1); // Remove the '#'
             const params = new URLSearchParams(hash);
