@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Timetable Generator</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #020617, #0f172a);
+            color: #e5e7eb;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1em;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+        
+        @keyframes sway {
+            0% { transform: translateY(0) translateX(-10px); }
+            25% { transform: translateY(25vh) translateX(5px); }
+            50% { transform: translateY(50vh) translateX(-5px); }
+            75% { transform: translateY(75vh) translateX(10px); }
+            100% { transform: translateY(100vh) translateX(-10px); }
+        }
+        .container {
+            max-width: 420px;
+            width: 100%;
+            padding: 20px;
+        }
+        .card {
+            background: rgba(15, 23, 42, 0.95);
+            border-radius: 16px;
+            padding: 48px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid #1f2937;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+        h1 {
+            font-size: 1.75rem;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            white-space: nowrap;
+        }
+        .subtitle {
+            color: #9ca3af;
+            margin-bottom: 40px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .login-btn {
+            background: white;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.2s ease;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 20;
+        }
+        .login-btn:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .login-btn:active {
+            transform: scale(0.98);
+        }
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .info {
+            color: #9ca3af;
+            font-size: 0.85rem;
+            margin-top: 32px;
+            padding: 16px;
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid #3b82f6;
+            text-align: left;
+            line-height: 1.6;
+        }
+        .info strong {
+            color: #d1d5db;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .error {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            display: none;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>SCHEDULA MATRIX</h1>
+            <p class="subtitle">FlexiLearn made complex. I make it clear.</p>
+            
+            <div id="errorMessage" class="error"></div>
+            
+            <button id="loginBtn" class="login-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+                Sign in with Google
+            </button>
+            
+            <div class="info">
+                <strong>Note:</strong> Contact Admin for Access. If you see an access denied message, please try a different Google account.
+            </div>
+        </div>
+    </div>
+    
+    <!-- Use jsDelivr CDN instead of unpkg -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
+    
+    <script>
+        // Create snowfall effect
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            const shapes = ['•', '❄', '❅', '❆'];
+            snowflake.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+            snowflake.style.left = Math.random() * 100 + '%';
+            const duration = (Math.random() * 3 + 8) + 's';
+            snowflake.style.opacity = Math.random() * 0.6 + 0.2;
+            snowflake.style.fontSize = (Math.random() * 10 + 6) + 'px';
+            snowflake.style.animation = `sway ${duration} linear infinite`;
+            
+            document.body.appendChild(snowflake);
+            
+            setTimeout(() => {
+                snowflake.remove();
+            }, 12000);
+        }
+        
+        // Create snowflakes periodically
+        setInterval(createSnowflake, 600);
+        
+        // Initial snowflakes
+        for (let i = 0; i < 10; i++) {
+            setTimeout(createSnowflake, i * 300);
+        }
+    
+        // Supabase configuration
+        const SUPABASE_URL = 'https://qmlmexokphzqrinbdfwk.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFtbG1leG9rcGh6cXJpbmJkZndrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU2NDg5ODksImV4cCI6MjA4MTIyNDk4OX0.n4SY5_s-VSr9BHudSUhgJRc90wMcIJkP75UTJcX76Qo';
+        
+        // Supabase client variable
+        let supabase;
+        
+        // Show error function
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+        
+        // Disable login button function
+        function disableLoginButton() {
+            const loginBtn = document.getElementById('loginBtn');
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<span>Service Unavailable</span>';
+        }
+        
+        // Initialize Supabase client
+        function initSupabase() {
+            if (!window.supabase) {
+                console.error('Supabase library not loaded!');
+                showError('Failed to load authentication service. Please refresh the page or try a different browser.');
+                disableLoginButton();
+                return false;
+            }
+            
+            try {
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('Supabase client initialized successfully');
+                return true;
+            } catch (error) {
+                console.error('Failed to create Supabase client:', error);
+                showError('Failed to initialize authentication. Please check console for details.');
+                disableLoginButton();
+                return false;
+            }
+        }
+        
+        // Handle login function
+        async function handleLogin() {
+            const loginBtn = document.getElementById('loginBtn');
+            const errorDiv = document.getElementById('errorMessage');
+            
+            // Clear any previous errors
+            errorDiv.style.display = 'none';
+            
+            // Initialize Supabase if not already initialized
+            if (!supabase && !initSupabase()) {
+                return;
+            }
+            
+            // Disable button during login attempt
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<span>Redirecting to Google...</span>';
+            
+            try {
+                const { error } = await supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: window.location.origin,
+                        queryParams: {
+                            access_type: 'offline',
+                            prompt: 'consent'
+                        }
+                    }
+                });
+                
+                if (error) {
+                    throw error;
+                }
+                // If successful, the page will redirect automatically
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                
+                // Re-enable button
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+                    Sign in with Google
+                `;
+                
+                // Show user-friendly error
+                let errorMessage = 'Login failed. ';
+                if (error.message.includes('NetworkError') || error.message.includes('Tracking Prevention')) {
+                    errorMessage += 'Browser security settings are blocking authentication. ';
+                    errorMessage += 'Please try: 1) Using Chrome/Firefox, or 2) In Edge, go to Settings → Privacy → Tracking prevention → Set to "Basic"';
+                } else if (error.message.includes('CORS')) {
+                    errorMessage += 'Cross-origin request blocked. Contact administrator.';
+                } else {
+                    errorMessage += error.message;
+                }
+                showError(errorMessage);
+            }
+        }
+        
+        // Check URL fragment for auth callback
+        function checkUrlFragment() {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            const accessToken = params.get('access_token');
+            const error = params.get('error');
+            
+            if (error) {
+                showError(`Authentication error: ${error}`);
+            }
+            
+            if (accessToken) {
+                document.cookie = `sb-access-token=${accessToken}; path=/; max-age=86400; SameSite=Lax`;
+                window.history.replaceState({}, '', '/');
+                window.location.reload();
+            }
+        }
+        
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing...');
+            
+            // Initialize Supabase
+            initSupabase();
+            
+            // Attach login button listener
+            const loginBtn = document.getElementById('loginBtn');
+            if (loginBtn) {
+                loginBtn.addEventListener('click', handleLogin);
+                console.log('Login button event listener attached');
+            } else {
+                console.error('Login button not found!');
+                showError('Login button not found on page.');
+            }
+            
+            // Check URL on page load
+            checkUrlFragment();
+        });
+    </script>
+</body>
+</html>
