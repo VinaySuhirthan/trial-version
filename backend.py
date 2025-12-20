@@ -1871,10 +1871,17 @@ SUPABASE_JWT_SECRET = os.getenv("SUPABASE_JWT_SECRET")
 
 @app.middleware("http")
 async def auth_guard(request: Request, call_next):
-    public_paths = {"/login", "/health", "/logout"}
+    public_paths = {
+        "/login",
+        "/health",
+        "/logout",
+        "/static",
+        "/favicon.ico"
+    }
 
-    if request.url.path in public_paths:
-        return await call_next(request)
+    for p in public_paths:
+        if request.url.path.startswith(p):
+            return await call_next(request)
 
     token = request.cookies.get("sb-access-token")
     if not token:
@@ -1890,63 +1897,16 @@ async def auth_guard(request: Request, call_next):
         email = payload.get("email")
         if not email:
             return RedirectResponse("/login")
-    except Exception:
+
+    except Exception as e:
+        print("JWT ERROR:", e)
         return RedirectResponse("/login")
 
     if not is_email_allowed(email):
-        return HTMLResponse(f"""
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="utf-8">
-            <title>Access Denied</title>
-            <style>
-                body {{
-                    margin: 0;
-                    background: #020617;
-                    color: #e5e7eb;
-                    font-family: Arial, sans-serif;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    height: 100vh;
-                }}
-                .card {{
-                    background: #0f172a;
-                    padding: 40px;
-                    width: 400px;
-                    border-radius: 12px;
-                    border: 1px solid #1f2937;
-                    text-align: center;
-                }}
-                .logout-btn {{
-                    background: #ef4444;
-                    color: white;
-                    border: none;
-                    padding: 12px 24px;
-                    border-radius: 6px;
-                    font-weight: bold;
-                    cursor: pointer;
-                    margin-top: 20px;
-                    width: 100%;
-                }}
-            </style>
-        </head>
-        <body>
-            <div class="card">
-                <h2>🚫 Access Denied</h2>
-                <p>{email} is not allowed</p>
-                <button class="logout-btn" onclick="logout()">Logout</button>
-            </div>
-            <script>
-                function logout() {{
-                    document.cookie = "sb-access-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-                    window.location.href = "/login";
-                }}
-            </script>
-        </body>
-        </html>
-        """, status_code=403)
+        return HTMLResponse(
+            "<h2>Access Denied</h2><p>You are not allowed.</p>",
+            status_code=403
+        )
 
     request.state.email = email
     return await call_next(request)
