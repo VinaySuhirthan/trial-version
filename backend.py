@@ -16,9 +16,6 @@ from auth_utils import is_email_allowed
 import jwt
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
-
-
-
 # ========== SETUP ==========
 app = FastAPI(title="Timetable Generator API", version="3.0.0")
 app.mount("/static", StaticFiles(directory="static"), name="static")
